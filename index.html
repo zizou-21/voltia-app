@@ -2,1229 +2,983 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b1210">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1410">
 <title>VOLTIA v0.8 · Dark Premium</title>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
-
+<link href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet">
 <style>
 :root{
- --bg:#0b1210;--panel:#15231b;--panel2:#1d3024;
- --line:#30483a;--green:#b9ff46;--text:#f3f9f3;
- --muted:#a9bbaa;--blue:#67c9ff;--orange:#ffc16c
+--bg:#0b1410;--panel:#17261d;--panel2:#213629;
+--line:#35503d;--lime:#b9ff46;--text:#f2f7f1;
+--muted:#a8bbab;--blue:#67c9ff;--orange:#ffc16c
 }
 *{box-sizing:border-box}
-body{
- margin:0;background:var(--bg);color:var(--text);
- font-family:system-ui,-apple-system,"Segoe UI",sans-serif
-}
+body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,"Segoe UI",sans-serif}
 button,input,select{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.55;cursor:wait}
-a{color:var(--green)}
-header{
- height:72px;display:flex;align-items:center;
- justify-content:space-between;padding:0 17px;
- background:#101c15;border-bottom:1px solid var(--line)
-}
-.brand{display:flex;align-items:center;gap:11px}
-.logo{
- width:43px;height:43px;border-radius:13px;
- background:var(--green);color:#102016;
- display:grid;place-items:center;font-size:28px;font-weight:900
-}
-.brand h1{
- margin:0;color:var(--green);font-size:23px;letter-spacing:1px
-}
-.brand small{color:var(--muted);font-size:10px;letter-spacing:1px}
-.version{
- font-size:12px;color:var(--muted);border:1px solid var(--line);
- border-radius:22px;padding:7px 11px
-}
-main{max-width:1130px;margin:auto;padding:20px 14px 115px}
+header{height:75px;background:#101d16;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .logo{width:44px;height:44px;display:grid;place-items:center;background:var(--lime);color:#152719;border-radius:14px;font-size:28px;font-weight:900}
+.brand h1{color:var(--lime);font-size:23px;letter-spacing:1px;margin:0}
+.brand small{font-size:10px;letter-spacing:1px;color:var(--muted)}
+.version{font-size:12px;border:1px solid var(--line);padding:7px 12px;border-radius:25px;color:var(--muted)}
+main{max-width:1120px;padding:22px 15px 125px;margin:auto}
 section{display:none}
 section.active{display:block}
-h2{font-size:26px;margin:0 0 9px}
-h3{font-size:17px;margin:0 0 9px}
+h2{font-size:26px;margin:2px 0 10px}
+h3{font-size:17px;margin:0 0 10px}
 p{line-height:1.5}
 .muted{color:var(--muted)}
-.eyebrow{
- font-size:11px;color:var(--green);letter-spacing:1.5px;
- font-weight:800;margin-bottom:10px
-}
-.card{
- background:var(--panel);border:1px solid var(--line);
- border-radius:19px;padding:18px;margin-bottom:15px
-}
-.hero{
- background:linear-gradient(130deg,#275439,#14231b 78%);
- padding:30px 22px
-}
-.hero h2{font-size:35px;line-height:1.14;max-width:450px}
-.hero p{color:#d4e2d5}
-.btn{
- border:0;border-radius:12px;background:var(--green);
- color:#102016;padding:12px 16px;font-weight:800;
- text-decoration:none;display:inline-flex;
- align-items:center;justify-content:center
-}
-.btn.secondary{
- background:var(--panel2);color:var(--text);
- border:1px solid var(--line)
-}
-.btn.small{font-size:13px;padding:9px 12px}
+.eyebrow{color:var(--lime);font-size:11px;font-weight:800;letter-spacing:1.7px;margin-bottom:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:15px}
+.hero{background:linear-gradient(135deg,#2a553a,var(--panel) 80%);padding:32px 23px}
+.hero h2{font-size:36px;max-width:450px;line-height:1.14}
+.hero p{color:#dce8da}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--lime);color:#14251b;border:0;border-radius:12px;padding:12px 16px;text-decoration:none;font-weight:800}
+.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}
+.btn.small{padding:9px 12px;font-size:13px}
 .btn.full{width:100%}
-.actions{
- display:flex;gap:9px;flex-wrap:wrap;
- align-items:center;margin:12px 0
-}
+.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:13px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.feature{min-height:145px}
-.feature .symbol{font-size:29px;color:var(--green)}
-.feature h3{font-size:15px;margin-top:13px}
+.feature{min-height:135px}
+.feature .emoji{font-size:28px;color:var(--lime)}
+.feature h3{font-size:15px;margin-top:12px}
 .feature p{font-size:12px;color:var(--muted)}
-label{display:block;font-size:13px;margin-bottom:7px}
-input,select{
- width:100%;min-width:0;padding:12px;
- border:1px solid #42604a;border-radius:11px;
- background:#0e1913;color:#fff;font-size:15px
-}
-input:focus,select:focus,button:focus-visible,a:focus-visible{
- outline:2px solid var(--green);outline-offset:2px
-}
-.searchbar{display:flex;gap:8px}
-.searchbar input{flex:1}
-.filters{
- display:grid;grid-template-columns:1fr 1fr;
- gap:11px;margin-top:14px
-}
-
-/* MAPA DARK PREMIUM */
-.map-shell{
- position:relative;overflow:hidden;background:#1b2320;
- border:1px solid #375442;border-radius:20px
-}
-#map{
- height:60vh;min-height:440px;max-height:730px;
- z-index:0;background:#1b2320
-}
-.fallback-dark .leaflet-tile-pane{
- filter:invert(1) hue-rotate(180deg) brightness(.75) contrast(.9)
-}
-.map-tools{
- position:absolute;top:14px;right:14px;z-index:600;
- display:flex;flex-direction:column;gap:9px
-}
-.map-tool{
- width:43px;height:43px;background:#14251ef0;
- color:var(--green);border:1px solid #56715c;
- border-radius:12px;font-size:22px;
- box-shadow:0 4px 15px #0006
-}
-.map-label{
- position:absolute;top:14px;left:13px;z-index:500;
- max-width:calc(100% - 90px);background:#102018e8;
- color:#e9f5e9;padding:9px 12px;
- border:1px solid #46604c;border-radius:12px;
- font-size:12px;pointer-events:none
-}
-.station-sheet{
- position:absolute;left:12px;right:12px;bottom:13px;
- z-index:700;background:#13231ef7;
- border:1px solid #55725b;border-radius:18px;
- padding:16px;box-shadow:0 10px 35px #000a;
- max-height:57%;overflow:auto;backdrop-filter:blur(14px)
-}
-.station-sheet[hidden]{display:none}
-.sheet-top{
- display:flex;justify-content:space-between;
- align-items:flex-start;gap:12px
-}
-.sheet-top h3{margin:0 0 8px;font-size:18px}
-.sheet-close{
- width:35px;height:35px;border:0;border-radius:9px;
- background:#2b4234;color:white;font-size:22px
-}
-.sheet-meta{font-size:13px;color:#c4d3c6;margin:7px 0}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
-.chip{
- background:#2b4535;color:#d6ffb8;
- border-radius:8px;padding:6px 9px;font-size:12px
-}
-.pin{
- width:39px;height:39px;border:3px solid #153324;
- border-radius:13px;background:var(--green);
- color:#102016;display:grid;place-items:center;
- box-shadow:0 4px 15px #0009;
- font-weight:900;font-size:22px
-}
-.pin.fast{background:var(--blue)}
-.pin.ultra{background:var(--orange)}
-.pin.unknown{background:#c4d0c5}
-.cluster-pin{
- width:47px;height:47px;background:var(--green);
- border:4px solid #274c34;border-radius:50%;
- display:grid;place-items:center;color:#122018;
- font-size:14px;font-weight:900;box-shadow:0 4px 14px #0008
-}
-.legend{
- display:flex;flex-wrap:wrap;gap:12px;
- padding:13px 2px;font-size:12px;color:var(--muted)
-}
-.dot{
- display:inline-block;width:10px;height:10px;
- border-radius:50%;margin-right:5px
-}
-.status{font-size:13px;color:var(--muted);margin:13px 0}
-.station-grid{display:grid;gap:12px}
-.station{
- background:#192a20;border:1px solid var(--line);
- border-radius:17px;padding:17px
-}
-.station-top{
- display:flex;align-items:flex-start;
- justify-content:space-between;gap:10px
-}
+label{display:block;font-size:13px;margin:0 0 7px}
+input,select{width:100%;min-width:0;background:#0d1b13;border:1px solid #416249;border-radius:12px;padding:12px;color:white;font-size:15px}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.search{display:flex;gap:9px}
+.search input{flex:1}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:15px}
+.map-wrap{position:relative;border-radius:20px;overflow:hidden;border:1px solid #3a5341;background:#17251d}
+#map{height:59vh;min-height:440px;max-height:710px}
+.maplibregl-map{font-family:inherit}
+.maplibregl-ctrl-attrib{font-size:10px!important}
+.map-badge{position:absolute;left:13px;top:14px;z-index:5;padding:9px 12px;border:1px solid #486a50;border-radius:12px;background:#102019e8;font-size:12px;pointer-events:none}
+.map-tools{position:absolute;right:14px;top:14px;z-index:5;display:flex;flex-direction:column;gap:8px}
+.map-tool{border:1px solid #57705d;border-radius:12px;width:44px;height:44px;background:#12241be8;color:var(--lime);font-size:22px;box-shadow:0 4px 14px #0008}
+.sheet{position:absolute;left:12px;right:12px;bottom:13px;z-index:6;background:#13241df7;border:1px solid #56765d;border-radius:18px;padding:17px;box-shadow:0 10px 30px #000b;max-height:59%;overflow:auto;backdrop-filter:blur(12px)}
+.sheet[hidden]{display:none}
+.sheet-head,.station-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.sheet-head h3{font-size:18px}
+.close{width:36px;height:36px;border:0;border-radius:10px;background:#2b4434;color:white;font-size:22px}
+.sheet p,.station p{font-size:13px;color:var(--muted);margin:7px 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.chip{border-radius:8px;padding:6px 9px;background:#2b4535;color:#dcffc5;font-size:12px}
+.legend{display:flex;gap:13px;flex-wrap:wrap;color:var(--muted);font-size:12px;padding:14px 2px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.status{color:var(--muted);font-size:13px;line-height:1.5;margin:13px 0}
+.station-list{display:grid;gap:12px}
+.station{border-radius:17px;background:#1b2d22;border:1px solid var(--line);padding:17px}
 .station h3{font-size:16px}
-.station p{font-size:13px;color:var(--muted);margin:7px 0}
-.star{
- background:#2b4535;border:0;border-radius:11px;
- color:var(--green);font-size:23px;
- min-width:40px;height:40px
-}
-.empty{color:var(--muted);font-size:14px;padding:14px}
-.result{color:var(--green);font-weight:700;line-height:1.9}
-.vehicle-icon{font-size:45px;margin:12px 0}
-.leaflet-container{font-family:inherit}
-.leaflet-control-attribution{font-size:10px!important}
-nav{
- position:fixed;bottom:0;left:0;right:0;z-index:1100;
- display:flex;background:#142119;border-top:1px solid var(--line);
- padding:7px 3px calc(8px + env(safe-area-inset-bottom))
-}
-nav button{
- flex:1;background:none;border:0;color:#9eafa1;
- display:flex;flex-direction:column;align-items:center;
- gap:4px;padding:7px 0;font-size:10px
-}
-.navicon{font-size:22px}
-nav button.active{color:var(--green);font-weight:800}
-footer{
- text-align:center;font-size:11px;
- color:var(--muted);padding:20px
-}
+.star{background:#2c4835;border:0;border-radius:12px;width:40px;height:40px;flex-shrink:0;color:var(--lime);font-size:23px}
+.empty{color:var(--muted);padding:15px;font-size:14px}
+.result{color:var(--lime);font-weight:750;line-height:1.9}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#132119;border-top:1px solid var(--line);display:flex;padding:7px 3px calc(8px + env(safe-area-inset-bottom))}
+nav button{flex:1;background:none;border:0;color:#a0afa1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:7px 0;font-size:10px}
+nav .nav-icon{font-size:22px}
+nav button.active{font-weight:800;color:var(--lime)}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 @media(min-width:800px){
- .hero{padding:40px}
- .hero h2{font-size:44px}
- .station-grid{grid-template-columns:1fr 1fr}
- .station-sheet{
-  right:auto;width:min(430px,calc(100% - 24px))
- }
+.hero{padding:40px}
+.hero h2{font-size:44px}
+.station-list{grid-template-columns:1fr 1fr}
+.sheet{right:auto;width:min(430px,calc(100% - 24px))}
 }
 @media(max-width:390px){
- .filters{grid-template-columns:1fr}
- .searchbar .btn{padding:12px}
+.filters{grid-template-columns:1fr}
+.search .btn{padding:12px}
 }
 </style>
 </head>
-
 <body>
-
 <header>
- <div class="brand">
-  <div class="logo">ϟ</div>
-  <div>
-   <h1>VOLTIA</h1>
-   <small>ENERGÍA EN MOVIMIENTO</small>
-  </div>
- </div>
- <div class="version">v0.8</div>
+<div class="brand">
+<div class="logo">ϟ</div>
+<div>
+<h1>VOLTIA</h1>
+<small>ENERGÍA EN MOVIMIENTO</small>
+</div>
+</div>
+<span class="version">v0.8 · Fix</span>
 </header>
 
 <main>
-
 <section id="inicio" class="active">
- <div class="card hero">
-  <div class="eyebrow">TU PRÓXIMA RECARGA</div>
-  <h2>La energía está en el camino.</h2>
-  <p>Encuentra cargadores reales en un mapa moderno, consulta sus conectores y guarda tus favoritos.</p>
-  <button class="btn" onclick="mostrar('mapa')">
-   Explorar cargadores →
-  </button>
- </div>
-
- <div class="grid2">
-  <div class="card feature">
-   <div class="symbol">⌖</div>
-   <h3>Mapa inteligente</h3>
-   <p>Estaciones agrupadas y diferenciadas por potencia.</p>
-  </div>
-  <div class="card feature">
-   <div class="symbol">☆</div>
-   <h3>Favoritos</h3>
-   <p>Consulta tus puntos habituales.</p>
-   <button class="btn secondary small" onclick="mostrar('favoritos')">
-    Ver favoritos
-   </button>
-  </div>
- </div>
-
- <div class="card">
-  <div class="eyebrow">DARK PREMIUM</div>
-  <h3>Un mapa pensado para conducir</h3>
-  <p class="muted">Pulsa un cargador para ver una ficha flotante sin salir del mapa.</p>
-  <button class="btn full" onclick="mostrar('mapa')">
-   Abrir mapa →
-  </button>
- </div>
-
- <div class="card">
-  <h3>Compara el coste de recarga</h3>
-  <p class="muted">Calcula cuánto pagarías con distintas tarifas por kWh.</p>
-  <button class="btn secondary" onclick="mostrar('comparar')">
-   Comparar precios
-  </button>
- </div>
+<div class="card hero">
+<div class="eyebrow">TU PRÓXIMA RECARGA</div>
+<h2>La energía está en el camino.</h2>
+<p>Encuentra cargadores reales, explora el mapa Dark Premium y guarda tus estaciones favoritas.</p>
+<button class="btn" onclick="mostrar('mapa')">Explorar cargadores →</button>
+</div>
+<div class="grid2">
+<div class="card feature">
+<div class="emoji">⌖</div>
+<h3>Mapa inteligente</h3>
+<p>Estaciones agrupadas por zona y diferenciadas por potencia.</p>
+</div>
+<div class="card feature">
+<div class="emoji">☆</div>
+<h3>Mis favoritos</h3>
+<p>Guarda las estaciones que más utilizas.</p>
+<button class="btn secondary small" onclick="mostrar('favoritos')">Ver favoritos</button>
+</div>
+</div>
+<div class="card">
+<div class="eyebrow">DARK PREMIUM</div>
+<h3>Tu mapa de recarga</h3>
+<p class="muted">Consulta fichas flotantes, conectores y potencias sin salir del mapa.</p>
+<button class="btn full" onclick="mostrar('mapa')">Abrir mapa →</button>
+</div>
+<div class="card">
+<h3>Compara antes de cargar</h3>
+<p class="muted">Calcula cuánto pagarías según el precio de cada operador.</p>
+<button class="btn secondary" onclick="mostrar('comparar')">Comparar precios</button>
+</div>
 </section>
 
 <section id="mapa">
- <div class="eyebrow">EXPLORAR</div>
- <h2>Mapa de cargadores</h2>
- <p class="muted">Encuentra tu próxima estación de recarga.</p>
+<div class="eyebrow">EXPLORAR</div>
+<h2>Mapa de cargadores</h2>
+<p class="muted">Cargadores reales de Open Charge Map.</p>
+<div class="card">
+<label for="ciudad">Buscar ciudad o dirección</label>
+<div class="search">
+<input id="ciudad" placeholder="Ej. Sabadell, Barcelona">
+<button id="botonCiudad" class="btn" onclick="buscarCiudad()">Buscar</button>
+</div>
+<div class="actions">
+<button class="btn secondary small" onclick="miUbicacion()">◎ Cerca de mí</button>
+<button class="btn secondary small" onclick="buscar()">↻ Actualizar zona</button>
+</div>
+<div class="filters">
+<div>
+<label for="conector">Conector</label>
+<select id="conector" onchange="filtrar()">
+<option value="todos">Todos</option>
+<option value="ccs">CCS Combo</option>
+<option value="type2">Tipo 2</option>
+<option value="chademo">CHAdeMO</option>
+</select>
+</div>
+<div>
+<label for="potencia">Potencia</label>
+<select id="potencia" onchange="filtrar()">
+<option value="todos">Todas</option>
+<option value="lenta">Hasta 22 kW</option>
+<option value="rapida">Más de 22 y menos de 150 kW</option>
+<option value="ultra">150 kW o más</option>
+</select>
+</div>
+</div>
+</div>
 
- <div class="card">
-  <label for="ciudad">Buscar ciudad o dirección</label>
+<div class="map-wrap">
+<div id="map" aria-label="Mapa de cargadores"></div>
+<div class="map-badge" id="etiquetaMapa">● VOLTIA · DARK MAP</div>
+<div class="map-tools">
+<button class="map-tool" onclick="miUbicacion()" title="Mi ubicación">⌖</button>
+<button class="map-tool" onclick="cambiarTema()" title="Mapa oscuro o claro">◐</button>
+<button class="map-tool" onclick="buscar()" title="Actualizar esta zona">↻</button>
+</div>
+<div class="sheet" id="fichaFlotante" hidden></div>
+</div>
 
-  <div class="searchbar">
-   <input id="ciudad" placeholder="Ej. Sabadell, Barcelona">
-   <button id="botonCiudad" class="btn" onclick="buscarCiudad()">
-    Buscar
-   </button>
-  </div>
-
-  <div class="actions">
-   <button class="btn secondary small" onclick="miUbicacion()">
-    ◎ Cerca de mí
-   </button>
-   <button class="btn secondary small" onclick="buscar()">
-    ↻ Actualizar zona
-   </button>
-  </div>
-
-  <div class="filters">
-   <div>
-    <label for="conector">Conector</label>
-    <select id="conector" onchange="filtrar()">
-     <option value="todos">Todos</option>
-     <option value="ccs">CCS Combo</option>
-     <option value="type2">Tipo 2</option>
-     <option value="chademo">CHAdeMO</option>
-    </select>
-   </div>
-
-   <div>
-    <label for="potencia">Potencia</label>
-    <select id="potencia" onchange="filtrar()">
-     <option value="todos">Todas</option>
-     <option value="lenta">Hasta 22 kW</option>
-     <option value="rapida">Más de 22 y menos de 150 kW</option>
-     <option value="ultra">150 kW o más</option>
-    </select>
-   </div>
-  </div>
- </div>
-
- <div class="map-shell">
-  <div id="map" aria-label="Mapa interactivo de puntos de recarga"></div>
-
-  <div id="mapLabel" class="map-label">
-   ● VOLTIA · DARK MAP
-  </div>
-
-  <div class="map-tools">
-   <button class="map-tool" onclick="miUbicacion()" aria-label="Mi ubicación" title="Mi ubicación">⌖</button>
-   <button class="map-tool" onclick="cambiarTema()" aria-label="Cambiar mapa oscuro o claro" title="Cambiar tema">◐</button>
-   <button class="map-tool" onclick="buscar()" aria-label="Actualizar cargadores" title="Actualizar zona">↻</button>
-  </div>
-
-  <div id="fichaFlotante" class="station-sheet" hidden aria-live="polite"></div>
- </div>
-
- <div class="legend">
-  <span><i class="dot" style="background:#b9ff46"></i>Hasta 22 kW</span>
-  <span><i class="dot" style="background:#67c9ff"></i>Rápida</span>
-  <span><i class="dot" style="background:#ffc16c"></i>Ultrarrápida</span>
-  <span><i class="dot" style="background:#c4d0c5"></i>Sin datos</span>
- </div>
-
- <p id="estado" class="status" role="status">Preparando mapa…</p>
-
- <h3>⚡ Estaciones encontradas</h3>
- <div id="lista" class="station-grid"></div>
-
- <p class="muted" style="font-size:12px">
-  Estaciones: Open Charge Map. Mapas: OpenFreeMap, OpenMapTiles y OpenStreetMap. Comprueba la disponibilidad, compatibilidad y tarifas con el operador.
- </p>
+<div class="legend">
+<span><i class="dot" style="background:#b9ff46"></i>Hasta 22 kW</span>
+<span><i class="dot" style="background:#67c9ff"></i>Rápida</span>
+<span><i class="dot" style="background:#ffc16c"></i>Ultrarrápida</span>
+<span><i class="dot" style="background:#c4d0c5"></i>Sin datos</span>
+</div>
+<p id="estado" class="status" role="status">Abre el mapa para cargar las estaciones.</p>
+<h3>⚡ Estaciones encontradas</h3>
+<div id="lista" class="station-list"></div>
+<p class="muted" style="font-size:12px">
+La información de los cargadores puede estar incompleta o desactualizada. Consulta precios, compatibilidad y disponibilidad con el operador.
+</p>
 </section>
 
 <section id="favoritos">
- <div class="eyebrow">TUS ESTACIONES</div>
- <h2>Mis favoritos</h2>
- <p class="muted">Tus cargadores guardados.</p>
- <div id="listaFavoritos" class="station-grid"></div>
- <p class="muted" style="font-size:12px">
-  Los favoritos se guardan únicamente en este navegador.
- </p>
+<div class="eyebrow">TUS ESTACIONES</div>
+<h2>Mis favoritos</h2>
+<p class="muted">Estaciones guardadas en este navegador.</p>
+<div id="listaFavoritos" class="station-list"></div>
 </section>
 
 <section id="comparar">
- <div class="eyebrow">AHORRA EN CADA RECARGA</div>
- <h2>Comparar precios</h2>
-
- <div class="card">
-  <label for="precioA">Cargador A · €/kWh</label>
-  <input id="precioA" type="number" min="0" step="0.01" value="0.39">
-
-  <br><br>
-  <label for="precioB">Cargador B · €/kWh</label>
-  <input id="precioB" type="number" min="0" step="0.01" value="0.49">
-
-  <br><br>
-  <label for="energia">Energía a cargar · kWh</label>
-  <input id="energia" type="number" min="0.1" step="0.1" value="10">
-
-  <div class="actions">
-   <button class="btn full" onclick="calcular()">
-    Calcular ahorro →
-   </button>
-  </div>
-
-  <div id="resultado" class="result"></div>
- </div>
-
- <p class="muted" style="font-size:12px">
-  Precios de ejemplo editables, no tarifas reales verificadas. No incluye cargos adicionales.
- </p>
+<div class="eyebrow">AHORRA EN CADA RECARGA</div>
+<h2>Comparar precios</h2>
+<div class="card">
+<label for="precioA">Cargador A · €/kWh</label>
+<input id="precioA" type="number" min="0" step="0.01" value="0.39">
+<br><br>
+<label for="precioB">Cargador B · €/kWh</label>
+<input id="precioB" type="number" min="0" step="0.01" value="0.49">
+<br><br>
+<label for="energia">Energía a cargar · kWh</label>
+<input id="energia" type="number" min="0.1" step="0.1" value="10">
+<div class="actions">
+<button class="btn full" onclick="calcular()">Calcular ahorro →</button>
+</div>
+<div class="result" id="resultado"></div>
+</div>
+<p class="muted" style="font-size:12px">
+Tarifas de ejemplo, no precios reales verificados. No incluye posibles cargos adicionales.
+</p>
 </section>
 
 <section id="vehiculo">
- <div class="eyebrow">TU MOVILIDAD</div>
- <h2>Mi vehículo</h2>
-
- <div class="card">
-  <div class="vehicle-icon">🚘</div>
-  <h3>Cupra León e-Hybrid</h3>
-  <p class="muted">Híbrido enchufable (PHEV)</p>
-  <p>Perfil de ejemplo.</p>
-  <p class="muted">
-   Próximamente: vehículos configurables, compatibilidad y planificación de rutas.
-  </p>
- </div>
+<div class="eyebrow">TU MOVILIDAD</div>
+<h2>Mi vehículo</h2>
+<div class="card">
+<h3>🚗 Cupra León e-Hybrid</h3>
+<p>Híbrido enchufable (PHEV).</p>
+<p class="muted">Perfil de ejemplo. Próximamente: vehículos configurables y filtros de compatibilidad.</p>
+</div>
 </section>
-
 <footer>VOLTIA · Energía en movimiento · 2026</footer>
 </main>
 
 <nav>
- <button class="active" data-page="inicio" onclick="mostrar('inicio')">
-  <span class="navicon">⌂</span>Inicio
- </button>
- <button data-page="mapa" onclick="mostrar('mapa')">
-  <span class="navicon">⌖</span>Mapa
- </button>
- <button data-page="favoritos" onclick="mostrar('favoritos')">
-  <span class="navicon">☆</span>Favoritos
- </button>
- <button data-page="comparar" onclick="mostrar('comparar')">
-  <span class="navicon">ϟ</span>Comparar
- </button>
- <button data-page="vehiculo" onclick="mostrar('vehiculo')">
-  <span class="navicon">▣</span>Vehículo
- </button>
+<button class="active" data-page="inicio" onclick="mostrar('inicio')"><span class="nav-icon">⌂</span>Inicio</button>
+<button data-page="mapa" onclick="mostrar('mapa')"><span class="nav-icon">⌖</span>Mapa</button>
+<button data-page="favoritos" onclick="mostrar('favoritos')"><span class="nav-icon">☆</span>Favoritos</button>
+<button data-page="comparar" onclick="mostrar('comparar')"><span class="nav-icon">ϟ</span>Comparar</button>
+<button data-page="vehiculo" onclick="mostrar('vehiculo')"><span class="nav-icon">▣</span>Vehículo</button>
 </nav>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
-<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js"></script>
-
 <script>
-const API = 'https://voltiaapi.mziyani21k.workers.dev';
-const FAV_KEY = 'voltia-favoritos-v05';
-const $ = id => document.getElementById(id);
+const API='https://voltiaapi.mziyani21k.workers.dev';
+const CLAVE_FAV='voltia-favoritos-v05';
+const $=id=>document.getElementById(id);
 
-let mapa;
-let marcadores;
-let capaBase;
-let estaciones = [];
-let primeraCarga = false;
-let solicitud = 0;
-let seleccion = null;
-let tema = 'dark';
+let mapa=null;
+let primeraCarga=false;
+let estaciones=[];
+let tema='dark';
+let seleccion=null;
+let peticion=0;
 
-const marcadoresPorId = new Map();
+const porId=new Map();
+const GEO={type:'FeatureCollection',features:[]};
 
-/* NAVEGACIÓN */
-function mostrar(id) {
- document.querySelectorAll('main section').forEach(s =>
-  s.classList.toggle('active', s.id === id)
- );
+const urlEstilo=t=>
+'https://tiles.openfreemap.org/styles/'+
+(t==='dark'?'dark':'liberty');
 
- document.querySelectorAll('nav button').forEach(b =>
-  b.classList.toggle('active', b.dataset.page === id)
- );
+function mostrar(id){
+document.querySelectorAll('main section').forEach(s=>
+s.classList.toggle('active',s.id===id));
 
- if (id === 'mapa') {
-  iniciarMapa();
+document.querySelectorAll('nav button').forEach(b=>
+b.classList.toggle('active',b.dataset.page===id));
 
-  if (mapa) {
-   setTimeout(() => mapa.invalidateSize(), 180);
-
-   if (!primeraCarga) {
-    primeraCarga = true;
-    buscar();
-   }
-  }
- }
-
- if (id === 'favoritos') pintarFavoritos();
- window.scrollTo(0, 0);
+if(id==='mapa'){
+iniciarMapa();
+if(mapa){
+setTimeout(()=>mapa.resize(),150);
+if(!primeraCarga){
+primeraCarga=true;
+buscar();
+}
+}
+}
+if(id==='favoritos')pintarFavoritos();
+window.scrollTo(0,0);
 }
 
-/* INICIALIZACIÓN DEL MAPA */
-function iniciarMapa() {
- if (mapa) return;
+function iniciarMapa(){
+if(mapa)return;
 
- if (typeof L === 'undefined') {
-  $('estado').textContent = 'No se pudo cargar Leaflet.';
-  return;
- }
-
- mapa = L.map('map', {
-  zoomControl: false,
-  minZoom: 1
- }).setView([41.3874, 2.1686], 13);
-
- L.control.zoom({
-  position: 'bottomright'
- }).addTo(mapa);
-
- aplicarTema();
-
- if (typeof L.markerClusterGroup === 'function') {
-  marcadores = L.markerClusterGroup({
-   showCoverageOnHover: false,
-   maxClusterRadius: 55,
-   iconCreateFunction: c => L.divIcon({
-    className: '',
-    html: '<div class="cluster-pin">' +
-     c.getChildCount() + '</div>',
-    iconSize: [47, 47],
-    iconAnchor: [23, 23]
-   })
-  });
- } else {
-  marcadores = L.layerGroup();
- }
-
- marcadores.addTo(mapa);
- mapa.on('click', cerrarFicha);
+if(typeof maplibregl==='undefined'){
+$('estado').textContent='No se ha cargado la biblioteca del mapa. Comprueba la conexión.';
+return;
 }
 
-/* MAPA OPENFREEMAP */
-function aplicarTema() {
- if (!mapa) return;
+mapa=new maplibregl.Map({
+container:'map',
+style:urlEstilo(tema),
+center:[2.1686,41.3874],
+zoom:12.5,
+attributionControl:true
+});
 
- const estilo =
-  'https://tiles.openfreemap.org/styles/' +
-  (tema === 'dark' ? 'dark' : 'liberty');
+mapa.addControl(
+new maplibregl.NavigationControl({showCompass:false}),
+'bottom-right'
+);
 
- $('mapLabel').textContent =
-  tema === 'dark'
-   ? '● VOLTIA · DARK MAP'
-   : '● VOLTIA · LIGHT MAP';
+mapa.on('style.load',construirCapas);
 
- if (capaBase && capaBase.getMaplibreMap) {
-  try {
-   capaBase.getMaplibreMap().setStyle(estilo);
-   return;
-  } catch (e) {
-   console.warn('Cambio de estilo:', e);
-  }
- }
+mapa.on('click',e=>{
+if(!mapa.isStyleLoaded())return;
 
- if (capaBase) mapa.removeLayer(capaBase);
+const layers=['estaciones','agrupaciones']
+.filter(n=>mapa.getLayer(n));
 
- const shell = document.querySelector('.map-shell');
- shell.classList.remove('fallback-dark');
+const encontrados=layers.length?
+mapa.queryRenderedFeatures(e.point,{layers}):[];
 
- if (typeof L.maplibreGL === 'function') {
-  try {
-   capaBase = L.maplibreGL({
-    style: estilo,
-    attribution:
-     '© OpenFreeMap · © OpenMapTiles · © OpenStreetMap contributors'
-   }).addTo(mapa);
+const f=encontrados[0];
 
-   return;
-  } catch (e) {
-   console.warn('Mapa vectorial no disponible:', e);
-  }
- }
-
- /* MAPA DE RESPALDO */
- capaBase = L.tileLayer(
-  'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-   attribution: '© OpenStreetMap contributors',
-   maxZoom: 19
-  }
- ).addTo(mapa);
-
- if (tema === 'dark') {
-  shell.classList.add('fallback-dark');
- }
+if(!f){
+cerrarFicha();
+return;
 }
 
-function cambiarTema() {
- tema = tema === 'dark' ? 'light' : 'dark';
-
- if (capaBase && !capaBase.getMaplibreMap) {
-  mapa.removeLayer(capaBase);
-  capaBase = null;
- }
-
- aplicarTema();
+if(f.layer.id==='agrupaciones'){
+mapa.easeTo({
+center:f.geometry.coordinates,
+zoom:Math.min(mapa.getZoom()+2,17),
+duration:450
+});
+cerrarFicha();
+return;
 }
 
-/* FAVORITOS */
-function favoritos() {
- try {
-  const x = JSON.parse(
-   localStorage.getItem(FAV_KEY) || '[]'
-  );
-  return Array.isArray(x) ? x : [];
- } catch {
-  return [];
- }
+const p=porId.get(String(f.properties.sid));
+if(p)abrirFicha(p);
+});
+
+mapa.on('mousemove',e=>{
+const layers=['estaciones','agrupaciones']
+.filter(n=>mapa.getLayer(n));
+
+mapa.getCanvas().style.cursor=
+layers.length&&
+mapa.queryRenderedFeatures(e.point,{layers}).length?
+'pointer':'';
+});
+
+mapa.on('error',e=>
+console.warn('Error del mapa:',e.error||e)
+);
 }
 
-function guardarFavoritos(x) {
- try {
-  localStorage.setItem(FAV_KEY, JSON.stringify(x));
-  return true;
- } catch {
-  alert('No se pueden guardar favoritos en este navegador.');
-  return false;
- }
+function construirCapas(){
+if(!mapa)return;
+
+if(!mapa.getSource('cargadores')){
+mapa.addSource('cargadores',{
+type:'geojson',
+data:GEO,
+cluster:true,
+clusterMaxZoom:14,
+clusterRadius:55
+});
 }
 
-function clave(p) {
- return String(
-  p.id ?? p.latitude + ',' + p.longitude + ',' + p.name
- );
+mapa.addLayer({
+id:'estaciones-halo',
+type:'circle',
+source:'cargadores',
+filter:['!',['has','point_count']],
+paint:{
+'circle-radius':23,
+'circle-color':'#102419',
+'circle-opacity':.8
+}
+});
+
+mapa.addLayer({
+id:'estaciones',
+type:'circle',
+source:'cargadores',
+filter:['!',['has','point_count']],
+paint:{
+'circle-radius':16,
+'circle-color':[
+'match',['get','tipo'],
+'ultra','#ffc16c',
+'fast','#67c9ff',
+'slow','#b9ff46',
+'#c4d0c5'
+],
+'circle-stroke-width':3,
+'circle-stroke-color':'#173827'
+}
+});
+
+mapa.addLayer({
+id:'agrupaciones-halo',
+type:'circle',
+source:'cargadores',
+filter:['has','point_count'],
+paint:{
+'circle-radius':28,
+'circle-color':'#1a3b27',
+'circle-opacity':.87
+}
+});
+
+mapa.addLayer({
+id:'agrupaciones',
+type:'circle',
+source:'cargadores',
+filter:['has','point_count'],
+paint:{
+'circle-radius':23,
+'circle-color':'#b9ff46',
+'circle-stroke-width':3,
+'circle-stroke-color':'#214631'
+}
+});
+
+mapa.addLayer({
+id:'agrupaciones-cantidad',
+type:'symbol',
+source:'cargadores',
+filter:['has','point_count'],
+layout:{
+'text-field':['get','point_count_abbreviated'],
+'text-size':14,
+'text-font':['Open Sans Bold','Arial Unicode MS Bold']
+},
+paint:{'text-color':'#102016'}
+});
+
+refrescarMapa();
 }
 
-function esFavorito(p) {
- return favoritos().some(x => clave(x) === clave(p));
+function cambiarTema(){
+if(!mapa)return;
+
+tema=tema==='dark'?'light':'dark';
+
+$('etiquetaMapa').textContent=
+tema==='dark'?
+'● VOLTIA · DARK MAP':
+'● VOLTIA · LIGHT MAP';
+
+mapa.setStyle(urlEstilo(tema));
 }
 
-function cambiarFavorito(id) {
- const p =
-  estaciones.find(x => clave(x) === id) ||
-  favoritos().find(x => clave(x) === id);
-
- if (!p) return;
-
- const abierta =
-  seleccion && clave(seleccion) === id;
-
- let f = favoritos();
-
- f = f.some(x => clave(x) === id)
-  ? f.filter(x => clave(x) !== id)
-  : [...f, p];
-
- if (guardarFavoritos(f)) {
-  filtrar();
-  pintarFavoritos();
-
-  if (abierta) abrirFicha(p);
- }
+function getFavoritos(){
+try{
+let v=JSON.parse(
+localStorage.getItem(CLAVE_FAV)||'[]'
+);
+return Array.isArray(v)?v:[];
+}catch{
+return [];
+}
 }
 
-/* DATOS DE CARGADORES */
-function conexionesDe(p) {
- return Array.isArray(p.connections)
-  ? p.connections
-  : [];
+function saveFavoritos(x){
+try{
+localStorage.setItem(CLAVE_FAV,JSON.stringify(x));
+return true;
+}catch{
+alert('No se han podido guardar los favoritos.');
+return false;
+}
 }
 
-function potenciaMaxima(p) {
- const w = conexionesDe(p)
-  .map(c =>
-   c.powerKW == null ? NaN : Number(c.powerKW)
-  )
-  .filter(n => Number.isFinite(n) && n > 0);
-
- return w.length ? Math.max(...w) : null;
+function clave(p){
+return String(
+p.id??(p.latitude+','+p.longitude+','+p.name)
+);
 }
 
-function categoria(p) {
- const w = potenciaMaxima(p);
-
- return w === null
-  ? 'unknown'
-  : w >= 150
-   ? 'ultra'
-   : w > 22
-    ? 'fast'
-    : 'slow';
+function esFavorito(p){
+return getFavoritos().some(x=>clave(x)===clave(p));
 }
 
-function icono(p) {
- return L.divIcon({
-  className: '',
-  html:
-   '<div class="pin ' + categoria(p) + '">ϟ</div>',
-  iconSize: [39, 39],
-  iconAnchor: [19, 19]
- });
+function favorito(id){
+const p=porId.get(id)||
+getFavoritos().find(x=>clave(x)===id);
+
+if(!p)return;
+
+let f=getFavoritos();
+
+f=f.some(x=>clave(x)===id)?
+f.filter(x=>clave(x)!==id):
+[...f,p];
+
+if(saveFavoritos(f)){
+pintarLista();
+pintarFavoritos();
+if(seleccion&&clave(seleccion)===id)abrirFicha(p);
+}
 }
 
-function tipoCoincide(t, c) {
- if (c === 'todos') return true;
-
- t = String(t || '').toLowerCase();
-
- if (c === 'ccs') {
-  return t.includes('ccs') ||
-   t.includes('combo') ||
-   t.includes('configuration ff');
- }
-
- if (c === 'type2') {
-  return t.includes('type 2') ||
-   t.includes('tipo 2') ||
-   t.includes('mennekes') ||
-   t.includes('62196-2');
- }
-
- return c === 'chademo' && t.includes('chademo');
+function conexiones(p){
+return Array.isArray(p.connections)?p.connections:[];
 }
 
-function potenciaCoincide(x, k) {
- if (k === 'todos') return true;
- if (x.powerKW == null) return false;
+function maxima(p){
+const v=conexiones(p)
+.map(x=>x.powerKW==null?NaN:Number(x.powerKW))
+.filter(n=>Number.isFinite(n)&&n>0);
 
- const w = Number(x.powerKW);
-
- return Number.isFinite(w) &&
-  w > 0 &&
-  (
-   (k === 'lenta' && w <= 22) ||
-   (k === 'rapida' && w > 22 && w < 150) ||
-   (k === 'ultra' && w >= 150)
-  );
+return v.length?Math.max(...v):null;
 }
 
-function coincide(p) {
- const c = $('conector').value;
- const k = $('potencia').value;
-
- return (c === 'todos' && k === 'todos') ||
-  conexionesDe(p).some(x =>
-   tipoCoincide(x.type, c) &&
-   potenciaCoincide(x, k)
-  );
+function tipo(p){
+const w=maxima(p);
+return w===null?'unknown':
+w>=150?'ultra':
+w>22?'fast':'slow';
 }
 
-function coordenadasValidas(p) {
- const a = Number(p.latitude);
- const b = Number(p.longitude);
+function coincide(p){
+const c=$('conector').value;
+const k=$('potencia').value;
 
- return Number.isFinite(a) &&
-  Number.isFinite(b) &&
-  a >= -90 && a <= 90 &&
-  b >= -180 && b <= 180;
+if(c==='todos'&&k==='todos')return true;
+
+return conexiones(p).some(x=>{
+const t=String(x.type||'').toLowerCase();
+const w=x.powerKW==null?NaN:Number(x.powerKW);
+
+const match=
+c==='todos'||
+(c==='ccs'&&(
+t.includes('ccs')||
+t.includes('combo')||
+t.includes('configuration ff')
+))||
+(c==='type2'&&(
+t.includes('type 2')||
+t.includes('tipo 2')||
+t.includes('mennekes')||
+t.includes('62196-2')
+))||
+(c==='chademo'&&t.includes('chademo'));
+
+const pot=
+k==='todos'||
+(Number.isFinite(w)&&w>0&&(
+(k==='lenta'&&w<=22)||
+(k==='rapida'&&w>22&&w<150)||
+(k==='ultra'&&w>=150)
+));
+
+return match&&pot;
+});
 }
 
-function datosFicha(p) {
- return {
-  direccion:
-   [p.address, p.town].filter(Boolean).join(', ') ||
-   'Dirección no disponible',
+function coordOK(p){
+const a=Number(p.latitude);
+const b=Number(p.longitude);
 
-  operador: p.operator || 'No indicado',
-
-  ruta:
-   'https://www.google.com/maps/dir/?api=1&destination=' +
-   encodeURIComponent(
-    p.latitude + ',' + p.longitude
-   )
- };
+return Number.isFinite(a)&&
+Number.isFinite(b)&&
+a>=-90&&a<=90&&
+b>=-180&&b<=180;
 }
 
-function crearChips(p, contenedor) {
- const conexiones = conexionesDe(p);
+function detalle(p){
+return {
+direccion:
+[p.address,p.town].filter(Boolean).join(', ')||
+'Dirección no disponible',
 
- const lista = conexiones.length
-  ? conexiones
-  : [{
-   type: 'Conectores no indicados',
-   powerKW: null
-  }];
+operador:p.operator||'No indicado',
 
- for (const c of lista) {
-  const chip = document.createElement('span');
-  chip.className = 'chip';
-
-  chip.textContent =
-   (c.type || 'Conector no indicado') +
-   (c.powerKW != null
-    ? ' · ' + c.powerKW + ' kW'
-    : '');
-
-  contenedor.appendChild(chip);
- }
+ruta:
+'https://www.google.com/maps/dir/?api=1&destination='+
+encodeURIComponent(
+p.latitude+','+p.longitude
+)
+};
 }
 
-/* FICHA FLOTANTE */
-function cerrarFicha() {
- seleccion = null;
- $('fichaFlotante').hidden = true;
- $('fichaFlotante').replaceChildren();
+function chips(p,el){
+const xs=conexiones(p);
+
+for(const x of xs.length?xs:[
+{type:'Conectores no indicados'}
+]){
+const c=document.createElement('span');
+c.className='chip';
+
+c.textContent=
+(x.type||'Conector no indicado')+
+(x.powerKW!=null?
+' · '+x.powerKW+' kW':'');
+el.appendChild(c);
+}
 }
 
-function abrirFicha(p) {
- seleccion = p;
-
- const box = $('fichaFlotante');
- const d = datosFicha(p);
-
- box.replaceChildren();
-
- const top = document.createElement('div');
- top.className = 'sheet-top';
-
- const h = document.createElement('h3');
- h.textContent = p.name || 'Punto de recarga';
- top.appendChild(h);
-
- const close = document.createElement('button');
- close.className = 'sheet-close';
- close.textContent = '×';
- close.setAttribute('aria-label', 'Cerrar ficha');
- close.onclick = cerrarFicha;
- top.appendChild(close);
-
- box.appendChild(top);
-
- const w = potenciaMaxima(p);
-
- const datos = [
-  '🏢 ' + d.operador,
-  '📍 ' + d.direccion,
-  '⚡ Máximo registrado: ' +
-   (w === null ? 'Sin datos' : w + ' kW')
- ];
-
- for (const txt of datos) {
-  const line = document.createElement('p');
-  line.className = 'sheet-meta';
-  line.textContent = txt;
-  box.appendChild(line);
- }
-
- const chips = document.createElement('div');
- chips.className = 'chips';
- crearChips(p, chips);
- box.appendChild(chips);
-
- const actions = document.createElement('div');
- actions.className = 'actions';
-
- const a = document.createElement('a');
- a.className = 'btn small';
- a.href = d.ruta;
- a.target = '_blank';
- a.rel = 'noopener noreferrer';
- a.textContent = '↗ Cómo llegar';
- actions.appendChild(a);
-
- const fav = document.createElement('button');
- fav.className = 'btn secondary small';
-
- fav.textContent = esFavorito(p)
-  ? '★ Quitar favorito'
-  : '☆ Guardar favorito';
-
- fav.onclick = () => cambiarFavorito(clave(p));
- actions.appendChild(fav);
-
- box.appendChild(actions);
- box.hidden = false;
+function par(el,s){
+const p=document.createElement('p');
+p.textContent=s;
+el.appendChild(p);
 }
 
-function verEnMapa(p) {
- mostrar('mapa');
+function crearFicha(p,flotante=false){
+const d=detalle(p);
+const el=document.createElement(
+flotante?'div':'article'
+);
 
- if (!mapa || !coordenadasValidas(p)) return;
+el.className=flotante?'':'station';
 
- mapa.setView([
-  Number(p.latitude),
-  Number(p.longitude)
- ], 16);
+const head=document.createElement('div');
+head.className=flotante?
+'sheet-head':'station-head';
 
- const marker = marcadoresPorId.get(clave(p));
+const h=document.createElement('h3');
+h.textContent=p.name||'Punto de recarga';
+head.appendChild(h);
 
- if (
-  marker &&
-  typeof marcadores.zoomToShowLayer === 'function'
- ) {
-  marcadores.zoomToShowLayer(
-   marker,
-   () => abrirFicha(p)
-  );
- } else {
-  abrirFicha(p);
- }
+const b=document.createElement('button');
+b.className=flotante?'close':'star';
+b.textContent=flotante?
+'×':esFavorito(p)?'★':'☆';
+
+b.setAttribute(
+'aria-label',
+flotante?'Cerrar ficha':'Guardar o quitar favorito'
+);
+
+b.onclick=flotante?
+cerrarFicha:
+()=>favorito(clave(p));
+
+head.appendChild(b);
+el.appendChild(head);
+
+par(el,'🏢 '+d.operador);
+par(el,'📍 '+d.direccion);
+par(el,
+'⚡ Potencia máxima registrada: '+
+(maxima(p)===null?
+'Sin datos':maxima(p)+' kW')
+);
+
+const tags=document.createElement('div');
+tags.className='chips';
+chips(p,tags);
+el.appendChild(tags);
+
+const acc=document.createElement('div');
+acc.className='actions';
+
+const a=document.createElement('a');
+a.className='btn small';
+a.href=d.ruta;
+a.target='_blank';
+a.rel='noopener noreferrer';
+a.textContent='↗ Cómo llegar';
+acc.appendChild(a);
+
+const sec=document.createElement('button');
+sec.className='btn secondary small';
+
+sec.textContent=flotante?
+(esFavorito(p)?
+'★ Quitar favorito':'☆ Guardar favorito'):
+'Ver en mapa';
+
+sec.onclick=flotante?
+()=>favorito(clave(p)):
+()=>verEnMapa(p);
+
+acc.appendChild(sec);
+el.appendChild(acc);
+
+return el;
 }
 
-/* TARJETAS DE ESTACIONES */
-function ficha(p) {
- const d = datosFicha(p);
- const el = document.createElement('article');
- el.className = 'station';
-
- const top = document.createElement('div');
- top.className = 'station-top';
-
- const h = document.createElement('h3');
- h.textContent = p.name || 'Punto de recarga';
- top.appendChild(h);
-
- const fav = document.createElement('button');
- fav.className = 'star';
- fav.textContent = esFavorito(p) ? '★' : '☆';
-
- fav.setAttribute(
-  'aria-label',
-  esFavorito(p)
-   ? 'Quitar favorito'
-   : 'Guardar favorito'
- );
-
- fav.onclick = () => cambiarFavorito(clave(p));
- top.appendChild(fav);
- el.appendChild(top);
-
- const w = potenciaMaxima(p);
-
- const datos = [
-  '🏢 ' + d.operador,
-  '📍 ' + d.direccion,
-  '⚡ Máximo registrado: ' +
-   (w === null ? 'Sin datos' : w + ' kW')
- ];
-
- for (const txt of datos) {
-  const line = document.createElement('p');
-  line.textContent = txt;
-  el.appendChild(line);
- }
-
- const chips = document.createElement('div');
- chips.className = 'chips';
- crearChips(p, chips);
- el.appendChild(chips);
-
- const actions = document.createElement('div');
- actions.className = 'actions';
-
- const a = document.createElement('a');
- a.href = d.ruta;
- a.target = '_blank';
- a.rel = 'noopener noreferrer';
- a.className = 'btn secondary small';
- a.textContent = '↗ Cómo llegar';
- actions.appendChild(a);
-
- const ver = document.createElement('button');
- ver.className = 'btn small';
- ver.textContent = 'Ver en mapa';
- ver.onclick = () => verEnMapa(p);
- actions.appendChild(ver);
-
- el.appendChild(actions);
- return el;
+function abrirFicha(p){
+seleccion=p;
+const el=$('fichaFlotante');
+el.replaceChildren(crearFicha(p,true));
+el.hidden=false;
 }
 
-/* FILTRAR CARGADORES */
-function filtrar() {
- if (!mapa || !marcadores) return;
-
- marcadores.clearLayers();
- marcadoresPorId.clear();
-
- $('lista').replaceChildren();
- cerrarFicha();
-
- let n = 0;
-
- for (const p of estaciones) {
-  if (!coordenadasValidas(p) || !coincide(p)) {
-   continue;
-  }
-
-  n++;
-
-  const marker = L.marker(
-   [
-    Number(p.latitude),
-    Number(p.longitude)
-   ],
-   {icon: icono(p)}
-  );
-
-  marker.on('click', () => abrirFicha(p));
-
-  marcadores.addLayer(marker);
-  marcadoresPorId.set(clave(p), marker);
-
-  $('lista').appendChild(ficha(p));
- }
-
- if (!n) {
-  const e = document.createElement('p');
-  e.className = 'empty';
-  e.textContent =
-   'No hay estaciones que coincidan con los filtros en los resultados recibidos.';
-
-  $('lista').appendChild(e);
- }
-
- $('estado').textContent =
-  n + ' estaciones visibles de ' +
-  estaciones.length + ' recibidas.';
+function cerrarFicha(){
+seleccion=null;
+$('fichaFlotante').hidden=true;
+$('fichaFlotante').replaceChildren();
 }
 
-/* API REAL DE CARGADORES */
-async function buscar() {
- iniciarMapa();
- if (!mapa) return;
+function verEnMapa(p){
+mostrar('mapa');
+if(!mapa||!coordOK(p))return;
 
- const actual = ++solicitud;
- const c = mapa.getCenter();
+mapa.flyTo({
+center:[
+Number(p.longitude),
+Number(p.latitude)
+],
+zoom:16
+});
 
- $('estado').textContent =
-  'Buscando cargadores reales…';
-
- $('lista').textContent =
-  'Consultando Open Charge Map…';
-
- const url = new URL(API + '/chargers');
-
- url.searchParams.set(
-  'lat', c.lat.toFixed(6)
- );
-
- url.searchParams.set(
-  'lon', c.lng.toFixed(6)
- );
-
- try {
-  const res = await fetch(
-   url.toString(),
-   {mode: 'cors'}
-  );
-
-  const data = await res.json();
-
-  if (actual !== solicitud) return;
-
-  if (!res.ok) {
-   throw Error(
-    data.error || 'Error HTTP ' + res.status
-   );
-  }
-
-  if (!Array.isArray(data.chargers)) {
-   throw Error('Formato de datos incorrecto');
-  }
-
-  estaciones = data.chargers;
-  filtrar();
-
- } catch (e) {
-  if (actual !== solicitud) return;
-
-  $('estado').textContent =
-   'No se pudieron cargar los cargadores.';
-
-  $('lista').textContent =
-   'Detalle: ' + e.message;
- }
+abrirFicha(p);
 }
 
-/* BUSCAR CIUDAD */
-async function buscarCiudad() {
- iniciarMapa();
- if (!mapa) return;
+function filtrar(){
+pintarLista();
+refrescarMapa();
+}
 
- const q = $('ciudad').value.trim();
+function visibles(){
+return estaciones.filter(
+p=>coordOK(p)&&coincide(p)
+);
+}
 
- if (q.length < 2) {
-  alert('Escribe una ciudad o dirección.');
-  return;
- }
+function geojson(){
+porId.clear();
 
- const boton = $('botonCiudad');
- boton.disabled = true;
+return {
+type:'FeatureCollection',
+features:visibles().map(p=>{
+porId.set(clave(p),p);
 
- $('estado').textContent =
-  'Buscando ubicación…';
+return {
+type:'Feature',
+geometry:{
+type:'Point',
+coordinates:[
+Number(p.longitude),
+Number(p.latitude)
+]
+},
+properties:{
+sid:clave(p),
+tipo:tipo(p)
+}
+};
+})
+};
+}
 
- try {
-  const url =
-   'https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=es&q=' +
-   encodeURIComponent(q);
+function refrescarMapa(){
+if(!mapa)return;
+const src=mapa.getSource('cargadores');
+if(src)src.setData(geojson());
+}
 
-  const r = await fetch(
-   url,
-   {headers: {Accept: 'application/json'}}
-  );
+function pintarLista(){
+const lista=$('lista');
+lista.replaceChildren();
 
-  if (!r.ok) {
-   throw Error('Servicio de búsqueda no disponible');
-  }
+const vs=visibles();
 
-  const a = await r.json();
+for(const p of vs){
+lista.appendChild(crearFicha(p));
+}
 
-  if (!a.length) {
-   throw Error('No se encontró esa ubicación');
-  }
+if(!vs.length){
+const e=document.createElement('p');
+e.className='empty';
+e.textContent=
+'No hay cargadores que coincidan con estos filtros en los resultados recibidos.';
+lista.appendChild(e);
+}
 
-  mapa.setView([
-   Number(a[0].lat),
-   Number(a[0].lon)
-  ], 13);
+$('estado').textContent=
+vs.length+' estaciones visibles de '+
+estaciones.length+' recibidas.';
+}
 
-  await buscar();
+async function buscar(){
+iniciarMapa();
+if(!mapa)return;
 
- } catch (e) {
-  $('estado').textContent =
-   'No se pudo buscar la ciudad: ' + e.message;
+const id=++peticion;
+const c=mapa.getCenter();
 
- } finally {
-  boton.disabled = false;
- }
+const url=new URL(API+'/chargers');
+url.searchParams.set('lat',c.lat.toFixed(6));
+url.searchParams.set('lon',c.lng.toFixed(6));
+
+$('estado').textContent=
+'Buscando cargadores reales…';
+
+try{
+const res=await fetch(
+url.toString(),
+{mode:'cors',cache:'no-store'}
+);
+
+const data=await res.json();
+
+if(id!==peticion)return;
+
+if(!res.ok){
+throw Error(
+data.error||'Error HTTP '+res.status
+);
+}
+
+if(!Array.isArray(data.chargers)){
+throw Error('Respuesta de datos incorrecta');
+}
+
+estaciones=data.chargers;
+
+cerrarFicha();
+pintarLista();
+refrescarMapa();
+
+}catch(e){
+if(id!==peticion)return;
+
+$('estado').textContent=
+'Error al cargar los cargadores: '+
+e.message+
+'. Puedes pulsar Actualizar zona para reintentar.';
+
+if(!estaciones.length){
+$('lista').textContent=
+'No se han podido obtener estaciones reales.';
+}
+}
+}
+
+async function buscarCiudad(){
+const q=$('ciudad').value.trim();
+
+if(q.length<2){
+alert('Escribe una ciudad o dirección.');
+return;
+}
+
+iniciarMapa();
+if(!mapa)return;
+
+const b=$('botonCiudad');
+b.disabled=true;
+$('estado').textContent='Buscando ubicación…';
+
+try{
+const r=await fetch(
+'https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=es&q='+
+encodeURIComponent(q),
+{headers:{Accept:'application/json'}}
+);
+
+if(!r.ok){
+throw Error('Servicio no disponible');
+}
+
+const xs=await r.json();
+
+if(!xs.length){
+throw Error('No se encontró esa ubicación');
+}
+
+mapa.jumpTo({
+center:[
+Number(xs[0].lon),
+Number(xs[0].lat)
+],
+zoom:13
+});
+
+await buscar();
+
+}catch(e){
+$('estado').textContent=
+'No se pudo buscar la ubicación: '+
+e.message;
+}finally{
+b.disabled=false;
+}
 }
 
 $('ciudad').addEventListener(
- 'keydown',
- e => {
-  if (e.key === 'Enter') buscarCiudad();
- }
+'keydown',
+e=>{
+if(e.key==='Enter')buscarCiudad();
+}
 );
 
-/* MI UBICACIÓN */
-function miUbicacion() {
- iniciarMapa();
- if (!mapa) return;
+function miUbicacion(){
+iniciarMapa();
+if(!mapa)return;
 
- if (!navigator.geolocation) {
-  $('estado').textContent =
-   'Geolocalización no disponible.';
-  return;
- }
-
- $('estado').textContent =
-  'Obteniendo ubicación…';
-
- navigator.geolocation.getCurrentPosition(
-  p => {
-   mapa.setView([
-    p.coords.latitude,
-    p.coords.longitude
-   ], 14);
-
-   buscar();
-  },
-  () => {
-   $('estado').textContent =
-    'No se pudo obtener tu ubicación. Mueve el mapa y pulsa Actualizar zona.';
-  },
-  {timeout: 12000}
- );
+if(!navigator.geolocation){
+$('estado').textContent=
+'Geolocalización no disponible.';
+return;
 }
 
-/* LISTA DE FAVORITOS */
-function pintarFavoritos() {
- const lista = $('listaFavoritos');
- lista.replaceChildren();
+$('estado').textContent=
+'Obteniendo ubicación…';
 
- const f = favoritos();
-
- if (!f.length) {
-  const e = document.createElement('div');
-  e.className = 'card empty';
-  e.textContent =
-   'Todavía no tienes estaciones favoritas.';
-
-  lista.appendChild(e);
-  return;
- }
-
- for (const p of f) {
-  lista.appendChild(ficha(p));
- }
+navigator.geolocation.getCurrentPosition(
+p=>{
+mapa.jumpTo({
+center:[
+p.coords.longitude,
+p.coords.latitude
+],
+zoom:14
+});
+buscar();
+},
+()=>{
+$('estado').textContent=
+'No se pudo obtener la ubicación. Busca una ciudad o actualiza la zona.';
+},
+{timeout:12000}
+);
 }
 
-/* COMPARADOR */
-function calcular() {
- const v = [
-  'precioA',
-  'precioB',
-  'energia'
- ].map(id => $(id).value.trim());
+function pintarFavoritos(){
+const lista=$('listaFavoritos');
+lista.replaceChildren();
 
- const [a, b, k] = v.map(Number);
- const out = $('resultado');
+const xs=getFavoritos();
 
- if (
-  v.some(x => x === '') ||
-  ![a, b, k].every(Number.isFinite) ||
-  a < 0 || b < 0 || k <= 0
- ) {
-  out.textContent =
-   'Introduce valores válidos.';
-  return;
- }
+if(!xs.length){
+const div=document.createElement('div');
+div.className='card empty';
+div.textContent=
+'Todavía no has guardado estaciones.';
+lista.appendChild(div);
+return;
+}
 
- const euros = n => n.toLocaleString(
-  'es-ES',
-  {
-   style: 'currency',
-   currency: 'EUR'
-  }
- );
+for(const p of xs){
+lista.appendChild(crearFicha(p));
+}
+}
 
- const A = a * k;
- const B = b * k;
+function calcular(){
+const v=[
+'precioA',
+'precioB',
+'energia'
+].map(id=>$(id).value.trim());
 
- out.textContent =
-  'Cargador A: ' + euros(A) +
-  ' | Cargador B: ' + euros(B) +
-  ' | Ahorro estimado: ' +
-  euros(Math.abs(A - B)) +
-  ' con ' + (A <= B ? 'A' : 'B');
+const [a,b,k]=v.map(Number);
+const out=$('resultado');
+
+if(
+v.some(x=>x==='')||
+![a,b,k].every(Number.isFinite)||
+a<0||b<0||k<=0
+){
+out.textContent='Introduce valores válidos.';
+return;
+}
+
+const euro=n=>n.toLocaleString('es-ES',{
+style:'currency',
+currency:'EUR'
+});
+
+const A=a*k;
+const B=b*k;
+
+out.textContent=
+'Cargador A: '+euro(A)+
+' | Cargador B: '+euro(B)+
+' | Ahorro estimado: '+
+euro(Math.abs(A-B))+
+' con '+(A<=B?'A':'B');
 }
 </script>
-
 </body>
 </html>
