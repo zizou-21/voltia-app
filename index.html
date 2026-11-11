@@ -5,106 +5,185 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0d1512">
-<title>VOLTIA — Energía en movimiento</title>
+<title>VOLTIA v0.7 — Energía en movimiento</title>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+
 <style>
 :root{
- --bg:#0d1512;--surface:#17241d;--surface2:#1e3025;
- --line:#304639;--green:#b9ff46;--white:#f5faf5;
- --muted:#a6b9aa;--danger:#ff9c92;
+ --bg:#0d1512;
+ --surface:#17241d;
+ --surface2:#1e3025;
+ --line:#304639;
+ --green:#b9ff46;
+ --white:#f5faf5;
+ --muted:#a6b9aa;
+ --blue:#65c8ff;
+ --orange:#ffc16c;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--white);
- font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{
+ margin:0;background:var(--bg);color:var(--white);
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
 button,input,select{font:inherit}
 button{cursor:pointer}
-button:disabled{opacity:.5;cursor:wait}
-header{height:76px;border-bottom:1px solid var(--line);
+button:disabled{opacity:.55;cursor:wait}
+header{
+ height:74px;background:#101b15;border-bottom:1px solid var(--line);
  display:flex;align-items:center;justify-content:space-between;
- padding:0 20px;background:#101b15}
+ padding:0 18px;
+}
 .brand{display:flex;align-items:center;gap:11px}
-.logo{width:43px;height:43px;background:var(--green);
- color:#102016;border-radius:13px;display:grid;place-items:center;
- font-size:27px;font-weight:900}
-.brand h1{font-size:23px;color:var(--green);margin:0;letter-spacing:1px}
-.brand small{color:var(--muted);font-size:10px;letter-spacing:1px}
-.version{border:1px solid var(--line);border-radius:30px;
- padding:7px 12px;color:var(--muted);font-size:12px}
-main{max-width:1100px;margin:auto;padding:22px 16px 115px}
+.logo{
+ width:43px;height:43px;border-radius:13px;
+ background:var(--green);color:#102016;
+ display:grid;place-items:center;font-size:28px;font-weight:900;
+}
+.brand h1{font-size:23px;letter-spacing:1px;color:var(--green);margin:0}
+.brand small{font-size:10px;letter-spacing:1px;color:var(--muted)}
+.version{
+ border:1px solid var(--line);border-radius:20px;
+ padding:7px 11px;color:var(--muted);font-size:12px;
+}
+main{max-width:1100px;margin:auto;padding:20px 15px 110px}
 section{display:none}
 section.active{display:block}
-h2{font-size:25px;letter-spacing:-.6px;margin:0 0 9px}
+h2{font-size:25px;margin:0 0 10px}
 h3{font-size:17px;margin:0 0 10px}
 p{line-height:1.5}
 .muted{color:var(--muted)}
-.eyebrow{font-size:11px;font-weight:800;color:var(--green);
- letter-spacing:1.7px;text-transform:uppercase}
-.card{background:var(--surface);border:1px solid var(--line);
- border-radius:20px;padding:19px;margin-bottom:15px}
-.hero{background:linear-gradient(135deg,#254b32,#17241d 72%);
- padding:28px 22px}
-.hero h2{font-size:32px;max-width:360px;line-height:1.15;margin:14px 0}
-.hero p{color:#d3e0d5;max-width:440px}
-.btn{background:var(--green);color:#122015;border:0;
- border-radius:12px;padding:13px 17px;font-weight:800}
-.btn.secondary{background:var(--surface2);color:var(--white);
- border:1px solid var(--line)}
-.btn.small{padding:9px 12px;font-size:13px}
+.eyebrow{
+ font-size:11px;font-weight:800;letter-spacing:1.5px;
+ color:var(--green);margin-bottom:10px;
+}
+.card{
+ background:var(--surface);border:1px solid var(--line);
+ border-radius:19px;padding:18px;margin-bottom:15px;
+}
+.hero{
+ background:linear-gradient(135deg,#285438,#17241d 75%);
+ padding:27px 22px;
+}
+.hero h2{font-size:34px;line-height:1.12;max-width:380px}
+.hero p{color:#d3e0d5}
+.btn{
+ border:0;background:var(--green);color:#142019;
+ border-radius:12px;padding:12px 16px;font-weight:800;
+}
+.btn.secondary{
+ background:var(--surface2);color:var(--white);
+ border:1px solid var(--line);
+}
+.btn.small{font-size:12px;padding:10px 12px}
 .btn.full{width:100%}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin:13px 0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.feature{padding:20px;min-height:130px}
-.feature .symbol{font-size:27px;color:var(--green);margin-bottom:14px}
-.feature h3{font-size:15px;margin-bottom:6px}
-.feature p{font-size:12px;margin:0;color:var(--muted)}
-label{display:block;font-size:13px;color:#d7e3d9;margin:0 0 7px}
-input,select{width:100%;min-width:0;padding:13px;
+.feature{min-height:130px}
+.feature .symbol{font-size:27px;color:var(--green)}
+.feature h3{font-size:15px;margin-top:13px}
+.feature p{font-size:12px;color:var(--muted)}
+label{display:block;font-size:13px;margin-bottom:7px}
+input,select{
+ width:100%;min-width:0;padding:13px;
  background:#0e1a13;border:1px solid #3d5846;
- border-radius:12px;color:white;font-size:15px}
+ border-radius:12px;color:white;font-size:15px;
+}
 input:focus,select:focus{outline:2px solid var(--green)}
-.searchbar{display:flex;gap:9px;margin-bottom:13px}
+.searchbar{display:flex;gap:8px}
 .searchbar input{flex:1}
-.filters{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
-#map{height:53vh;min-height:370px;max-height:660px;
- border-radius:18px;background:#e5ebe6;z-index:0}
-.leaflet-tile-pane{filter:grayscale(.65) brightness(1.04)}
-.pin{width:38px;height:38px;border-radius:13px;
- background:var(--green);border:3px solid #183b26;
- box-shadow:0 4px 12px #0007;display:grid;place-items:center;
- color:#17301c;font-size:21px;font-weight:900}
-.leaflet-popup-content-wrapper{border-radius:14px}
+.filters{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:11px;margin-top:14px;
+}
+#map{
+ height:56vh;min-height:390px;max-height:680px;
+ border-radius:18px;background:#e5ebe6;z-index:0;
+}
+.leaflet-tile-pane{filter:grayscale(.6) brightness(1.05)}
+.leaflet-popup-content-wrapper{border-radius:15px}
 .leaflet-popup-content{line-height:1.6}
-.leaflet-popup-content a{color:#246e28;font-weight:700}
-.status{font-size:13px;color:var(--muted);margin:14px 0}
-.station{background:#1b2c22;border:1px solid var(--line);
- border-radius:16px;padding:16px;margin:12px 0}
-.station-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.leaflet-popup-content a{color:#26762e;font-weight:700}
+.pin{
+ width:38px;height:38px;border-radius:12px;
+ display:grid;place-items:center;
+ border:3px solid #163020;
+ box-shadow:0 3px 12px #0008;
+ font-size:21px;color:#122015;font-weight:900;
+}
+.pin.slow{background:var(--green)}
+.pin.fast{background:var(--blue)}
+.pin.ultra{background:var(--orange)}
+.pin.unknown{background:#c5d1c7}
+.cluster-pin{
+ width:46px;height:46px;border-radius:50%;
+ background:#b9ff46;border:4px solid #254832;
+ color:#142019;font-weight:900;
+ display:grid;place-items:center;
+ box-shadow:0 4px 12px #0007;
+}
+.legend{
+ display:flex;flex-wrap:wrap;gap:12px;
+ padding:12px 2px;color:var(--muted);font-size:12px;
+}
+.dot{
+ display:inline-block;width:10px;height:10px;
+ border-radius:50%;margin-right:5px;
+}
+.status{font-size:13px;color:var(--muted);margin:13px 0}
+.station{
+ background:#1b2c22;border:1px solid var(--line);
+ border-radius:17px;padding:17px;margin:12px 0;
+}
+.station-top{
+ display:flex;justify-content:space-between;
+ align-items:flex-start;gap:12px;
+}
 .station h3{font-size:16px;margin:0 0 8px}
 .station p{font-size:13px;color:var(--muted);margin:6px 0}
-.station .plug{display:inline-block;background:#294334;color:var(--green);
- border-radius:7px;padding:5px 8px;font-size:12px;margin:5px 4px 5px 0}
-.star{background:#2b4434;color:var(--green);border:0;
- border-radius:10px;min-width:38px;height:38px;font-size:23px}
-.station a{color:var(--green);text-decoration:none;font-size:13px;font-weight:700}
-.vehicle-icon{font-size:48px;margin:12px 0}
-.result{color:var(--green);font-size:16px;font-weight:700;line-height:1.9}
-.empty{color:var(--muted);font-size:14px;padding:12px 0}
-nav{position:fixed;bottom:0;left:0;right:0;z-index:1000;
- background:#142119;border-top:1px solid var(--line);
- display:flex;justify-content:space-around;
- padding:7px 4px calc(8px + env(safe-area-inset-bottom))}
-nav button{background:none;border:0;color:#9eafa1;
- flex:1;display:flex;flex-direction:column;align-items:center;
- gap:5px;padding:7px 0;font-size:10px}
-nav button .navicon{font-size:22px}
+.station .operator{color:#d6e3d8}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.chip{
+ display:inline-block;padding:6px 9px;
+ background:#2a4232;color:#c8f6b1;
+ border-radius:8px;font-size:12px;
+}
+.chip.power{background:#34453b;color:#f4f7f4}
+.star{
+ border:0;background:#2b4434;color:var(--green);
+ border-radius:11px;min-width:40px;height:40px;font-size:23px;
+}
+.station a{
+ color:var(--green);font-size:13px;
+ font-weight:750;text-decoration:none;
+}
+.station .actions{align-items:center}
+.result{color:var(--green);font-weight:700;line-height:1.9}
+.empty{color:var(--muted);padding:18px 0;font-size:14px}
+.vehicle-icon{font-size:46px;margin-bottom:12px}
+nav{
+ position:fixed;bottom:0;left:0;right:0;
+ z-index:1000;background:#142119;
+ border-top:1px solid var(--line);
+ display:flex;padding:7px 3px calc(8px + env(safe-area-inset-bottom));
+}
+nav button{
+ flex:1;border:0;background:none;color:#9eafa1;
+ display:flex;flex-direction:column;align-items:center;
+ gap:5px;padding:7px 0;font-size:10px;
+}
+.navicon{font-size:22px}
 nav button.active{color:var(--green);font-weight:800}
-footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
+footer{text-align:center;font-size:11px;color:var(--muted);padding:20px}
 @media(min-width:800px){
- .hero{padding:38px}
- .hero h2{font-size:42px}
- .desktop-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px}
- .desktop-columns .card{margin-bottom:0}
+ .hero{padding:40px}
+ .hero h2{font-size:43px}
+ .station-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+ }
+ .station-grid .station{margin:0}
 }
 @media(max-width:390px){
  .filters{grid-template-columns:1fr}
@@ -112,25 +191,26 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 }
 </style>
 </head>
-<body>
 
+<body>
 <header>
-<div class="brand">
- <div class="logo">ϟ</div>
- <div>
-  <h1>VOLTIA</h1>
-  <small>ENERGÍA EN MOVIMIENTO</small>
+ <div class="brand">
+  <div class="logo">ϟ</div>
+  <div>
+   <h1>VOLTIA</h1>
+   <small>ENERGÍA EN MOVIMIENTO</small>
+  </div>
  </div>
-</div>
-<div class="version">v0.6</div>
+ <div class="version">v0.7</div>
 </header>
 
 <main>
+
 <section id="inicio" class="active">
  <div class="card hero">
   <div class="eyebrow">TU PRÓXIMA RECARGA</div>
   <h2>Encuentra energía cerca de ti.</h2>
-  <p>Descubre estaciones de recarga, consulta conectores y encuentra tu próximo destino.</p>
+  <p>Explora cargadores reales, descubre sus conectores y guarda tus estaciones favoritas.</p>
   <button class="btn" onclick="mostrar('mapa')">Explorar cargadores →</button>
  </div>
 
@@ -140,31 +220,32 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
    <h3>Filtros inteligentes</h3>
    <p>Encuentra conectores y potencias adecuados.</p>
   </div>
-  <div class="card feature" onclick="mostrar('favoritos')" style="cursor:pointer">
+  <div class="card feature">
    <div class="symbol">☆</div>
    <h3>Mis favoritos</h3>
-   <p>Accede a tus estaciones guardadas.</p>
+   <p>Guarda tus estaciones habituales.</p>
+   <button class="btn secondary small" onclick="mostrar('favoritos')">Ver favoritos</button>
   </div>
  </div>
 
  <div class="card">
-  <div class="eyebrow">EXPLORA</div>
-  <h3 style="margin-top:9px">Estaciones de recarga</h3>
-  <p class="muted">Explora el mapa interactivo con datos reales de Open Charge Map.</p>
+  <div class="eyebrow">MAPA INTERACTIVO</div>
+  <h3>Descubre estaciones de recarga</h3>
+  <p class="muted">Consulta cargadores agrupados por zona y diferenciados por potencia.</p>
   <button class="btn full" onclick="mostrar('mapa')">Abrir mapa →</button>
  </div>
 
  <div class="card">
   <h3>Compara antes de cargar</h3>
-  <p class="muted">Calcula el coste estimado de tus recargas utilizando diferentes tarifas.</p>
+  <p class="muted">Calcula el coste estimado de una recarga con diferentes precios.</p>
   <button class="btn secondary" onclick="mostrar('comparar')">Comparar precios</button>
  </div>
 </section>
 
 <section id="mapa">
  <div class="eyebrow">EXPLORAR</div>
- <h2 style="margin-top:8px">Mapa de cargadores</h2>
- <p class="muted" style="font-size:14px">Encuentra tu próxima estación de recarga.</p>
+ <h2>Mapa de cargadores</h2>
+ <p class="muted">Encuentra tu próxima estación de recarga.</p>
 
  <div class="card">
   <label for="ciudad">Buscar ciudad o dirección</label>
@@ -182,18 +263,18 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
    <div>
     <label for="conector">Tipo de conector</label>
     <select id="conector" onchange="filtrar()">
-     <option value="todos">Todos los conectores</option>
+     <option value="todos">Todos</option>
      <option value="ccs">CCS Combo</option>
      <option value="type2">Tipo 2</option>
      <option value="chademo">CHAdeMO</option>
     </select>
    </div>
    <div>
-    <label for="potencia">Potencia de carga</label>
+    <label for="potencia">Potencia</label>
     <select id="potencia" onchange="filtrar()">
-     <option value="todos">Todas las potencias</option>
+     <option value="todos">Todas</option>
      <option value="lenta">Hasta 22 kW</option>
-     <option value="rapida">Más de 22 a menos de 150 kW</option>
+     <option value="rapida">Más de 22 y menos de 150 kW</option>
      <option value="ultra">150 kW o más</option>
     </select>
    </div>
@@ -201,24 +282,36 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
  </div>
 
  <div id="map"></div>
- <p id="estado" class="status" role="status">Preparando mapa…</p>
 
+ <div class="legend">
+  <span><i class="dot" style="background:#b9ff46"></i>Hasta 22 kW</span>
+  <span><i class="dot" style="background:#65c8ff"></i>Rápida</span>
+  <span><i class="dot" style="background:#ffc16c"></i>Ultrarrápida</span>
+  <span><i class="dot" style="background:#c5d1c7"></i>Sin datos</span>
+ </div>
+
+ <p id="estado" class="status" role="status">Preparando mapa…</p>
  <h3>⚡ Estaciones encontradas</h3>
- <div id="lista"></div>
- <p class="muted" style="font-size:12px">Datos de Open Charge Map. Los conectores y potencias pueden estar desactualizados. Comprueba disponibilidad y tarifas con el operador.</p>
+ <div id="lista" class="station-grid"></div>
+ <p class="muted" style="font-size:12px">
+  Datos de Open Charge Map. La información puede estar incompleta.
+  Verifica disponibilidad, conectores y tarifas con el operador.
+ </p>
 </section>
 
 <section id="favoritos">
  <div class="eyebrow">TUS ESTACIONES</div>
- <h2 style="margin-top:8px">Mis favoritos</h2>
- <p class="muted">Tus puntos de recarga guardados.</p>
- <div id="listaFavoritos"></div>
- <p class="muted" style="font-size:12px">Se guardan en este navegador, no en una cuenta online.</p>
+ <h2>Mis favoritos</h2>
+ <p class="muted">Accede a tus puntos de recarga guardados.</p>
+ <div id="listaFavoritos" class="station-grid"></div>
+ <p class="muted" style="font-size:12px">
+  Los favoritos se guardan en este navegador.
+ </p>
 </section>
 
 <section id="comparar">
  <div class="eyebrow">AHORRA EN CADA RECARGA</div>
- <h2 style="margin-top:8px">Comparar precios</h2>
+ <h2>Comparar precios</h2>
  <div class="card">
   <label for="precioA">Cargador A · €/kWh</label>
   <input id="precioA" type="number" min="0" step=".01" value="0.39">
@@ -233,18 +326,20 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
   </div>
   <div id="resultado" class="result"></div>
  </div>
- <p class="muted" style="font-size:12px">Precios de ejemplo editables, no tarifas reales verificadas. No incluye posibles cargos adicionales.</p>
+ <p class="muted" style="font-size:12px">
+  Precios de ejemplo, no tarifas reales verificadas.
+ </p>
 </section>
 
 <section id="vehiculo">
  <div class="eyebrow">TU MOVILIDAD</div>
- <h2 style="margin-top:8px">Mi vehículo</h2>
+ <h2>Mi vehículo</h2>
  <div class="card">
   <div class="vehicle-icon">🚘</div>
   <h3>Cupra León e-Hybrid</h3>
   <p class="muted">Híbrido enchufable (PHEV)</p>
-  <p>Perfil de vehículo de ejemplo.</p>
-  <p class="muted">Próximamente: configuración de conectores compatibles, autonomía y planificación de rutas.</p>
+  <p>Perfil de ejemplo.</p>
+  <p class="muted">Próximamente: conectores compatibles, autonomía y planificación de rutas.</p>
  </div>
 </section>
 
@@ -260,21 +355,31 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 </nav>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
 <script>
 const API='https://voltiaapi.mziyani21k.workers.dev';
 const FAV_KEY='voltia-favoritos-v05';
-let mapa,marcadores,primeraCarga=false,solicitud=0,estaciones=[];
+
+let mapa,marcadores;
+let estaciones=[];
+let primeraCarga=false;
+let solicitud=0;
 
 function mostrar(id){
  document.querySelectorAll('main section').forEach(s=>
   s.classList.toggle('active',s.id===id));
  document.querySelectorAll('nav button').forEach(b=>
   b.classList.toggle('active',b.dataset.page===id));
+
  if(id==='mapa'){
   iniciarMapa();
   if(mapa){
    setTimeout(()=>mapa.invalidateSize(),150);
-   if(!primeraCarga){primeraCarga=true;buscar();}
+   if(!primeraCarga){
+    primeraCarga=true;
+    buscar();
+   }
   }
  }
  if(id==='favoritos')pintarFavoritos();
@@ -283,20 +388,42 @@ function mostrar(id){
 
 function iniciarMapa(){
  if(mapa)return;
+
  if(typeof L==='undefined'){
-  document.getElementById('estado').textContent='No se pudo cargar el mapa.';
+  document.getElementById('estado').textContent=
+   'No se pudo cargar Leaflet.';
   return;
  }
+
  mapa=L.map('map').setView([41.3874,2.1686],13);
+
  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
-  attribution:'© OpenStreetMap',maxZoom:19
+  attribution:'© OpenStreetMap',
+  maxZoom:19
  }).addTo(mapa);
- marcadores=L.layerGroup().addTo(mapa);
+
+ if(typeof L.markerClusterGroup==='function'){
+  marcadores=L.markerClusterGroup({
+   showCoverageOnHover:false,
+   maxClusterRadius:55,
+   iconCreateFunction:cluster=>L.divIcon({
+    className:'',
+    html:'<div class="cluster-pin">'+cluster.getChildCount()+'</div>',
+    iconSize:[46,46],
+    iconAnchor:[23,23]
+   })
+  });
+ }else{
+  marcadores=L.layerGroup();
+ }
+
+ mapa.addLayer(marcadores);
 }
 
 function seguro(v){
  return String(v??'').replace(/[&<>"']/g,c=>({
-  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  '&':'&amp;','<':'&lt;','>':'&gt;',
+  '"':'&quot;',"'":'&#39;'
  }[c]));
 }
 
@@ -329,60 +456,93 @@ function cambiarFavorito(id){
  const p=estaciones.find(x=>clave(x)===id)||
   favoritos().find(x=>clave(x)===id);
  if(!p)return;
+
  let f=favoritos();
  f=f.some(x=>clave(x)===id)?
   f.filter(x=>clave(x)!==id):[...f,p];
+
  if(guardarFavoritos(f)){
   filtrar();
   pintarFavoritos();
  }
 }
 
-function icono(){
+function conexionesDe(p){
+ return Array.isArray(p.connections)?p.connections:[];
+}
+
+function potenciaMaxima(p){
+ const potencias=conexionesDe(p)
+  .map(c=>c.powerKW==null?NaN:Number(c.powerKW))
+  .filter(n=>Number.isFinite(n)&&n>0);
+ return potencias.length?Math.max(...potencias):null;
+}
+
+function categoria(p){
+ const w=potenciaMaxima(p);
+ if(w===null)return 'unknown';
+ if(w>=150)return 'ultra';
+ if(w>22)return 'fast';
+ return 'slow';
+}
+
+function icono(p){
  return L.divIcon({
   className:'',
-  html:'<div class="pin">ϟ</div>',
+  html:'<div class="pin '+categoria(p)+'">ϟ</div>',
   iconSize:[38,38],
   iconAnchor:[19,19],
   popupAnchor:[0,-19]
  });
 }
 
+function tipoCoincide(t,c){
+ if(c==='todos')return true;
+ t=String(t||'').toLowerCase();
+ if(c==='ccs'){
+  return t.includes('ccs')||
+   t.includes('combo')||
+   t.includes('configuration ff');
+ }
+ if(c==='type2'){
+  return t.includes('type 2')||
+   t.includes('tipo 2')||
+   t.includes('mennekes')||
+   t.includes('62196-2');
+ }
+ if(c==='chademo')return t.includes('chademo');
+ return false;
+}
+
+function potenciaCoincide(c,k){
+ if(k==='todos')return true;
+ if(c.powerKW==null)return false;
+ const w=Number(c.powerKW);
+ if(!Number.isFinite(w)||w<=0)return false;
+ if(k==='lenta')return w<=22;
+ if(k==='rapida')return w>22&&w<150;
+ if(k==='ultra')return w>=150;
+ return false;
+}
+
 function coincide(p){
  const c=document.getElementById('conector').value;
  const k=document.getElementById('potencia').value;
- const conexiones=Array.isArray(p.connections)?p.connections:[];
  if(c==='todos'&&k==='todos')return true;
- return conexiones.some(x=>{
-  const t=String(x.type||'').toLowerCase();
-  const w=Number(x.powerKW);
-  const tipo=c==='todos'||
-   (c==='ccs'&&(t.includes('ccs')||t.includes('combo')||
-    t.includes('configuration ff')))||
-   (c==='type2'&&(t.includes('type 2')||t.includes('tipo 2')||
-    t.includes('mennekes')||t.includes('62196-2')))||
-   (c==='chademo'&&t.includes('chademo'));
-  const pot=k==='todos'||
-   (x.powerKW!=null&&Number.isFinite(w)&&w>0&&(
-    (k==='lenta'&&w<=22)||
-    (k==='rapida'&&w>22&&w<150)||
-    (k==='ultra'&&w>=150)
-   ));
-  return tipo&&pot;
- });
+ return conexionesDe(p).some(x=>
+  tipoCoincide(x.type,c)&&potenciaCoincide(x,k));
 }
 
 function datosFicha(p){
- const direccion=[p.address,p.town].filter(Boolean).join(', ')||
-  'Dirección no disponible';
+ const direccion=[p.address,p.town]
+  .filter(Boolean).join(', ')||'Dirección no disponible';
+
  const operador=p.operator||'No indicado';
- const conexiones=(p.connections||[]).map(c=>
-  String(c.type||'Conector no indicado')+
-  (c.powerKW!=null?' · '+c.powerKW+' kW':'')
- ).join(' | ')||'Conectores no indicados';
+
  const ruta='https://www.google.com/maps/dir/?api=1&destination='+
   encodeURIComponent(p.latitude+','+p.longitude);
- return {direccion,operador,conexiones,ruta};
+
+ return {direccion,operador,ruta};
 }
 
 function ficha(p){
@@ -392,6 +552,7 @@ function ficha(p){
 
  const top=document.createElement('div');
  top.className='station-top';
+
  const titulo=document.createElement('h3');
  titulo.textContent=p.name||'Punto de recarga';
  top.appendChild(titulo);
@@ -405,59 +566,125 @@ function ficha(p){
  top.appendChild(fav);
  el.appendChild(top);
 
- for(const t of [d.direccion,'Operador: '+d.operador]){
-  const par=document.createElement('p');
-  par.textContent=t;
-  el.appendChild(par);
+ const operador=document.createElement('p');
+ operador.className='operator';
+ operador.textContent='🏢 '+d.operador;
+ el.appendChild(operador);
+
+ const direccion=document.createElement('p');
+ direccion.textContent='📍 '+d.direccion;
+ el.appendChild(direccion);
+
+ const max=potenciaMaxima(p);
+ if(max!==null){
+  const potencia=document.createElement('p');
+  potencia.textContent='⚡ Potencia máxima registrada: '+max+' kW';
+  el.appendChild(potencia);
  }
 
- const plug=document.createElement('div');
- plug.className='plug';
- plug.textContent='⚡ '+d.conexiones;
- el.appendChild(plug);
+ const badges=document.createElement('div');
+ badges.className='badges';
+
+ const conexiones=conexionesDe(p);
+ if(conexiones.length){
+  for(const c of conexiones){
+   const chip=document.createElement('span');
+   chip.className='chip';
+   chip.textContent=(c.type||'Conector no indicado')+
+    (c.powerKW!=null?' · '+c.powerKW+' kW':'');
+   badges.appendChild(chip);
+  }
+ }else{
+  const chip=document.createElement('span');
+  chip.className='chip';
+  chip.textContent='Conectores no indicados';
+  badges.appendChild(chip);
+ }
+ el.appendChild(badges);
 
  const actions=document.createElement('div');
  actions.className='actions';
+
  const a=document.createElement('a');
  a.href=d.ruta;
  a.target='_blank';
  a.rel='noopener noreferrer';
  a.textContent='↗ Cómo llegar';
  actions.appendChild(a);
+
+ const ver=document.createElement('button');
+ ver.className='btn secondary small';
+ ver.textContent='Ver en mapa';
+ ver.onclick=()=>{
+  mostrar('mapa');
+  const lat=Number(p.latitude);
+  const lon=Number(p.longitude);
+  if(Number.isFinite(lat)&&Number.isFinite(lon)){
+   mapa.setView([lat,lon],17);
+   const marcador=marcadores.getLayers().find(m=>
+    m.options&&m.options.voltiaId===clave(p));
+   if(marcador){
+    if(typeof marcadores.zoomToShowLayer==='function'){
+     marcadores.zoomToShowLayer(marcador,()=>marcador.openPopup());
+    }else{
+     marcador.openPopup();
+    }
+   }
+  }
+ };
+ actions.appendChild(ver);
  el.appendChild(actions);
+
  return el;
 }
 
 function filtrar(){
  if(!mapa||!marcadores)return;
  marcadores.clearLayers();
+
  const lista=document.getElementById('lista');
  lista.replaceChildren();
+
  let n=0;
 
  for(const p of estaciones){
-  const lat=Number(p.latitude),lon=Number(p.longitude);
+  const lat=Number(p.latitude);
+  const lon=Number(p.longitude);
+
   if(!Number.isFinite(lat)||!Number.isFinite(lon)||
-     lat < -90||lat > 90||lon < -180||lon > 180||!coincide(p))continue;
+   lat < -90||lat > 90||lon < -180||lon > 180||
+   !coincide(p))continue;
 
   n++;
   const d=datosFicha(p);
-  L.marker([lat,lon],{icon:icono()})
-   .bindPopup(
-    '<strong>'+seguro(p.name||'Punto de recarga')+'</strong><br>'+
-    seguro(d.direccion)+'<br>Operador: '+seguro(d.operador)+
-    '<br>Conectores: '+seguro(d.conexiones)+
-    '<br><a target="_blank" rel="noopener noreferrer" href="'+d.ruta+'">Cómo llegar</a>'
-   ).addTo(marcadores);
+  const conexiones=conexionesDe(p).map(c=>
+   String(c.type||'Conector no indicado')+
+   (c.powerKW!=null?' · '+c.powerKW+' kW':'')
+  ).join(', ')||'Conectores no indicados';
+
+  const popup=
+   '<strong>'+seguro(p.name||'Punto de recarga')+'</strong><br>'+
+   seguro(d.direccion)+'<br>'+
+   'Operador: '+seguro(d.operador)+'<br>'+
+   'Conectores: '+seguro(conexiones)+'<br>'+
+   '<a target="_blank" rel="noopener noreferrer" href="'+d.ruta+'">Cómo llegar</a>';
+
+  const marker=L.marker([lat,lon],{
+   icon:icono(p),
+   voltiaId:clave(p)
+  }).bindPopup(popup);
+
+  marcadores.addLayer(marker);
   lista.appendChild(ficha(p));
  }
 
  if(!n){
   const e=document.createElement('p');
   e.className='empty';
-  e.textContent='No hay estaciones que coincidan con estos filtros.';
+  e.textContent='No hay estaciones que coincidan con estos filtros en los resultados recibidos.';
   lista.appendChild(e);
  }
+
  document.getElementById('estado').textContent=
   n+' estaciones visibles de '+estaciones.length+' recibidas.';
 }
@@ -465,11 +692,14 @@ function filtrar(){
 async function buscar(){
  iniciarMapa();
  if(!mapa)return;
+
  const actual=++solicitud;
  const centro=mapa.getCenter();
  const estado=document.getElementById('estado');
+
  estado.textContent='Buscando cargadores reales…';
- document.getElementById('lista').textContent='Consultando Open Charge Map…';
+ document.getElementById('lista').textContent=
+  'Consultando Open Charge Map…';
 
  const url=new URL(API+'/chargers');
  url.searchParams.set('lat',centro.lat.toFixed(6));
@@ -478,34 +708,55 @@ async function buscar(){
  try{
   const res=await fetch(url.toString(),{mode:'cors'});
   const data=await res.json();
+
   if(actual!==solicitud)return;
   if(!res.ok)throw Error(data.error||'Error HTTP '+res.status);
-  if(!Array.isArray(data.chargers))throw Error('Formato de datos incorrecto');
+  if(!Array.isArray(data.chargers)){
+   throw Error('Formato de datos incorrecto');
+  }
+
   estaciones=data.chargers;
   filtrar();
+
  }catch(e){
   if(actual!==solicitud)return;
   estado.textContent='No se pudieron cargar los cargadores.';
-  document.getElementById('lista').textContent='Detalle: '+e.message;
+  document.getElementById('lista').textContent=
+   'Detalle: '+e.message;
  }
 }
 
 async function buscarCiudad(){
+ iniciarMapa();
+ if(!mapa)return;
+
  const q=document.getElementById('ciudad').value.trim();
- if(q.length<2){alert('Escribe una ciudad o dirección.');return}
+ if(q.length<2){
+  alert('Escribe una ciudad o dirección.');
+  return;
+ }
+
  const boton=document.getElementById('botonCiudad');
  boton.disabled=true;
- document.getElementById('estado').textContent='Buscando ubicación…';
+ document.getElementById('estado').textContent=
+  'Buscando ubicación…';
 
  try{
   const u='https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=es&q='+
    encodeURIComponent(q);
-  const r=await fetch(u,{headers:{Accept:'application/json'}});
+
+  const r=await fetch(u,{
+   headers:{Accept:'application/json'}
+  });
+
   if(!r.ok)throw Error('Servicio de búsqueda no disponible');
+
   const a=await r.json();
   if(!a.length)throw Error('No se encontró esa ubicación');
+
   mapa.setView([Number(a[0].lat),Number(a[0].lon)],13);
   await buscar();
+
  }catch(e){
   document.getElementById('estado').textContent=
    'No se pudo buscar la ciudad: '+e.message;
@@ -521,19 +772,25 @@ document.getElementById('ciudad').addEventListener('keydown',e=>{
 function miUbicacion(){
  iniciarMapa();
  if(!mapa)return;
+
  const estado=document.getElementById('estado');
+
  if(!navigator.geolocation){
   estado.textContent='Geolocalización no disponible.';
   return;
  }
+
  estado.textContent='Obteniendo ubicación…';
+
  navigator.geolocation.getCurrentPosition(
   p=>{
    mapa.setView([p.coords.latitude,p.coords.longitude],14);
    buscar();
   },
-  ()=>estado.textContent=
-   'No se pudo obtener tu ubicación. Mueve el mapa y pulsa Actualizar zona.',
+  ()=>{
+   estado.textContent=
+    'No se pudo obtener tu ubicación. Mueve el mapa y pulsa Actualizar zona.';
+  },
   {timeout:12000}
  );
 }
@@ -541,12 +798,20 @@ function miUbicacion(){
 function pintarFavoritos(){
  const lista=document.getElementById('listaFavoritos');
  lista.replaceChildren();
+
  const fav=favoritos();
+
  if(!fav.length){
-  lista.innerHTML='<div class="card empty">Todavía no tienes estaciones favoritas.</div>';
+  const e=document.createElement('div');
+  e.className='card empty';
+  e.textContent='Todavía no tienes estaciones favoritas.';
+  lista.appendChild(e);
   return;
  }
- for(const p of fav)lista.appendChild(ficha(p));
+
+ for(const p of fav){
+  lista.appendChild(ficha(p));
+ }
 }
 
 function calcular(){
@@ -554,15 +819,22 @@ function calcular(){
  const v=ids.map(id=>document.getElementById(id).value.trim());
  const [a,b,k]=v.map(Number);
  const out=document.getElementById('resultado');
- if(v.some(x=>x==='')||![a,b,k].every(Number.isFinite)||a<0||b<0||k<=0){
+
+ if(v.some(x=>x==='')||
+  ![a,b,k].every(Number.isFinite)||
+  a<0||b<0||k<=0){
   out.textContent='Introduce valores válidos.';
   return;
  }
+
  const eur=n=>n.toLocaleString('es-ES',{
   style:'currency',currency:'EUR'
  });
+
  const A=a*k,B=b*k;
- out.textContent='Cargador A: '+eur(A)+
+
+ out.textContent=
+  'Cargador A: '+eur(A)+
   ' | Cargador B: '+eur(B)+
   ' | Ahorro estimado: '+eur(Math.abs(A-B))+
   ' con '+(A<=B?'A':'B');
