@@ -1,169 +1,275 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101816">
-<title>VOLTIA v0.5</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d1512">
+<title>VOLTIA — Energía en movimiento</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
+:root{
+ --bg:#0d1512;--surface:#17241d;--surface2:#1e3025;
+ --line:#304639;--green:#b9ff46;--white:#f5faf5;
+ --muted:#a6b9aa;--danger:#ff9c92;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#101816;color:#f4f7f4;font-family:system-ui,Arial,sans-serif}
-header{padding:17px 20px;background:#192820;border-bottom:1px solid #344a38}
-h1{margin:0;color:#b9ff46;font-size:27px}
-small,.muted{color:#b7c6ba}
-small{font-size:11px}
-main{max-width:1050px;margin:auto;padding:18px 14px 100px}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--white);
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
+header{height:76px;border-bottom:1px solid var(--line);
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 20px;background:#101b15}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:43px;height:43px;background:var(--green);
+ color:#102016;border-radius:13px;display:grid;place-items:center;
+ font-size:27px;font-weight:900}
+.brand h1{font-size:23px;color:var(--green);margin:0;letter-spacing:1px}
+.brand small{color:var(--muted);font-size:10px;letter-spacing:1px}
+.version{border:1px solid var(--line);border-radius:30px;
+ padding:7px 12px;color:var(--muted);font-size:12px}
+main{max-width:1100px;margin:auto;padding:22px 16px 115px}
 section{display:none}
 section.active{display:block}
-.card{background:#1c2a23;border:1px solid #36503d;border-radius:16px;padding:17px;margin-bottom:15px}
-.hero{background:linear-gradient(130deg,#27583a,#192820)}
-h2{font-size:21px;margin:0 0 15px}
-h3{margin:0 0 12px}
+h2{font-size:25px;letter-spacing:-.6px;margin:0 0 9px}
+h3{font-size:17px;margin:0 0 10px}
 p{line-height:1.5}
-button{cursor:pointer}
-.btn{background:#b9ff46;color:#102014;border:0;border-radius:10px;padding:12px 15px;font-weight:700}
-.secondary{background:#34483b;color:white}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.field{display:block;margin:10px 0 4px;font-size:14px}
-input,select{width:100%;padding:12px;background:#101816;border:1px solid #526658;color:white;border-radius:10px;font-size:16px}
-input:focus,select:focus{outline:2px solid #b9ff46}
-.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:12px 0}
-#map{height:52vh;min-height:340px;max-height:620px;border-radius:15px;background:#e4e8e3;z-index:0}
-.leaflet-tile-pane{filter:grayscale(.65) brightness(1.06)}
-.pin{width:37px;height:37px;background:#b9ff46;border:3px solid #193521;border-radius:50%;display:grid;place-items:center;font-size:21px;box-shadow:0 3px 10px #0007}
-.station{border-bottom:1px solid #405244;padding:14px 0}
-.station:last-child{border:0}
-.station strong{display:block;margin-bottom:6px}
-.station p{margin:5px 0;font-size:14px}
-.station a{color:#b9ff46}
-.station button{margin-top:7px}
-.status{color:#d3dfd4;font-size:14px;margin:13px 0}
-.result{color:#b9ff46;font-weight:bold;margin-top:15px;line-height:1.8}
-nav{position:fixed;bottom:0;left:0;right:0;background:#192820;border-top:1px solid #38503e;display:flex;z-index:1000}
-nav button{flex:1;padding:15px 2px;background:none;border:0;color:#c9d5cc;font-size:12px}
-nav button.active{color:#b9ff46;font-weight:bold}
-.inline{display:flex;gap:8px}
-.inline input{flex:1;min-width:0}
-.empty{color:#b7c6ba}
+.muted{color:var(--muted)}
+.eyebrow{font-size:11px;font-weight:800;color:var(--green);
+ letter-spacing:1.7px;text-transform:uppercase}
+.card{background:var(--surface);border:1px solid var(--line);
+ border-radius:20px;padding:19px;margin-bottom:15px}
+.hero{background:linear-gradient(135deg,#254b32,#17241d 72%);
+ padding:28px 22px}
+.hero h2{font-size:32px;max-width:360px;line-height:1.15;margin:14px 0}
+.hero p{color:#d3e0d5;max-width:440px}
+.btn{background:var(--green);color:#122015;border:0;
+ border-radius:12px;padding:13px 17px;font-weight:800}
+.btn.secondary{background:var(--surface2);color:var(--white);
+ border:1px solid var(--line)}
+.btn.small{padding:9px 12px;font-size:13px}
+.btn.full{width:100%}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin:13px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.feature{padding:20px;min-height:130px}
+.feature .symbol{font-size:27px;color:var(--green);margin-bottom:14px}
+.feature h3{font-size:15px;margin-bottom:6px}
+.feature p{font-size:12px;margin:0;color:var(--muted)}
+label{display:block;font-size:13px;color:#d7e3d9;margin:0 0 7px}
+input,select{width:100%;min-width:0;padding:13px;
+ background:#0e1a13;border:1px solid #3d5846;
+ border-radius:12px;color:white;font-size:15px}
+input:focus,select:focus{outline:2px solid var(--green)}
+.searchbar{display:flex;gap:9px;margin-bottom:13px}
+.searchbar input{flex:1}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+#map{height:53vh;min-height:370px;max-height:660px;
+ border-radius:18px;background:#e5ebe6;z-index:0}
+.leaflet-tile-pane{filter:grayscale(.65) brightness(1.04)}
+.pin{width:38px;height:38px;border-radius:13px;
+ background:var(--green);border:3px solid #183b26;
+ box-shadow:0 4px 12px #0007;display:grid;place-items:center;
+ color:#17301c;font-size:21px;font-weight:900}
+.leaflet-popup-content-wrapper{border-radius:14px}
+.leaflet-popup-content{line-height:1.6}
+.leaflet-popup-content a{color:#246e28;font-weight:700}
+.status{font-size:13px;color:var(--muted);margin:14px 0}
+.station{background:#1b2c22;border:1px solid var(--line);
+ border-radius:16px;padding:16px;margin:12px 0}
+.station-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.station h3{font-size:16px;margin:0 0 8px}
+.station p{font-size:13px;color:var(--muted);margin:6px 0}
+.station .plug{display:inline-block;background:#294334;color:var(--green);
+ border-radius:7px;padding:5px 8px;font-size:12px;margin:5px 4px 5px 0}
+.star{background:#2b4434;color:var(--green);border:0;
+ border-radius:10px;min-width:38px;height:38px;font-size:23px}
+.station a{color:var(--green);text-decoration:none;font-size:13px;font-weight:700}
+.vehicle-icon{font-size:48px;margin:12px 0}
+.result{color:var(--green);font-size:16px;font-weight:700;line-height:1.9}
+.empty{color:var(--muted);font-size:14px;padding:12px 0}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:1000;
+ background:#142119;border-top:1px solid var(--line);
+ display:flex;justify-content:space-around;
+ padding:7px 4px calc(8px + env(safe-area-inset-bottom))}
+nav button{background:none;border:0;color:#9eafa1;
+ flex:1;display:flex;flex-direction:column;align-items:center;
+ gap:5px;padding:7px 0;font-size:10px}
+nav button .navicon{font-size:22px}
+nav button.active{color:var(--green);font-weight:800}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
+@media(min-width:800px){
+ .hero{padding:38px}
+ .hero h2{font-size:42px}
+ .desktop-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+ .desktop-columns .card{margin-bottom:0}
+}
+@media(max-width:390px){
+ .filters{grid-template-columns:1fr}
+ .searchbar .btn{padding:12px}
+}
 </style>
 </head>
 <body>
+
 <header>
-<h1>⚡ VOLTIA</h1>
-<small>TU ENERGÍA. UNA SOLA APP. · v0.5</small>
+<div class="brand">
+ <div class="logo">ϟ</div>
+ <div>
+  <h1>VOLTIA</h1>
+  <small>ENERGÍA EN MOVIMIENTO</small>
+ </div>
+</div>
+<div class="version">v0.6</div>
 </header>
+
 <main>
 <section id="inicio" class="active">
-<div class="card hero">
-<h2>Encuentra tu próxima recarga</h2>
-<p>Explora estaciones reales, filtra por conector y potencia, y guarda tus favoritas.</p>
-<button class="btn" onclick="mostrar('mapa')">Explorar cargadores</button>
-</div>
-<div class="card">
-<h3>⭐ Tus favoritos</h3>
-<p class="muted">Consulta las estaciones que has guardado.</p>
-<button class="btn secondary" onclick="mostrar('favoritos')">Ver favoritos</button>
-</div>
-<div class="card">
-<h3>⚡ Compara recargas</h3>
-<button class="btn secondary" onclick="mostrar('comparar')">Comparar precios</button>
-</div>
+ <div class="card hero">
+  <div class="eyebrow">TU PRÓXIMA RECARGA</div>
+  <h2>Encuentra energía cerca de ti.</h2>
+  <p>Descubre estaciones de recarga, consulta conectores y encuentra tu próximo destino.</p>
+  <button class="btn" onclick="mostrar('mapa')">Explorar cargadores →</button>
+ </div>
+
+ <div class="grid2">
+  <div class="card feature">
+   <div class="symbol">⚡</div>
+   <h3>Filtros inteligentes</h3>
+   <p>Encuentra conectores y potencias adecuados.</p>
+  </div>
+  <div class="card feature" onclick="mostrar('favoritos')" style="cursor:pointer">
+   <div class="symbol">☆</div>
+   <h3>Mis favoritos</h3>
+   <p>Accede a tus estaciones guardadas.</p>
+  </div>
+ </div>
+
+ <div class="card">
+  <div class="eyebrow">EXPLORA</div>
+  <h3 style="margin-top:9px">Estaciones de recarga</h3>
+  <p class="muted">Explora el mapa interactivo con datos reales de Open Charge Map.</p>
+  <button class="btn full" onclick="mostrar('mapa')">Abrir mapa →</button>
+ </div>
+
+ <div class="card">
+  <h3>Compara antes de cargar</h3>
+  <p class="muted">Calcula el coste estimado de tus recargas utilizando diferentes tarifas.</p>
+  <button class="btn secondary" onclick="mostrar('comparar')">Comparar precios</button>
+ </div>
 </section>
 
 <section id="mapa">
-<h2>📍 Mapa de cargadores</h2>
-<div class="card">
-<label class="field" for="ciudad">Buscar ciudad o dirección</label>
-<div class="inline">
-<input id="ciudad" placeholder="Ej. Sabadell" autocomplete="street-address">
-<button class="btn" id="buscarCiudad" onclick="buscarCiudad()">Buscar</button>
-</div>
-<div class="actions">
-<button class="btn secondary" onclick="miUbicacion()">◎ Cerca de mí</button>
-<button class="btn secondary" onclick="buscar()">↻ Actualizar zona</button>
-</div>
-<div class="filters">
-<div>
-<label class="field" for="conector">Conector</label>
-<select id="conector" onchange="filtrar()">
-<option value="todos">Todos</option>
-<option value="ccs">CCS (Combo)</option>
-<option value="type2">Tipo 2</option>
-<option value="chademo">CHAdeMO</option>
-</select>
-</div>
-<div>
-<label class="field" for="potencia">Potencia</label>
-<select id="potencia" onchange="filtrar()">
-<option value="todos">Todas</option>
-<option value="lenta">Hasta 22 kW</option>
-<option value="rapida">Más de 22 y menos de 150 kW</option>
-<option value="ultra">150 kW o más</option>
-</select>
-</div>
-</div>
-</div>
-<div id="map"></div>
-<p id="estado" class="status" role="status">Preparando mapa…</p>
-<div class="card">
-<h3>⚡ Estaciones en esta zona</h3>
-<div id="lista">Abre el mapa para buscar estaciones.</div>
-</div>
-<p class="muted">Fuente: Open Charge Map. Datos orientativos; comprueba disponibilidad, precios y compatibilidad con el operador. Los filtros se aplican a las estaciones recibidas.</p>
+ <div class="eyebrow">EXPLORAR</div>
+ <h2 style="margin-top:8px">Mapa de cargadores</h2>
+ <p class="muted" style="font-size:14px">Encuentra tu próxima estación de recarga.</p>
+
+ <div class="card">
+  <label for="ciudad">Buscar ciudad o dirección</label>
+  <div class="searchbar">
+   <input id="ciudad" placeholder="Ej. Sabadell, Barcelona">
+   <button id="botonCiudad" class="btn" onclick="buscarCiudad()">Buscar</button>
+  </div>
+
+  <div class="actions">
+   <button class="btn secondary small" onclick="miUbicacion()">◎ Cerca de mí</button>
+   <button class="btn secondary small" onclick="buscar()">↻ Actualizar zona</button>
+  </div>
+
+  <div class="filters">
+   <div>
+    <label for="conector">Tipo de conector</label>
+    <select id="conector" onchange="filtrar()">
+     <option value="todos">Todos los conectores</option>
+     <option value="ccs">CCS Combo</option>
+     <option value="type2">Tipo 2</option>
+     <option value="chademo">CHAdeMO</option>
+    </select>
+   </div>
+   <div>
+    <label for="potencia">Potencia de carga</label>
+    <select id="potencia" onchange="filtrar()">
+     <option value="todos">Todas las potencias</option>
+     <option value="lenta">Hasta 22 kW</option>
+     <option value="rapida">Más de 22 a menos de 150 kW</option>
+     <option value="ultra">150 kW o más</option>
+    </select>
+   </div>
+  </div>
+ </div>
+
+ <div id="map"></div>
+ <p id="estado" class="status" role="status">Preparando mapa…</p>
+
+ <h3>⚡ Estaciones encontradas</h3>
+ <div id="lista"></div>
+ <p class="muted" style="font-size:12px">Datos de Open Charge Map. Los conectores y potencias pueden estar desactualizados. Comprueba disponibilidad y tarifas con el operador.</p>
 </section>
 
 <section id="favoritos">
-<h2>⭐ Favoritos</h2>
-<div class="card"><div id="listaFavoritos"></div></div>
-<p class="muted">Los favoritos se guardan solo en este navegador y dispositivo.</p>
+ <div class="eyebrow">TUS ESTACIONES</div>
+ <h2 style="margin-top:8px">Mis favoritos</h2>
+ <p class="muted">Tus puntos de recarga guardados.</p>
+ <div id="listaFavoritos"></div>
+ <p class="muted" style="font-size:12px">Se guardan en este navegador, no en una cuenta online.</p>
 </section>
 
 <section id="comparar">
-<h2>⚡ Comparador de precios</h2>
-<div class="card">
-<label class="field" for="precioA">Precio A (€/kWh)</label>
-<input id="precioA" type="number" min="0" step=".01" value="0.39">
-<label class="field" for="precioB">Precio B (€/kWh)</label>
-<input id="precioB" type="number" min="0" step=".01" value="0.49">
-<label class="field" for="energia">Energía a cargar (kWh)</label>
-<input id="energia" type="number" min=".1" step=".1" value="10">
-<div class="actions">
-<button class="btn" onclick="calcular()">Calcular</button>
-</div>
-<div id="resultado" class="result"></div>
-</div>
-<p class="muted">Precios de ejemplo; no son tarifas reales verificadas.</p>
+ <div class="eyebrow">AHORRA EN CADA RECARGA</div>
+ <h2 style="margin-top:8px">Comparar precios</h2>
+ <div class="card">
+  <label for="precioA">Cargador A · €/kWh</label>
+  <input id="precioA" type="number" min="0" step=".01" value="0.39">
+  <br><br>
+  <label for="precioB">Cargador B · €/kWh</label>
+  <input id="precioB" type="number" min="0" step=".01" value="0.49">
+  <br><br>
+  <label for="energia">Energía a cargar · kWh</label>
+  <input id="energia" type="number" min=".1" step=".1" value="10">
+  <div class="actions">
+   <button class="btn full" onclick="calcular()">Calcular ahorro →</button>
+  </div>
+  <div id="resultado" class="result"></div>
+ </div>
+ <p class="muted" style="font-size:12px">Precios de ejemplo editables, no tarifas reales verificadas. No incluye posibles cargos adicionales.</p>
 </section>
 
 <section id="vehiculo">
-<h2>🚗 Mi vehículo</h2>
-<div class="card">
-<h3>Cupra León e-Hybrid</h3>
-<p>Híbrido enchufable (PHEV).</p>
-<p class="muted">Próximamente: selección de vehículos y filtros automáticos de compatibilidad.</p>
-</div>
+ <div class="eyebrow">TU MOVILIDAD</div>
+ <h2 style="margin-top:8px">Mi vehículo</h2>
+ <div class="card">
+  <div class="vehicle-icon">🚘</div>
+  <h3>Cupra León e-Hybrid</h3>
+  <p class="muted">Híbrido enchufable (PHEV)</p>
+  <p>Perfil de vehículo de ejemplo.</p>
+  <p class="muted">Próximamente: configuración de conectores compatibles, autonomía y planificación de rutas.</p>
+ </div>
 </section>
+
+<footer>VOLTIA · Energía en movimiento · 2026</footer>
 </main>
 
 <nav>
-<button class="active" data-page="inicio" onclick="mostrar('inicio')">⌂ Inicio</button>
-<button data-page="mapa" onclick="mostrar('mapa')">📍 Mapa</button>
-<button data-page="favoritos" onclick="mostrar('favoritos')">⭐ Favoritos</button>
-<button data-page="comparar" onclick="mostrar('comparar')">⚡ Comparar</button>
-<button data-page="vehiculo" onclick="mostrar('vehiculo')">🚗 Vehículo</button>
+ <button class="active" data-page="inicio" onclick="mostrar('inicio')"><span class="navicon">⌂</span>Inicio</button>
+ <button data-page="mapa" onclick="mostrar('mapa')"><span class="navicon">⌖</span>Mapa</button>
+ <button data-page="favoritos" onclick="mostrar('favoritos')"><span class="navicon">☆</span>Favoritos</button>
+ <button data-page="comparar" onclick="mostrar('comparar')"><span class="navicon">ϟ</span>Comparar</button>
+ <button data-page="vehiculo" onclick="mostrar('vehiculo')"><span class="navicon">▣</span>Vehículo</button>
 </nav>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const API='https://voltiaapi.mziyani21k.workers.dev';
+const FAV_KEY='voltia-favoritos-v05';
 let mapa,marcadores,primeraCarga=false,solicitud=0,estaciones=[];
-const FAVORITOS='voltia-favoritos-v05';
 
 function mostrar(id){
- document.querySelectorAll('main section').forEach(s=>s.classList.toggle('active',s.id===id));
- document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+ document.querySelectorAll('main section').forEach(s=>
+  s.classList.toggle('active',s.id===id));
+ document.querySelectorAll('nav button').forEach(b=>
+  b.classList.toggle('active',b.dataset.page===id));
  if(id==='mapa'){
   iniciarMapa();
   if(mapa){
@@ -194,19 +300,19 @@ function seguro(v){
  }[c]));
 }
 
-function getFavoritos(){
+function favoritos(){
  try{
-  const x=JSON.parse(localStorage.getItem(FAVORITOS)||'[]');
+  const x=JSON.parse(localStorage.getItem(FAV_KEY)||'[]');
   return Array.isArray(x)?x:[];
  }catch{return []}
 }
 
-function setFavoritos(x){
+function guardarFavoritos(x){
  try{
-  localStorage.setItem(FAVORITOS,JSON.stringify(x));
+  localStorage.setItem(FAV_KEY,JSON.stringify(x));
   return true;
  }catch{
-  alert('El navegador no permite guardar favoritos.');
+  alert('No se pueden guardar favoritos en este navegador.');
   return false;
  }
 }
@@ -216,16 +322,17 @@ function clave(p){
 }
 
 function esFavorito(p){
- return getFavoritos().some(x=>clave(x)===clave(p));
+ return favoritos().some(x=>clave(x)===clave(p));
 }
 
 function cambiarFavorito(id){
- const p=estaciones.find(x=>clave(x)===id)||getFavoritos().find(x=>clave(x)===id);
+ const p=estaciones.find(x=>clave(x)===id)||
+  favoritos().find(x=>clave(x)===id);
  if(!p)return;
- let f=getFavoritos();
+ let f=favoritos();
  f=f.some(x=>clave(x)===id)?
   f.filter(x=>clave(x)!==id):[...f,p];
- if(setFavoritos(f)){
+ if(guardarFavoritos(f)){
   filtrar();
   pintarFavoritos();
  }
@@ -234,10 +341,10 @@ function cambiarFavorito(id){
 function icono(){
  return L.divIcon({
   className:'',
-  html:'<div class="pin">⚡</div>',
-  iconSize:[37,37],
-  iconAnchor:[18,18],
-  popupAnchor:[0,-18]
+  html:'<div class="pin">ϟ</div>',
+  iconSize:[38,38],
+  iconAnchor:[19,19],
+  popupAnchor:[0,-19]
  });
 }
 
@@ -245,30 +352,34 @@ function coincide(p){
  const c=document.getElementById('conector').value;
  const k=document.getElementById('potencia').value;
  const conexiones=Array.isArray(p.connections)?p.connections:[];
+ if(c==='todos'&&k==='todos')return true;
  return conexiones.some(x=>{
   const t=String(x.type||'').toLowerCase();
   const w=Number(x.powerKW);
   const tipo=c==='todos'||
-   (c==='ccs'&&(t.includes('ccs')||t.includes('combo')))||
-   (c==='type2'&&(t.includes('type 2')||t.includes('tipo 2')||t.includes('mennekes')))||
+   (c==='ccs'&&(t.includes('ccs')||t.includes('combo')||
+    t.includes('configuration ff')))||
+   (c==='type2'&&(t.includes('type 2')||t.includes('tipo 2')||
+    t.includes('mennekes')||t.includes('62196-2')))||
    (c==='chademo'&&t.includes('chademo'));
-  const potencia=k==='todos'||
-   (Number.isFinite(w)&&w>0&&(
+  const pot=k==='todos'||
+   (x.powerKW!=null&&Number.isFinite(w)&&w>0&&(
     (k==='lenta'&&w<=22)||
     (k==='rapida'&&w>22&&w<150)||
     (k==='ultra'&&w>=150)
    ));
-  return tipo&&potencia;
- })||(c==='todos'&&k==='todos'&&conexiones.length===0);
+  return tipo&&pot;
+ });
 }
 
 function datosFicha(p){
- const direccion=[p.address,p.town].filter(Boolean).join(', ')||'Dirección no disponible';
+ const direccion=[p.address,p.town].filter(Boolean).join(', ')||
+  'Dirección no disponible';
  const operador=p.operator||'No indicado';
  const conexiones=(p.connections||[]).map(c=>
   String(c.type||'Conector no indicado')+
-  (c.powerKW!=null?' ('+c.powerKW+' kW)':'')
- ).join(', ')||'Conectores no indicados';
+  (c.powerKW!=null?' · '+c.powerKW+' kW':'')
+ ).join(' | ')||'Conectores no indicados';
  const ruta='https://www.google.com/maps/dir/?api=1&destination='+
   encodeURIComponent(p.latitude+','+p.longitude);
  return {direccion,operador,conexiones,ruta};
@@ -276,33 +387,44 @@ function datosFicha(p){
 
 function ficha(p){
  const d=datosFicha(p);
- const el=document.createElement('div');
+ const el=document.createElement('article');
  el.className='station';
- const titulo=document.createElement('strong');
- titulo.textContent='⚡ '+(p.name||'Punto de recarga');
- el.appendChild(titulo);
 
- for(const t of [d.direccion,'Operador: '+d.operador,'Conectores: '+d.conexiones]){
+ const top=document.createElement('div');
+ top.className='station-top';
+ const titulo=document.createElement('h3');
+ titulo.textContent=p.name||'Punto de recarga';
+ top.appendChild(titulo);
+
+ const fav=document.createElement('button');
+ fav.className='star';
+ fav.textContent=esFavorito(p)?'★':'☆';
+ fav.title=esFavorito(p)?'Quitar favorito':'Guardar favorito';
+ fav.setAttribute('aria-label',fav.title);
+ fav.onclick=()=>cambiarFavorito(clave(p));
+ top.appendChild(fav);
+ el.appendChild(top);
+
+ for(const t of [d.direccion,'Operador: '+d.operador]){
   const par=document.createElement('p');
   par.textContent=t;
   el.appendChild(par);
  }
 
+ const plug=document.createElement('div');
+ plug.className='plug';
+ plug.textContent='⚡ '+d.conexiones;
+ el.appendChild(plug);
+
+ const actions=document.createElement('div');
+ actions.className='actions';
  const a=document.createElement('a');
  a.href=d.ruta;
  a.target='_blank';
  a.rel='noopener noreferrer';
- a.textContent='Cómo llegar';
- el.appendChild(a);
-
- const botones=document.createElement('div');
- botones.className='actions';
- const fav=document.createElement('button');
- fav.className='btn secondary';
- fav.textContent=esFavorito(p)?'★ Quitar favorito':'☆ Guardar favorito';
- fav.onclick=()=>cambiarFavorito(clave(p));
- botones.appendChild(fav);
- el.appendChild(botones);
+ a.textContent='↗ Cómo llegar';
+ actions.appendChild(a);
+ el.appendChild(actions);
  return el;
 }
 
@@ -314,8 +436,7 @@ function filtrar(){
  let n=0;
 
  for(const p of estaciones){
-  const lat=Number(p.latitude);
-  const lon=Number(p.longitude);
+  const lat=Number(p.latitude),lon=Number(p.longitude);
   if(!Number.isFinite(lat)||!Number.isFinite(lon)||
      lat < -90||lat > 90||lon < -180||lon > 180||!coincide(p))continue;
 
@@ -334,7 +455,7 @@ function filtrar(){
  if(!n){
   const e=document.createElement('p');
   e.className='empty';
-  e.textContent='No hay estaciones que coincidan con los filtros en los resultados recibidos.';
+  e.textContent='No hay estaciones que coincidan con estos filtros.';
   lista.appendChild(e);
  }
  document.getElementById('estado').textContent=
@@ -371,13 +492,11 @@ async function buscar(){
 
 async function buscarCiudad(){
  const q=document.getElementById('ciudad').value.trim();
- if(q.length<2){
-  alert('Escribe una ciudad o dirección.');
-  return;
- }
- const b=document.getElementById('buscarCiudad');
- b.disabled=true;
+ if(q.length<2){alert('Escribe una ciudad o dirección.');return}
+ const boton=document.getElementById('botonCiudad');
+ boton.disabled=true;
  document.getElementById('estado').textContent='Buscando ubicación…';
+
  try{
   const u='https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=es&q='+
    encodeURIComponent(q);
@@ -391,7 +510,7 @@ async function buscarCiudad(){
   document.getElementById('estado').textContent=
    'No se pudo buscar la ciudad: '+e.message;
  }finally{
-  b.disabled=false;
+  boton.disabled=false;
  }
 }
 
@@ -404,18 +523,17 @@ function miUbicacion(){
  if(!mapa)return;
  const estado=document.getElementById('estado');
  if(!navigator.geolocation){
-  estado.textContent='La geolocalización no está disponible.';
+  estado.textContent='Geolocalización no disponible.';
   return;
  }
- estado.textContent='Obteniendo tu ubicación…';
+ estado.textContent='Obteniendo ubicación…';
  navigator.geolocation.getCurrentPosition(
   p=>{
    mapa.setView([p.coords.latitude,p.coords.longitude],14);
    buscar();
   },
-  ()=>{
-   estado.textContent='No se pudo obtener tu ubicación. Mueve el mapa y pulsa Actualizar zona.';
-  },
+  ()=>estado.textContent=
+   'No se pudo obtener tu ubicación. Mueve el mapa y pulsa Actualizar zona.',
   {timeout:12000}
  );
 }
@@ -423,9 +541,9 @@ function miUbicacion(){
 function pintarFavoritos(){
  const lista=document.getElementById('listaFavoritos');
  lista.replaceChildren();
- const fav=getFavoritos();
+ const fav=favoritos();
  if(!fav.length){
-  lista.textContent='Todavía no has guardado ninguna estación.';
+  lista.innerHTML='<div class="card empty">Todavía no tienes estaciones favoritas.</div>';
   return;
  }
  for(const p of fav)lista.appendChild(ficha(p));
@@ -440,11 +558,13 @@ function calcular(){
   out.textContent='Introduce valores válidos.';
   return;
  }
- const eur=n=>n.toLocaleString('es-ES',{style:'currency',currency:'EUR'});
+ const eur=n=>n.toLocaleString('es-ES',{
+  style:'currency',currency:'EUR'
+ });
  const A=a*k,B=b*k;
  out.textContent='Cargador A: '+eur(A)+
   ' | Cargador B: '+eur(B)+
-  ' | Ahorro: '+eur(Math.abs(A-B))+
+  ' | Ahorro estimado: '+eur(Math.abs(A-B))+
   ' con '+(A<=B?'A':'B');
 }
 </script>
