@@ -8,6 +8,7 @@
 <title>VOLTIA v0.8 · Dark Premium</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 
 <style>
@@ -592,6 +593,9 @@ footer{
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-leaflet@0.1.1/leaflet-maplibre-gl.js"></script>
+
 <script>
 const API = 'https://voltiaapi.mziyani21k.workers.dev';
 const FAV_KEY = 'voltia-favoritos-v05';
@@ -670,23 +674,39 @@ function iniciarMapa() {
   mapa.on('click', () => cerrarFicha());
 }
 
+function aplicarTema() 
 function aplicarTema() {
   if (!mapa) return;
 
-  if (capaBase) mapa.removeLayer(capaBase);
+  if (capaBase) {
+    mapa.removeLayer(capaBase);
+  }
 
-  const estilo = tema === 'dark' ? 'dark_all' : 'voyager';
+  const estilo = tema === 'dark'
+    ? 'dark'
+    : 'liberty';
 
-  capaBase = L.tileLayer(
-    'https://{s}.basemaps.cartocdn.com/' +
-    estilo + '/{z}/{x}/{y}{r}.png',
-    {
-      subdomains: 'abcd',
-      maxZoom: 19,
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
-        '&copy; <a href="https://carto.com/attributions">CARTO</a>'
-    }
+  if (typeof L.maplibreGL === 'function') {
+    capaBase = L.maplibreGL({
+      style: 'https://tiles.openfreemap.org/styles/' + estilo,
+      attribution: '© OpenFreeMap · © OpenMapTiles · © OpenStreetMap'
+    }).addTo(mapa);
+  } else {
+    capaBase = L.tileLayer(
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+      }
+    ).addTo(mapa);
+  }
+
+  document.getElementById('mapLabel').textContent =
+    tema === 'dark'
+      ? '● VOLTIA · DARK MAP'
+      : '● VOLTIA · LIGHT MAP';
+}
+
   );
 
   capaBase.addTo(mapa);
