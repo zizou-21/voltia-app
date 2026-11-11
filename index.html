@@ -5,37 +5,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#101816">
-<title>VOLTIA | Cargadores eléctricos</title>
+<title>VOLTIA | Tu energía, una sola app</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#101816;color:#f5f7f5;font-family:Arial,sans-serif}
-header{background:#17221e;padding:20px}
-h1{color:#b9ff46;margin:0}
-header small{color:#b9c7bd}
-main{max-width:900px;margin:auto;padding:18px 16px 100px}
+body{margin:0;background:#101816;color:#f4f7f4;font-family:Arial,sans-serif}
+header{background:#192820;padding:18px 20px;border-bottom:1px solid #344a38}
+h1{margin:0;color:#b9ff46;font-size:27px}
+small,.muted{color:#b7c6ba}
+small{font-size:11px}
+main{max-width:1000px;margin:auto;padding:20px 15px 100px}
 section{display:none}
 section.active{display:block}
-.card{background:#1b2923;border:1px solid #34483b;border-radius:18px;padding:20px;margin-bottom:15px}
-.hero{background:linear-gradient(130deg,#285035,#19251e)}
-h2{margin-top:0}
-.muted{color:#b8c5bc;font-size:14px;line-height:1.5}
+.card{background:#1c2a23;border:1px solid #36503d;border-radius:17px;padding:20px;margin-bottom:16px}
+.hero{background:linear-gradient(130deg,#27583a,#192820)}
+h2{font-size:22px;margin:0 0 15px}
+h3{margin:0 0 12px}
+p{line-height:1.5}
 button{cursor:pointer}
-.btn{background:#b9ff46;color:#101816;border:0;border-radius:11px;padding:13px 16px;font-weight:bold}
-.secondary{background:#304338;color:white}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-#map{height:55vh;min-height:350px;max-height:650px;border-radius:16px;background:#dfe5df;z-index:0}
-.leaflet-tile-pane{filter:grayscale(.65) brightness(1.08)}
-.charger-pin{background:#b9ff46;border:3px solid #14241a;border-radius:50%;width:37px;height:37px;display:grid;place-items:center;font-size:21px;box-shadow:0 3px 10px #0006}
-.charger-pin span{color:#102014}
-.station{padding:14px 0;border-bottom:1px solid #3c5042}
-.station strong{display:block;margin-bottom:6px}
-.station a,.leaflet-popup-content a{color:#317c24;font-weight:bold}
+.btn{background:#b9ff46;color:#102014;border:0;border-radius:11px;padding:13px 16px;font-weight:bold}
+.secondary{background:#34483b;color:white}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:15px}
+#map{height:55vh;min-height:360px;max-height:650px;border-radius:15px;background:#e4e8e3;z-index:0}
+.leaflet-tile-pane{filter:grayscale(.65) brightness(1.06)}
+.pin{width:40px;height:40px;background:#b9ff46;border:3px solid #193521;border-radius:50%;display:grid;place-items:center;font-size:22px;box-shadow:0 3px 10px #0007}
+.station{border-bottom:1px solid #405244;padding:15px 0}
+.station:last-child{border:0}
+.station strong{display:block;margin-bottom:7px}
+.station p{margin:5px 0;font-size:14px}
+.station a,.leaflet-popup a{color:#297c25;font-weight:bold}
 .station a{color:#b9ff46}
-input{display:block;width:100%;padding:12px;margin:7px 0 15px;background:#101816;border:1px solid #526557;border-radius:10px;color:white;font-size:16px}
-.result{color:#b9ff46;font-weight:bold;margin-top:15px;line-height:1.7}
-nav{position:fixed;bottom:0;left:0;right:0;background:#17221e;border-top:1px solid #33473a;display:flex;z-index:1000}
-nav button{flex:1;border:0;background:none;color:#d1dcd3;padding:17px 3px;font-size:12px}
+input{width:100%;padding:12px;background:#101816;border:1px solid #526658;color:white;border-radius:10px;font-size:16px;margin:8px 0 16px}
+label{display:block}
+.result{color:#b9ff46;font-weight:bold;margin-top:15px;line-height:1.8}
+.status{color:#d3dfd4;font-size:14px;margin:13px 0}
+nav{position:fixed;bottom:0;left:0;right:0;background:#192820;border-top:1px solid #38503e;display:flex;z-index:1000}
+nav button{flex:1;padding:16px 2px;background:none;border:0;color:#c9d5cc;font-size:12px}
 nav button.active{color:#b9ff46;font-weight:bold}
 </style>
 </head>
@@ -44,56 +49,61 @@ nav button.active{color:#b9ff46;font-weight:bold}
 <h1>⚡ VOLTIA</h1>
 <small>TU ENERGÍA. UNA SOLA APP.</small>
 </header>
-
 <main>
 <section id="inicio" class="active">
 <div class="card hero">
-<h2>Encuentra tu próxima recarga</h2>
-<p>Localiza cargadores eléctricos de forma rápida y sencilla.</p>
-<button class="btn" onclick="mostrar('mapa')">Ver cargadores</button>
+<h2>Bienvenido a VOLTIA</h2>
+<p>Encuentra puntos de recarga, consulta conectores y descubre dónde cargar tu vehículo.</p>
+<button class="btn" onclick="mostrar('mapa')">Explorar cargadores</button>
 </div>
 <div class="card">
-<h3>🔋 Ahorra en cada recarga</h3>
-<p class="muted">Compara precios y calcula cuánto pagarías por cargar tu vehículo.</p>
+<h3>⚡ Compara tus recargas</h3>
+<p class="muted">Calcula cuánto pagarías utilizando distintos precios por kWh.</p>
 <button class="btn secondary" onclick="mostrar('comparar')">Comparar precios</button>
+</div>
+<div class="card">
+<h3>🔋 Una sola aplicación</h3>
+<p class="muted">Estamos desarrollando VOLTIA para reunir distintas redes de recarga. La activación y el pago de sesiones llegarán cuando dispongamos de acuerdos e integraciones autorizadas.</p>
 </div>
 </section>
 
 <section id="mapa">
-<h2>📍 Cargadores cercanos</h2>
+<h2>📍 Mapa de cargadores</h2>
 <div class="actions">
 <button class="btn" onclick="miUbicacion()">◎ Cerca de mí</button>
 <button class="btn secondary" onclick="buscar()">↻ Actualizar zona</button>
 </div>
 <div id="map"></div>
-<p id="estado" class="muted" role="status">Preparando mapa…</p>
+<p id="estado" class="status" role="status">Preparando el mapa…</p>
 <div class="card">
-<h3>Puntos encontrados</h3>
-<div id="lista" class="muted">Buscando cargadores…</div>
+<h3>⚡ Puntos encontrados</h3>
+<div id="lista">Cargando estaciones…</div>
 </div>
-<p class="muted">Datos colaborativos de OpenStreetMap. La disponibilidad real puede variar.</p>
+<p class="muted">Fuente: Open Charge Map. Los datos pueden estar incompletos o desactualizados. Comprueba las condiciones del operador antes de cargar.</p>
 </section>
 
 <section id="comparar">
-<h2>⚡ Comparador</h2>
+<h2>⚡ Comparador de precios</h2>
 <div class="card">
-<label for="a">Cargador A (€/kWh)</label>
-<input id="a" type="number" min="0" step=".01" value=".39">
-<label for="b">Cargador B (€/kWh)</label>
-<input id="b" type="number" min="0" step=".01" value=".49">
-<label for="kwh">Energía (kWh)</label>
-<input id="kwh" type="number" min=".1" step=".1" value="10">
-<button class="btn" onclick="calcular()">Calcular ahorro</button>
-<div class="result" id="resultado"></div>
+<label for="precioA">Precio cargador A (€/kWh)</label>
+<input id="precioA" type="number" min="0" step=".01" value="0.39">
+<label for="precioB">Precio cargador B (€/kWh)</label>
+<input id="precioB" type="number" min="0" step=".01" value="0.49">
+<label for="energia">Energía a cargar (kWh)</label>
+<input id="energia" type="number" min=".1" step=".1" value="10">
+<button class="btn" onclick="calcular()">Calcular</button>
+<div id="resultado" class="result"></div>
 </div>
-<p class="muted">Precios de ejemplo. No incluyen cargos adicionales.</p>
+<p class="muted">Precios de ejemplo, editables. No representan tarifas verificadas ni incluyen otros posibles cargos.</p>
 </section>
 
 <section id="vehiculo">
 <h2>🚗 Mi vehículo</h2>
 <div class="card">
 <h3>Cupra León e-Hybrid</h3>
-<p class="muted">Vehículo de ejemplo. Próximamente añadiremos configuración de batería, conectores y autonomía.</p>
+<p class="muted">Vehículo de ejemplo para el desarrollo de VOLTIA.</p>
+<p>Tipo: híbrido enchufable (PHEV)</p>
+<p>Próximamente podrás seleccionar tu vehículo, filtrar conectores compatibles y calcular el coste de cada recarga.</p>
 </div>
 </section>
 </main>
@@ -107,27 +117,23 @@ nav button.active{color:#b9ff46;font-weight:bold}
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-let map,grupo,primeraBusqueda=false;
-let consultaActual=0;
-const endpoints=[
- 'https://overpass.kumi.systems/api/interpreter',
- 'https://overpass.nchc.org.tw/api/interpreter',
- 'https://overpass-api.de/api/interpreter'
-];
+const API="https://voltiaapi.mziyani21k.workers.dev";
+let mapa,marcadores,primeraCarga=false;
+let solicitud=0;
 
 function mostrar(id){
- document.querySelectorAll('main section').forEach(s=>{
-  s.classList.toggle('active',s.id===id);
+ document.querySelectorAll("main section").forEach(s=>{
+  s.classList.toggle("active",s.id===id);
  });
- document.querySelectorAll('nav button').forEach(b=>{
-  b.classList.toggle('active',b.dataset.page===id);
+ document.querySelectorAll("nav button").forEach(b=>{
+  b.classList.toggle("active",b.dataset.page===id);
  });
- if(id==='mapa'){
+ if(id==="mapa"){
   iniciarMapa();
-  if(map){
-   setTimeout(()=>map.invalidateSize(),150);
-   if(!primeraBusqueda){
-    primeraBusqueda=true;
+  if(mapa){
+   setTimeout(()=>mapa.invalidateSize(),150);
+   if(!primeraCarga){
+    primeraCarga=true;
     buscar();
    }
   }
@@ -136,163 +142,172 @@ function mostrar(id){
 }
 
 function iniciarMapa(){
- if(map)return;
- if(typeof L==='undefined'){
-  document.getElementById('estado').textContent='No se ha podido cargar el mapa. Comprueba tu conexión.';
+ if(mapa)return;
+ if(typeof L==="undefined"){
+  document.getElementById("estado").textContent=
+   "No se pudo cargar el mapa. Comprueba la conexión.";
   return;
  }
- map=L.map('map',{zoomControl:false}).setView([41.3874,2.1686],13);
- L.control.zoom({position:'bottomright'}).addTo(map);
- L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
-  attribution:'© OpenStreetMap',
+ mapa=L.map("map",{zoomControl:false})
+  .setView([41.3874,2.1686],13);
+ L.control.zoom({position:"bottomright"}).addTo(mapa);
+ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
+  attribution:"© OpenStreetMap",
   maxZoom:19
- }).addTo(map);
- grupo=L.layerGroup().addTo(map);
+ }).addTo(mapa);
+ marcadores=L.layerGroup().addTo(mapa);
 }
 
-function seguro(valor){
- return String(valor??'').replace(/[&<>"']/g,c=>({
-  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+function textoSeguro(valor){
+ return String(valor??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",
+  '"':"&quot;","'":"&#39;"
  }[c]));
 }
 
 function icono(){
  return L.divIcon({
-  className:'',
-  html:'<div class="charger-pin"><span>⚡</span></div>',
-  iconSize:[37,37],
-  iconAnchor:[18,18],
-  popupAnchor:[0,-20]
+  className:"",
+  html:'<div class="pin">⚡</div>',
+  iconSize:[40,40],
+  iconAnchor:[20,20],
+  popupAnchor:[0,-21]
  });
-}
-
-async function consultar(query){
- for(const endpoint of endpoints){
-  const control=new AbortController();
-  const timeout=setTimeout(()=>control.abort(),13000);
-  try{
-   const respuesta=await fetch(endpoint,{
-    method:'POST',
-    body:new URLSearchParams({data:query}),
-    signal:control.signal
-   });
-   if(!respuesta.ok)throw Error('Servidor ocupado');
-   return await respuesta.json();
-  }catch(error){
-   // Probar el siguiente servidor público
-  }finally{
-   clearTimeout(timeout);
-  }
- }
- throw Error('No se pudo consultar ningún servidor');
 }
 
 async function buscar(){
  iniciarMapa();
- if(!map)return;
- const solicitud=++consultaActual;
- const estado=document.getElementById('estado');
- const lista=document.getElementById('lista');
- const centro=map.getCenter();
- estado.textContent='Buscando cargadores en esta zona…';
- lista.textContent='Cargando datos…';
+ if(!mapa)return;
+ const actual=++solicitud;
+ const estado=document.getElementById("estado");
+ const lista=document.getElementById("lista");
+ const centro=mapa.getCenter();
 
- const query=`[out:json][timeout:18];(
- node["amenity"="charging_station"](around:5000,${centro.lat.toFixed(5)},${centro.lng.toFixed(5)});
- way["amenity"="charging_station"](around:5000,${centro.lat.toFixed(5)},${centro.lng.toFixed(5)});
-);out center 100;`;
+ estado.textContent="Buscando cargadores reales…";
+ lista.textContent="Consultando Open Charge Map…";
+
+ const url=new URL(API+"/chargers");
+ url.searchParams.set("lat",centro.lat.toFixed(6));
+ url.searchParams.set("lon",centro.lng.toFixed(6));
 
  try{
-  const datos=await consultar(query);
-  if(solicitud!==consultaActual)return;
-  grupo.clearLayers();
+  const respuesta=await fetch(url.toString(),{
+   method:"GET",
+   mode:"cors"
+  });
+  const datos=await respuesta.json();
+  if(actual!==solicitud)return;
+
+  if(!respuesta.ok){
+   throw new Error(datos.error||"Error HTTP "+respuesta.status);
+  }
+  if(!Array.isArray(datos.chargers)){
+   throw new Error("Formato de datos incorrecto");
+  }
+
+  marcadores.clearLayers();
   lista.replaceChildren();
+  let encontrados=0;
 
-  const puntos=(datos.elements||[]).filter(p=>{
-   return Number.isFinite(p.lat??p.center?.lat)&&
-          Number.isFinite(p.lon??p.center?.lon);
-  }).slice(0,100);
+  for(const p of datos.chargers){
+   const lat=Number(p.latitude);
+   const lon=Number(p.longitude);
+   if(!Number.isFinite(lat)||!Number.isFinite(lon)||
+      lat < -90||lat > 90||lon < -180||lon > 180)continue;
 
-  for(const p of puntos){
-   const lat=p.lat??p.center.lat;
-   const lon=p.lon??p.center.lon;
-   const t=p.tags||{};
-   const nombre=t.name||t.operator||'Cargador eléctrico';
-   const direccion=[
-    t['addr:street'],t['addr:housenumber'],t['addr:city']
-   ].filter(Boolean).join(' ')||'Dirección no indicada';
-   const operador=t.operator||'No indicado';
-   const conectores=[
-    ['socket:type2','Tipo 2'],
-    ['socket:ccs','CCS'],
-    ['socket:chademo','CHAdeMO']
-   ].filter(x=>t[x[0]]&&t[x[0]]!=='no'&&t[x[0]]!=='0')
-    .map(x=>x[1]).join(', ')||'No indicados';
-   const ruta='https://www.google.com/maps/dir/?api=1&destination='+
-     encodeURIComponent(lat+','+lon);
+   encontrados++;
+   const nombre=p.name||"Punto de recarga";
+   const direccion=[p.address,p.town].filter(Boolean).join(", ")
+      ||"Dirección no disponible";
+   const operador=p.operator||"No indicado";
+   const conexiones=(p.connections||[]).map(c=>{
+    const potencia=c.powerKW!=null?
+      " ("+c.powerKW+" kW)":"";
+    return (c.type||"Conector no indicado")+potencia;
+   }).join(", ")||"Conectores no indicados";
 
-   const contenido=`<strong>${seguro(nombre)}</strong><br>
-    ${seguro(direccion)}<br>
-    Conectores: ${seguro(conectores)}<br>
-    <a href="${ruta}" target="_blank" rel="noopener noreferrer">Cómo llegar</a>`;
+   const ruta="https://www.google.com/maps/dir/?api=1&destination="+
+    encodeURIComponent(lat+","+lon);
+
+   const contenido=
+    "<strong>"+textoSeguro(nombre)+"</strong><br>"+
+    textoSeguro(direccion)+"<br>"+
+    "Operador: "+textoSeguro(operador)+"<br>"+
+    "Conectores: "+textoSeguro(conexiones)+"<br>"+
+    '<a target="_blank" rel="noopener noreferrer" href="'+ruta+'">Cómo llegar</a>';
 
    L.marker([lat,lon],{icon:icono()})
-    .bindPopup(contenido).addTo(grupo);
+    .bindPopup(contenido)
+    .addTo(marcadores);
 
-   const ficha=document.createElement('div');
-   ficha.className='station';
-   ficha.innerHTML=`<strong>⚡ ${seguro(nombre)}</strong>
-    <div>${seguro(direccion)}</div>
-    <div>Operador: ${seguro(operador)}</div>
-    <div>Conectores: ${seguro(conectores)}</div>
-    <a href="${ruta}" target="_blank" rel="noopener noreferrer">Cómo llegar</a>`;
+   const ficha=document.createElement("div");
+   ficha.className="station";
+   ficha.innerHTML=
+    "<strong>⚡ "+textoSeguro(nombre)+"</strong>"+
+    "<p>"+textoSeguro(direccion)+"</p>"+
+    "<p>Operador: "+textoSeguro(operador)+"</p>"+
+    "<p>Conectores: "+textoSeguro(conexiones)+"</p>"+
+    '<a target="_blank" rel="noopener noreferrer" href="'+ruta+'">Cómo llegar</a>';
    lista.appendChild(ficha);
   }
 
-  if(!puntos.length){
-   lista.textContent='No se encontraron puntos registrados. Prueba otra zona.';
+  if(!encontrados){
+   lista.textContent="No hay cargadores registrados en esta zona.";
   }
-  estado.textContent=puntos.length+' cargadores encontrados (máximo 100).';
+  estado.textContent=encontrados+" cargadores encontrados.";
+
  }catch(error){
-  if(solicitud!==consultaActual)return;
-  estado.textContent='No se pudieron cargar los puntos. Los servidores públicos pueden estar ocupados.';
-  lista.textContent='Prueba de nuevo en unos minutos.';
+  if(actual!==solicitud)return;
+  estado.textContent="No se pudieron cargar los cargadores.";
+  lista.textContent="Detalle: "+error.message+
+   ". Comprueba la conexión con VOLTIA API.";
  }
 }
 
 function miUbicacion(){
  iniciarMapa();
- if(!map)return;
- const estado=document.getElementById('estado');
+ if(!mapa)return;
+ const estado=document.getElementById("estado");
  if(!navigator.geolocation){
-  estado.textContent='Tu navegador no permite obtener la ubicación.';
+  estado.textContent="La geolocalización no está disponible.";
   return;
  }
- estado.textContent='Obteniendo ubicación…';
+ estado.textContent="Obteniendo tu ubicación…";
  navigator.geolocation.getCurrentPosition(
-  p=>{
-   map.setView([p.coords.latitude,p.coords.longitude],14);
+  pos=>{
+   mapa.setView([
+    pos.coords.latitude,
+    pos.coords.longitude
+   ],14);
    buscar();
   },
   ()=>{
-   estado.textContent='No se pudo obtener tu ubicación. Puedes mover el mapa manualmente.';
+   estado.textContent=
+    "No se pudo obtener tu ubicación. Puedes mover el mapa y pulsar Actualizar zona.";
   },
-  {timeout:12000,enableHighAccuracy:false}
+  {enableHighAccuracy:false,timeout:12000}
  );
 }
 
 function calcular(){
- const campos=['a','b','kwh'].map(id=>document.getElementById(id).value.trim());
- const salida=document.getElementById('resultado');
- const [a,b,k]=campos.map(Number);
- if(campos.some(v=>v==='')||![a,b,k].every(Number.isFinite)||a<0||b<0||k<=0){
-  salida.textContent='Introduce valores válidos.';
+ const ids=["precioA","precioB","energia"];
+ const valores=ids.map(id=>document.getElementById(id).value.trim());
+ const [a,b,k]=valores.map(Number);
+ const salida=document.getElementById("resultado");
+ if(valores.some(v=>v==="")||
+    ![a,b,k].every(Number.isFinite)||
+    a<0||b<0||k<=0){
+  salida.textContent="Introduce valores válidos.";
   return;
  }
- const euros=n=>n.toLocaleString('es-ES',{style:'currency',currency:'EUR'});
+ const euros=n=>n.toLocaleString("es-ES",{
+  style:"currency",currency:"EUR"
+ });
  const totalA=a*k,totalB=b*k;
- salida.textContent=`A: ${euros(totalA)} | B: ${euros(totalB)}
- | Ahorro con ${totalA<=totalB?'A':'B'}: ${euros(Math.abs(totalA-totalB))}`;
+ salida.textContent="Cargador A: "+euros(totalA)+
+  " | Cargador B: "+euros(totalB)+
+  " | Ahorro: "+euros(Math.abs(totalA-totalB))+
+  " con "+(totalA<=totalB?"A":"B");
 }
 </script>
 </body>
