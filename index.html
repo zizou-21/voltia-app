@@ -5,9 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1410">
-<title>VOLTIA v0.9 · Dark Premium</title>
+<title>VOLTIA v1.0 · Dark Premium</title>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
-
 <style>
 :root{
  --bg:#0b1410;--panel:#17261d;--panel2:#213629;
@@ -15,33 +14,24 @@
  --muted:#a8bbab;--blue:#67c9ff;--orange:#ffc16c;
 }
 *{box-sizing:border-box}
-body{
- margin:0;background:var(--bg);color:var(--text);
- font:15px system-ui,-apple-system,"Segoe UI",sans-serif;
-}
+body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,"Segoe UI",sans-serif}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.55}
 a{color:var(--lime)}
 header{
  height:75px;background:#101d16;border-bottom:1px solid var(--line);
- display:flex;align-items:center;justify-content:space-between;
- padding:0 18px;
+ display:flex;align-items:center;justify-content:space-between;padding:0 18px
 }
 .brand{display:flex;align-items:center;gap:12px}
 .logo{
  width:44px;height:44px;display:grid;place-items:center;
  background:var(--lime);color:#152719;border-radius:14px;
- font-size:28px;font-weight:900;
+ font-size:28px;font-weight:900
 }
-.brand h1{
- color:var(--lime);font-size:23px;letter-spacing:1px;margin:0;
-}
+.brand h1{color:var(--lime);font-size:23px;letter-spacing:1px;margin:0}
 .brand small{font-size:10px;letter-spacing:1px;color:var(--muted)}
-.version{
- font-size:12px;border:1px solid var(--line);
- padding:7px 12px;border-radius:25px;color:var(--muted);
-}
+.version{font-size:12px;border:1px solid var(--line);padding:7px 12px;border-radius:25px;color:var(--muted)}
 main{max-width:1120px;padding:22px 15px 125px;margin:auto}
 section{display:none}
 section.active{display:block}
@@ -49,39 +39,21 @@ h2{font-size:26px;margin:2px 0 10px}
 h3{font-size:17px;margin:0 0 10px}
 p{line-height:1.5}
 .muted{color:var(--muted)}
-.eyebrow{
- color:var(--lime);font-size:11px;font-weight:800;
- letter-spacing:1.7px;margin-bottom:10px;
-}
-.card{
- background:var(--panel);border:1px solid var(--line);
- border-radius:20px;padding:20px;margin-bottom:15px;
-}
-.hero{
- background:linear-gradient(135deg,#2a553a,var(--panel) 80%);
- padding:32px 23px;
-}
+.eyebrow{color:var(--lime);font-size:11px;font-weight:800;letter-spacing:1.7px;margin-bottom:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:15px}
+.hero{background:linear-gradient(135deg,#2a553a,var(--panel) 80%);padding:32px 23px}
 .hero h2{font-size:36px;max-width:450px;line-height:1.14}
 .hero p{color:#dce8da}
 .btn{
  display:inline-flex;align-items:center;justify-content:center;
- background:var(--lime);color:#14251b;border:0;
- border-radius:12px;padding:12px 16px;
- text-decoration:none;font-weight:800;
+ background:var(--lime);color:#14251b;border:0;border-radius:12px;
+ padding:12px 16px;text-decoration:none;font-weight:800
 }
-.btn.secondary{
- background:var(--panel2);border:1px solid var(--line);
- color:var(--text);
-}
+.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}
 .btn.small{padding:9px 12px;font-size:13px}
 .btn.full{width:100%}
-.actions{
- display:flex;align-items:center;gap:9px;
- flex-wrap:wrap;margin-top:13px;
-}
-.grid2{
- display:grid;grid-template-columns:1fr 1fr;gap:12px;
-}
+.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:13px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .feature{min-height:135px}
 .feature .emoji{font-size:28px;color:var(--lime)}
 .feature h3{font-size:15px;margin-top:12px}
@@ -90,150 +62,93 @@ label{display:block;font-size:13px;margin:0 0 7px}
 input,select,textarea{
  width:100%;min-width:0;background:#0d1b13;
  border:1px solid #416249;border-radius:12px;
- padding:12px;color:white;font-size:15px;
+ padding:12px;color:white;font-size:15px
 }
 input:focus,select:focus,textarea:focus,button:focus-visible{
- outline:2px solid var(--lime);outline-offset:2px;
+ outline:2px solid var(--lime);outline-offset:2px
 }
 .search{display:flex;gap:9px}
 .search input{flex:1}
-.filters{
- display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
- gap:11px;margin-top:15px;
-}
-.map-wrap{
- position:relative;border-radius:20px;overflow:hidden;
- border:1px solid #3a5341;background:#17251d;
-}
+.filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:15px}
+.map-wrap{position:relative;border-radius:20px;overflow:hidden;border:1px solid #3a5341;background:#17251d}
 #map{height:59vh;min-height:440px;max-height:710px}
 .map-badge{
  position:absolute;left:13px;top:14px;z-index:5;
  padding:9px 12px;border:1px solid #486a50;
- border-radius:12px;background:#102019e8;font-size:12px;
- pointer-events:none;
+ border-radius:12px;background:#102019e8;font-size:12px;pointer-events:none
 }
-.map-tools{
- position:absolute;right:14px;top:14px;z-index:5;
- display:flex;flex-direction:column;gap:8px;
-}
+.map-tools{position:absolute;right:14px;top:14px;z-index:5;display:flex;flex-direction:column;gap:8px}
 .map-tool{
- border:1px solid #57705d;border-radius:12px;
- width:44px;height:44px;background:#12241be8;
- color:var(--lime);font-size:22px;
- box-shadow:0 4px 14px #0008;
+ border:1px solid #57705d;border-radius:12px;width:44px;height:44px;
+ background:#12241be8;color:var(--lime);font-size:22px;
+ box-shadow:0 4px 14px #0008
 }
 .sheet{
- position:absolute;left:12px;right:12px;bottom:13px;
- z-index:6;background:#13241df7;
- border:1px solid #56765d;border-radius:18px;
+ position:absolute;left:12px;right:12px;bottom:13px;z-index:6;
+ background:#13241df7;border:1px solid #56765d;border-radius:18px;
  padding:17px;box-shadow:0 10px 30px #000b;
- max-height:65%;overflow:auto;
- backdrop-filter:blur(12px);
+ max-height:65%;overflow:auto;backdrop-filter:blur(12px)
 }
 .sheet[hidden]{display:none}
-.sheet-head,.station-head{
- display:flex;align-items:flex-start;
- justify-content:space-between;gap:10px;
-}
-.close{
- width:36px;height:36px;border:0;
- border-radius:10px;background:#2b4434;
- color:white;font-size:22px;
-}
-.sheet p,.station p{
- font-size:13px;color:var(--muted);margin:7px 0;
-}
+.sheet-head,.station-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.close{width:36px;height:36px;border:0;border-radius:10px;background:#2b4434;color:white;font-size:22px}
+.sheet p,.station p{font-size:13px;color:var(--muted);margin:7px 0}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
-.chip{
- border-radius:8px;padding:6px 9px;
- background:#2b4535;color:#dcffc5;font-size:12px;
-}
-.legend{
- display:flex;gap:13px;flex-wrap:wrap;
- color:var(--muted);font-size:12px;padding:14px 2px;
-}
-.dot{
- display:inline-block;width:10px;height:10px;
- border-radius:50%;margin-right:5px;
-}
-.status{
- color:var(--muted);font-size:13px;
- line-height:1.5;margin:13px 0;
-}
+.chip{border-radius:8px;padding:6px 9px;background:#2b4535;color:#dcffc5;font-size:12px}
+.legend{display:flex;gap:13px;flex-wrap:wrap;color:var(--muted);font-size:12px;padding:14px 2px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.status{color:var(--muted);font-size:13px;line-height:1.5;margin:13px 0}
 .station-list{display:grid;gap:12px}
-.station{
- border-radius:17px;background:#1b2d22;
- border:1px solid var(--line);padding:17px;
-}
+.station{border-radius:17px;background:#1b2d22;border:1px solid var(--line);padding:17px}
 .station h3{font-size:16px}
 .star{
- background:#2c4835;border:0;border-radius:12px;
- width:40px;height:40px;flex-shrink:0;
- color:var(--lime);font-size:23px;
+ background:#2c4835;border:0;border-radius:12px;width:40px;height:40px;
+ flex-shrink:0;color:var(--lime);font-size:23px
 }
 .empty{color:var(--muted);padding:15px;font-size:14px}
-.result{
- color:var(--lime);font-weight:750;line-height:1.9;
-}
-.price-box{
- border:1px solid #48654b;background:#112519;
- border-radius:12px;padding:12px;margin-top:12px;
-}
-.price-big{
- font-size:22px;font-weight:850;color:var(--lime);
-}
-.price-head{
- display:flex;align-items:center;
- justify-content:space-between;gap:7px;flex-wrap:wrap;
-}
+.result{color:var(--lime);font-weight:750;line-height:1.9}
+.price-box{border:1px solid #48654b;background:#112519;border-radius:12px;padding:12px;margin-top:12px}
+.price-big{font-size:22px;font-weight:850;color:var(--lime)}
+.price-head{display:flex;align-items:center;justify-content:space-between;gap:7px;flex-wrap:wrap}
 .mini{font-size:11px;color:var(--muted)}
-.hint{
- font-size:12px;line-height:1.45;color:#c6d4c9;
-}
+.hint{font-size:12px;line-height:1.45;color:#c6d4c9}
 .tag{
- display:inline-block;background:#334635;
- color:#e1f4da;border-radius:7px;
- padding:4px 7px;font-size:11px;font-weight:700;
+ display:inline-block;background:#334635;color:#e1f4da;border-radius:7px;
+ padding:5px 8px;font-size:11px;font-weight:700
 }
 .tag.personal{background:#30445a;color:#c8e7ff}
 .tag.missing{background:#3a403b;color:#bdcabe}
-.ref-row{
- border-top:1px solid var(--line);padding:13px 0;
-}
+.ref-row{border-top:1px solid var(--line);padding:13px 0}
 .ref-row:first-child{border-top:0}
 .ref-row p{margin:6px 0}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi .card{text-align:center;padding:15px}
+.kpi strong{display:block;color:var(--lime);font-size:25px}
+.kpi small{color:var(--muted)}
 nav{
  position:fixed;left:0;right:0;bottom:0;z-index:20;
- background:#132119;border-top:1px solid var(--line);
- display:flex;
- padding:7px 3px calc(8px + env(safe-area-inset-bottom));
+ background:#132119;border-top:1px solid var(--line);display:flex;
+ padding:7px 3px calc(8px + env(safe-area-inset-bottom))
 }
 nav button{
  flex:1;background:none;border:0;color:#a0afa1;
  display:flex;flex-direction:column;align-items:center;
- gap:5px;padding:7px 0;font-size:10px;
+ gap:5px;padding:7px 0;font-size:10px
 }
 nav .nav-icon{font-size:22px}
 nav button.active{font-weight:800;color:var(--lime)}
-footer{
- text-align:center;color:var(--muted);
- font-size:11px;padding:18px;
-}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 dialog{
- color:var(--text);background:#16261c;
- border:1px solid #55705a;border-radius:20px;
- padding:22px;width:min(92vw,450px);
- max-height:85vh;overflow:auto;
+ color:var(--text);background:#16261c;border:1px solid #55705a;
+ border-radius:20px;padding:22px;width:min(92vw,450px);
+ max-height:85vh;overflow:auto
 }
 dialog::backdrop{background:#000b}
-.dialog-form{display:grid;gap:11px}
 @media(min-width:800px){
  .hero{padding:40px}
  .hero h2{font-size:44px}
  .station-list{grid-template-columns:1fr 1fr}
- .sheet{
-  right:auto;width:min(445px,calc(100% - 24px));
- }
+ .sheet{right:auto;width:min(445px,calc(100% - 24px))}
 }
 @media(max-width:400px){
  .filters{grid-template-columns:1fr}
@@ -244,53 +159,56 @@ dialog::backdrop{background:#000b}
 
 <body>
 <header>
-<div class="brand">
- <div class="logo">ϟ</div>
- <div>
-  <h1>VOLTIA</h1>
-  <small>ENERGÍA EN MOVIMIENTO</small>
+ <div class="brand">
+  <div class="logo">ϟ</div>
+  <div>
+   <h1>VOLTIA</h1>
+   <small>ENERGÍA EN MOVIMIENTO</small>
+  </div>
  </div>
-</div>
-<span class="version">v0.9</span>
+ <span class="version">v1.0</span>
 </header>
 
 <main>
 
 <section id="inicio" class="active">
  <div class="card hero">
-  <div class="eyebrow">ENCUENTRA TU PRÓXIMA RECARGA</div>
-  <h2>Recarga con más información.</h2>
-  <p>Mapa Dark Premium, cargadores reales y tarifas publicadas de referencia cuando existan.</p>
-  <button class="btn" onclick="mostrar('mapa')">
-   Explorar cargadores →
-  </button>
+  <div class="eyebrow">VOLTIA 1.0 · MULTIOPERADOR</div>
+  <h2>Encuentra tu recarga. Compara mejor.</h2>
+  <p>Explora cargadores reales y consulta tarifas publicadas de referencia de varios operadores.</p>
+  <button class="btn" onclick="mostrar('mapa')">Explorar cargadores →</button>
  </div>
 
  <div class="grid2">
   <div class="card feature">
    <div class="emoji">⌖</div>
-   <h3>Mapa inteligente</h3>
+   <h3>Mapa Dark Premium</h3>
    <p>Estaciones reales y fichas flotantes.</p>
   </div>
   <div class="card feature">
    <div class="emoji">€</div>
-   <h3>Comparar costes</h3>
-   <p>Tarifas publicadas y precios anotados por ti.</p>
-   <button class="btn secondary small" onclick="mostrar('comparar')">Comparar</button>
+   <h3>Comparación</h3>
+   <p>Referencias oficiales y tus propias tarifas anotadas.</p>
+   <button class="btn secondary small" onclick="mostrar('comparar')">Ver tarifas</button>
   </div>
  </div>
 
  <div class="card">
-  <h3>Datos transparentes</h3>
-  <p class="muted">Mostramos referencias oficiales y diferenciamos las tarifas orientativas de las anotaciones personales.</p>
+  <h3>Más operadores</h3>
+  <p class="muted">Endesa, Wenea, Repsol y Zunder: referencias de tarifas publicadas. Iberdrola y Tesla: consulta de precios en sus canales oficiales.</p>
   <button class="btn full" onclick="mostrar('mapa')">Abrir mapa →</button>
+ </div>
+
+ <div class="card">
+  <h3>Transparencia de precios</h3>
+  <p class="muted">Las tarifas generales son orientativas. El importe definitivo puede depender del cargador, el horario, la ubicación o una suscripción.</p>
  </div>
 </section>
 
 <section id="mapa">
  <div class="eyebrow">EXPLORAR</div>
  <h2>Mapa de cargadores</h2>
- <p class="muted">Datos de Open Charge Map. Comprueba el precio definitivo en la aplicación del operador.</p>
+ <p class="muted">Datos de estaciones de Open Charge Map.</p>
 
  <div class="card">
   <label for="ciudad">Buscar ciudad o dirección</label>
@@ -331,7 +249,7 @@ dialog::backdrop{background:#000b}
    </div>
 
    <div>
-    <label for="horario">Horario</label>
+    <label for="horario">Horario · Endesa</label>
     <select id="horario" onchange="actualizarPrecios()">
      <option value="dia">Día · 07:00–22:59</option>
      <option value="noche">Noche · 23:00–06:59</option>
@@ -342,13 +260,13 @@ dialog::backdrop{background:#000b}
     <label for="orden">Ordenar estaciones</label>
     <select id="orden" onchange="pintarLista()">
      <option value="original">Orden recibido</option>
-     <option value="precio">Menor precio de referencia</option>
+     <option value="precio">Menor precio orientativo</option>
      <option value="nombre">Nombre A–Z</option>
     </select>
    </div>
 
    <div>
-    <label for="soloPrecio">Filtro de precio</label>
+    <label for="soloPrecio">Filtro de precios</label>
     <select id="soloPrecio" onchange="filtrar()">
      <option value="todos">Todas las estaciones</option>
      <option value="conocidos">Con precio o referencia</option>
@@ -360,13 +278,11 @@ dialog::backdrop{background:#000b}
  <div class="map-wrap">
   <div id="map"></div>
   <div class="map-badge" id="etiquetaMapa">● VOLTIA · DARK MAP</div>
-
   <div class="map-tools">
    <button class="map-tool" onclick="miUbicacion()" title="Mi ubicación">⌖</button>
    <button class="map-tool" onclick="cambiarTema()" title="Cambiar tema">◐</button>
    <button class="map-tool" onclick="buscar()" title="Actualizar zona">↻</button>
   </div>
-
   <div class="sheet" id="fichaFlotante" hidden></div>
  </div>
 
@@ -378,12 +294,22 @@ dialog::backdrop{background:#000b}
  </div>
 
  <p id="estado" class="status" role="status">Abre el mapa para cargar las estaciones.</p>
+
+ <div class="kpi">
+  <div class="card">
+   <strong id="totalVisibles">—</strong>
+   <small>Estaciones visibles</small>
+  </div>
+  <div class="card">
+   <strong id="totalReferencias">—</strong>
+   <small>Con precio o referencia</small>
+  </div>
+ </div>
+
  <h3>⚡ Estaciones encontradas</h3>
  <div id="lista" class="station-list"></div>
-
  <p class="muted" style="font-size:12px">
-  Los datos pueden estar incompletos o desactualizados.
-  VOLTIA todavía no dispone de precios en tiempo real por cargador.
+  VOLTIA no garantiza tarifas ni disponibilidad en tiempo real. Confirma el importe y las condiciones antes de iniciar una recarga.
  </p>
 </section>
 
@@ -395,54 +321,30 @@ dialog::backdrop{background:#000b}
 </section>
 
 <section id="comparar">
- <div class="eyebrow">PRECIOS Y FUENTES</div>
+ <div class="eyebrow">TARIFAS Y AHORRO</div>
  <h2>Comparador de recargas</h2>
 
  <div class="card">
-  <h3>Comparar dos tarifas</h3>
-
+  <h3>Comparar dos precios</h3>
   <label for="precioA">Tarifa A · €/kWh</label>
   <input id="precioA" type="number" min="0" step="0.01" value="0.39">
-
   <br><br>
   <label for="precioB">Tarifa B · €/kWh</label>
   <input id="precioB" type="number" min="0" step="0.01" value="0.49">
-
   <br><br>
   <label for="energia">Energía · kWh</label>
   <input id="energia" type="number" min="0.1" step="0.1" value="10">
-
   <div class="actions">
    <button class="btn full" onclick="calcular()">Calcular ahorro</button>
   </div>
   <div class="result" id="resultado"></div>
-  <p class="muted" style="font-size:12px">Los valores iniciales son ejemplos editables, no tarifas verificadas.</p>
+  <p class="mini">Los valores iniciales son ejemplos editables.</p>
  </div>
 
  <div class="card">
-  <h3>Tarifas publicadas de referencia</h3>
-
-  <div class="ref-row">
-   <b>Endesa · e-Flex</b>
-   <p class="muted">Referencia de tarifa publicada para Península y Baleares, según potencia y horario.</p>
-   <p class="muted">AC menos de 50 kW: 0,35 € día / 0,30 € noche.</p>
-   <p class="muted">DC menos de 100 kW: 0,43 € día / 0,37 € noche.</p>
-   <p class="muted">DC desde 100 kW: 0,55 € día / 0,47 € noche.</p>
-   <p class="mini">Valores de referencia del tarifario 2026, con IVA incluido. No garantizan el precio de cada estación.</p>
-   <a href="https://www.endesaxway.com/content/dam/endesa-x-way/pdfs/TarifarioEE_2026_05.15.pdf" target="_blank" rel="noopener noreferrer">Consultar tarifario Endesa ↗</a>
-  </div>
-
-  <div class="ref-row">
-   <b>Iberdrola</b>
-   <p class="muted">Los precios pueden variar por punto. VOLTIA no asigna automáticamente una tarifa a sus estaciones.</p>
-   <a href="https://www.iberdrola.es/movilidad-electrica/productos/puntos-de-recarga" target="_blank" rel="noopener noreferrer">Consultar Iberdrola ↗</a>
-  </div>
-
-  <div class="ref-row">
-   <b>REVE · Red Eléctrica</b>
-   <p class="muted">La integración de datos de precios por estación está pendiente de acceso autorizado a su API.</p>
-   <a href="https://www.mapareve.es/" target="_blank" rel="noopener noreferrer">Consultar REVE ↗</a>
-  </div>
+  <h3>Fuentes oficiales de referencia</h3>
+  <div id="tarifasOperadores"></div>
+  <p class="hint">Consulta siempre la tarifa actual del punto. Las referencias se han incorporado manualmente al código y no se actualizan automáticamente.</p>
  </div>
 </section>
 
@@ -452,48 +354,38 @@ dialog::backdrop{background:#000b}
  <div class="card">
   <h3>🚗 Cupra León e-Hybrid</h3>
   <p>Híbrido enchufable (PHEV).</p>
-  <p class="muted">Perfil de ejemplo. Próximamente: configuración de vehículos y filtros de compatibilidad.</p>
+  <p class="muted">Perfil de ejemplo. Próximamente: selección de vehículo, conectores compatibles y planificación de rutas.</p>
  </div>
 </section>
 
-<footer>VOLTIA v0.9 · Energía en movimiento</footer>
+<footer>VOLTIA v1.0 · Energía en movimiento</footer>
 </main>
 
 <nav>
- <button class="active" data-page="inicio" onclick="mostrar('inicio')">
-  <span class="nav-icon">⌂</span>Inicio
- </button>
- <button data-page="mapa" onclick="mostrar('mapa')">
-  <span class="nav-icon">⌖</span>Mapa
- </button>
- <button data-page="favoritos" onclick="mostrar('favoritos')">
-  <span class="nav-icon">☆</span>Favoritos
- </button>
- <button data-page="comparar" onclick="mostrar('comparar')">
-  <span class="nav-icon">€</span>Comparar
- </button>
- <button data-page="vehiculo" onclick="mostrar('vehiculo')">
-  <span class="nav-icon">▣</span>Vehículo
- </button>
+ <button class="active" data-page="inicio" onclick="mostrar('inicio')"><span class="nav-icon">⌂</span>Inicio</button>
+ <button data-page="mapa" onclick="mostrar('mapa')"><span class="nav-icon">⌖</span>Mapa</button>
+ <button data-page="favoritos" onclick="mostrar('favoritos')"><span class="nav-icon">☆</span>Favoritos</button>
+ <button data-page="comparar" onclick="mostrar('comparar')"><span class="nav-icon">€</span>Comparar</button>
+ <button data-page="vehiculo" onclick="mostrar('vehiculo')"><span class="nav-icon">▣</span>Vehículo</button>
 </nav>
 
 <dialog id="precioDialog">
  <form id="formPrecio">
-  <h3>Anotar tarifa de una estación</h3>
+  <h3>Anotar precio de una estación</h3>
   <p class="muted" id="dialogEstacion"></p>
 
   <label for="manualPrecio">Precio consultado · €/kWh</label>
   <input id="manualPrecio" type="number" min="0" max="10" step="0.001" required>
-
   <br><br>
+
   <label for="manualFuente">Enlace a la fuente (opcional)</label>
   <input id="manualFuente" type="url" placeholder="https://...">
-
   <br><br>
+
   <label for="manualNota">Condiciones de la tarifa</label>
   <textarea id="manualNota" rows="2" maxlength="250"></textarea>
 
-  <p class="hint">Este precio será una anotación personal guardada en tu navegador, no una tarifa verificada por VOLTIA.</p>
+  <p class="hint">Este precio se guardará solamente en tu navegador. No estará verificado por VOLTIA.</p>
 
   <div class="actions">
    <button class="btn" type="submit">Guardar</button>
@@ -504,24 +396,49 @@ dialog::backdrop{background:#000b}
 </dialog>
 
 <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
-
 <script>
 const API='https://voltiaapi.mziyani21k.workers.dev';
 const FAV_KEY='voltia-favoritos-v05';
 const PRICE_KEY='voltia-precios-personales-v09';
-const ENDESA='https://www.endesaxway.com/content/dam/endesa-x-way/pdfs/TarifarioEE_2026_05.15.pdf';
 const $=id=>document.getElementById(id);
 
-let mapa=null;
-let estaciones=[];
-let primeraCarga=false;
-let tema='dark';
-let seleccion=null;
-let peticion=0;
-let edicion=null;
+const FUENTES={
+ endesa:{
+  nombre:'Endesa',
+  url:'https://www.endesaxway.com/content/dam/endesa-x-way/pdfs/TarifarioEE_2026_04.01.pdf',
+  resumen:'e-Flex · tarifas por corriente, potencia y horario. Pueden existir excepciones.'
+ },
+ wenea:{
+  nombre:'Wenea',
+  url:'https://wenea.com/tarifas-de-carga/',
+  resumen:'AC 0,39 € · DC 0,49 € · HPC 0,59 €/kWh. Estaciones asociadas pueden variar.'
+ },
+ repsol:{
+  nombre:'Repsol',
+  url:'https://www.repsol.es/particulares/vehiculos/movilidad-electrica/pago-por-recarga/',
+  resumen:'Normal 0,36 € · rápida desde 0,48 € · ultrarrápida 0,56 €/kWh.'
+ },
+ zunder:{
+  nombre:'Zunder',
+  url:'https://www.zunder.com/usuario-ve/',
+  resumen:'Referencia AC hasta 50 kW: 0,42 €; más de 50 kW: 0,59 €/kWh. Hay excepciones.'
+ },
+ iberdrola:{
+  nombre:'Iberdrola',
+  url:'https://www.iberdrola.es/movilidad-electrica',
+  resumen:'Consulta el precio concreto en la aplicación de recarga de Iberdrola.'
+ },
+ tesla:{
+  nombre:'Tesla',
+  url:'https://www.tesla.com/es_es/support/charging/supercharging-other-evs',
+  resumen:'Precio variable por Supercargador, horario y condiciones. Consulta la app Tesla.'
+ }
+};
 
+let mapa=null,estaciones=[],primeraCarga=false;
+let tema='dark',seleccion=null,peticion=0,edicion=null;
 const porId=new Map();
-const vacio={type:'FeatureCollection',features:[]};
+const geoVacio={type:'FeatureCollection',features:[]};
 
 const euro=n=>n.toLocaleString('es-ES',{
  style:'currency',currency:'EUR'
@@ -531,7 +448,7 @@ const estilo=t=>
  'https://tiles.openfreemap.org/styles/'+
  (t==='dark'?'dark':'liberty');
 
-/* NAVEGACION */
+/* NAVEGACIÓN */
 function mostrar(id){
  document.querySelectorAll('main section').forEach(s=>
   s.classList.toggle('active',s.id===id)
@@ -543,7 +460,7 @@ function mostrar(id){
  if(id==='mapa'){
   iniciarMapa();
   if(mapa){
-   setTimeout(()=>mapa.resize(),150);
+   setTimeout(()=>mapa.resize(),160);
    if(!primeraCarga){
     primeraCarga=true;
     buscar();
@@ -556,7 +473,7 @@ function mostrar(id){
  window.scrollTo(0,0);
 }
 
-/* MAPA */
+/* MAPA DARK PREMIUM */
 function iniciarMapa(){
  if(mapa)return;
 
@@ -595,10 +512,14 @@ function iniciarMapa(){
   }
 
   if(f.layer.id==='agrupaciones'){
-   mapa.easeTo({
-    center:f.geometry.coordinates,
-    zoom:Math.min(mapa.getZoom()+2,17),
-    duration:450
+   const fuente=mapa.getSource('cargadores');
+   const clusterId=f.properties.cluster_id;
+   fuente.getClusterExpansionZoom(clusterId,(err,zoom)=>{
+    mapa.easeTo({
+     center:f.geometry.coordinates,
+     zoom:err?Math.min(mapa.getZoom()+2,17):zoom,
+     duration:450
+    });
    });
    cerrarFicha();
    return;
@@ -622,12 +543,12 @@ function iniciarMapa(){
 }
 
 function construirCapas(){
- if(!mapa)return;
+ if(!mapa||mapa.getLayer('estaciones'))return;
 
  if(!mapa.getSource('cargadores')){
   mapa.addSource('cargadores',{
    type:'geojson',
-   data:vacio,
+   data:geoVacio,
    cluster:true,
    clusterMaxZoom:14,
    clusterRadius:55
@@ -706,12 +627,10 @@ function construirCapas(){
 
 function cambiarTema(){
  if(!mapa)return;
- tema=tema==='dark'?'light':'dark';
 
+ tema=tema==='dark'?'light':'dark';
  $('etiquetaMapa').textContent=
-  tema==='dark'
-   ?'● VOLTIA · DARK MAP'
-   :'● VOLTIA · LIGHT MAP';
+  tema==='dark'?'● VOLTIA · DARK MAP':'● VOLTIA · LIGHT MAP';
 
  mapa.setStyle(estilo(tema));
 }
@@ -778,7 +697,7 @@ function favorito(id){
  }
 }
 
-/* ESTACIONES */
+/* ESTACIONES Y FILTROS */
 function conexiones(p){
  return Array.isArray(p.connections)?p.connections:[];
 }
@@ -809,17 +728,13 @@ function tipoCoincide(t,c){
  if(c==='todos')return true;
  t=String(t||'').toLowerCase();
 
- if(c==='ccs'){
-  return t.includes('ccs')||
-   t.includes('combo')||
-   t.includes('configuration ff');
- }
- if(c==='type2'){
-  return t.includes('type 2')||
-   t.includes('tipo 2')||
-   t.includes('mennekes')||
-   t.includes('62196-2');
- }
+ if(c==='ccs')return t.includes('ccs')||
+  t.includes('combo')||t.includes('configuration ff');
+
+ if(c==='type2')return t.includes('type 2')||
+  t.includes('tipo 2')||t.includes('mennekes')||
+  t.includes('62196-2');
+
  if(c==='chademo')return t.includes('chademo');
  return false;
 }
@@ -861,9 +776,21 @@ function detalle(p){
  };
 }
 
-/* TARIFAS DE REFERENCIA */
-function claseCorriente(c){
- const t=String(c.type||'').toLowerCase();
+function identificarOperador(p){
+ const t=String(p.operator||'').toLowerCase();
+
+ if(t.includes('endesa'))return 'endesa';
+ if(t.includes('wenea'))return 'wenea';
+ if(t.includes('repsol'))return 'repsol';
+ if(t.includes('zunder')||t.includes('easycharger'))return 'zunder';
+ if(t.includes('iberdrola'))return 'iberdrola';
+ if(t.includes('tesla'))return 'tesla';
+
+ return null;
+}
+
+function corriente(x){
+ const t=String(x.type||'').toLowerCase();
 
  if(t.includes('ccs')||t.includes('combo')||
     t.includes('chademo'))return 'DC';
@@ -875,81 +802,112 @@ function claseCorriente(c){
  return null;
 }
 
+/* TARIFAS PUBLICADAS DE REFERENCIA */
+function referenciaConexion(op,x){
+ const w=x.powerKW==null?NaN:Number(x.powerKW);
+ const c=corriente(x);
+ const noche=$('horario').value==='noche';
+
+ if(!Number.isFinite(w)||w<=0||!c)return null;
+
+ let precio=null,descripcion='',minimo=false;
+
+ if(op==='endesa'){
+  if(c==='AC'&&w<50){
+   precio=noche?0.30:0.35;
+   descripcion='Endesa e-Flex · AC menor de 50 kW';
+  }else if(c==='DC'&&w<100){
+   precio=noche?0.37:0.43;
+   descripcion='Endesa e-Flex · DC menor de 100 kW';
+  }else if(c==='DC'&&w>=100){
+   precio=noche?0.47:0.55;
+   descripcion='Endesa e-Flex · DC desde 100 kW';
+  }
+ }
+
+ if(op==='wenea'){
+  if(c==='AC'&&w>=7.4&&w<=22){
+   precio=0.39;descripcion='Wenea · AC 7,4–22 kW';
+  }else if(c==='DC'&&w>=50&&w<=150){
+   precio=0.49;descripcion='Wenea · DC 50–150 kW';
+  }else if(c==='DC'&&w>=151&&w<=400){
+   precio=0.59;descripcion='Wenea · HPC 151–400 kW';
+  }
+ }
+
+ if(op==='repsol'){
+  if(c==='AC'&&w<=22){
+   precio=0.36;descripcion='Repsol · carga normal';
+  }else if(c==='DC'&&w>22&&w<150){
+   precio=0.48;descripcion='Repsol · carga rápida';
+   minimo=true;
+  }else if(c==='DC'&&w>=150){
+   precio=0.56;descripcion='Repsol · ultrarrápida';
+  }
+ }
+
+ if(op==='zunder'){
+  if(c==='AC'&&w<=50){
+   precio=0.42;descripcion='Zunder · AC hasta 50 kW';
+  }else if(c==='DC'&&w>50){
+   precio=0.59;descripcion='Zunder · rápida desde más de 50 kW';
+  }
+ }
+
+ if(precio===null)return null;
+ return {precio,descripcion,minimo};
+}
+
 function precioEstacion(p){
  const personal=preciosPersonales()[clave(p)];
 
- if(personal&&Number.isFinite(Number(personal.precio))&&
-    personal.precio!==''&&Number(personal.precio)>=0){
+ if(personal&&personal.precio!==''&&
+    Number.isFinite(Number(personal.precio))&&
+    Number(personal.precio)>=0){
   return {
    precio:Number(personal.precio),
    tipo:'personal',
-   titulo:'Anotado por ti',
-   detalle:personal.nota||'Tarifa personal sin verificar',
-   fuente:personal.fuente||'',
-   desde:false
+   titulo:'Precio anotado por ti',
+   descripcion:personal.nota||'Anotación personal',
+   url:personal.fuente||'',
+   minimo:false
   };
  }
 
- const operador=String(p.operator||'').toLowerCase();
-
- if(!operador.includes('endesa'))return null;
-
- const lat=Number(p.latitude),lon=Number(p.longitude);
-
- // Referencia limitada a la zona aproximada
- // de Península y Baleares.
- if(!Number.isFinite(lat)||!Number.isFinite(lon)||
-    lat<35.95||lat>44.1||lon< -9.5||lon>4.6)return null;
-
- const noche=$('horario').value==='noche';
- const candidatos=[];
-
- for(const c of conexionesFiltradas(p)){
-  const corriente=claseCorriente(c);
-  const kw=c.powerKW==null?NaN:Number(c.powerKW);
-
-  if(!Number.isFinite(kw)||kw<=0)continue;
-
-  if(corriente==='AC'&&kw<50){
-   candidatos.push({
-    precio:noche?0.30:0.35,
-    detalle:'AC · menos de 50 kW'
-   });
-  }
-
-  if(corriente==='DC'&&kw<100){
-   candidatos.push({
-    precio:noche?0.37:0.43,
-    detalle:'DC · menos de 100 kW'
-   });
-  }
-
-  if(corriente==='DC'&&kw>=100){
-   candidatos.push({
-    precio:noche?0.47:0.55,
-    detalle:'DC · desde 100 kW'
-   });
-  }
+ const op=identificarOperador(p);
+ if(!op||!['endesa','wenea','repsol','zunder'].includes(op)){
+  return null;
  }
 
- if(!candidatos.length)return null;
+ // Referencias para estaciones de España peninsular
+ // y Baleares; no se infiere la tarifa de otros países.
+ const lat=Number(p.latitude),lon=Number(p.longitude);
+ if(!Number.isFinite(lat)||!Number.isFinite(lon)||
+    lat<35.9||lat>44.1||lon< -9.5||lon>4.6)return null;
 
- candidatos.sort((a,b)=>a.precio-b.precio);
- const mejor=candidatos[0];
+ const posibilidades=conexionesFiltradas(p)
+  .map(x=>referenciaConexion(op,x))
+  .filter(Boolean);
+
+ if(!posibilidades.length)return null;
+
+ posibilidades.sort((a,b)=>a.precio-b.precio);
+ const r=posibilidades[0];
 
  return {
-  precio:mejor.precio,
+  precio:r.precio,
   tipo:'referencia',
-  titulo:'Endesa e-Flex · referencia de tarifario',
-  detalle:mejor.detalle+' · '+(noche?'Noche':'Día'),
-  fuente:ENDESA,
-  desde:candidatos.length>1
+  titulo:FUENTES[op].nombre+' · tarifa publicada de referencia',
+  descripcion:r.descripcion,
+  url:FUENTES[op].url,
+  minimo:r.minimo||posibilidades.length>1
  };
 }
 
 function cantidad(){
- const k=Number($('energiaEstimacion').value);
- return Number.isFinite(k)&&k>0&&k<=300?k:null;
+ const v=$('energiaEstimacion').value.trim();
+ const k=Number(v);
+ return v!==''&&Number.isFinite(k)&&k>0&&k<=300?k:null;
 }
 
 function vistas(){
@@ -979,7 +937,7 @@ function ordenadas(){
  return a;
 }
 
-/* FICHAS */
+/* TARJETAS */
 function par(el,texto){
  const p=document.createElement('p');
  p.textContent=texto;
@@ -993,8 +951,7 @@ function chips(p,el){
  for(const x of lista){
   const chip=document.createElement('span');
   chip.className='chip';
-  chip.textContent=
-   (x.type||'Conector no indicado')+
+  chip.textContent=(x.type||'Conector no indicado')+
    (x.powerKW!=null?' · '+x.powerKW+' kW':'');
   el.appendChild(chip);
  }
@@ -1010,7 +967,20 @@ function crearPrecio(p,el){
   tag.className='tag missing';
   tag.textContent='Precio no disponible';
   box.appendChild(tag);
-  par(box,'Consulta el precio actual en la aplicación del operador.');
+
+  const op=identificarOperador(p);
+
+  par(box,'No hay una tarifa aplicable confirmada para este punto.');
+
+  if(op&&FUENTES[op]){
+   const a=document.createElement('a');
+   a.href=FUENTES[op].url;
+   a.target='_blank';
+   a.rel='noopener noreferrer';
+   a.textContent='Consultar '+FUENTES[op].nombre+' ↗';
+   box.appendChild(a);
+  }
+
   el.appendChild(box);
   return;
  }
@@ -1021,7 +991,7 @@ function crearPrecio(p,el){
  const precio=document.createElement('div');
  precio.className='price-big';
  precio.textContent=
-  (tarifa.desde?'Desde ':'')+
+  (tarifa.minimo?'Desde ':'')+
   tarifa.precio.toLocaleString('es-ES',{
    minimumFractionDigits:2,
    maximumFractionDigits:3
@@ -1032,24 +1002,22 @@ function crearPrecio(p,el){
  const tag=document.createElement('span');
  tag.className=tarifa.tipo==='personal'?'tag personal':'tag';
  tag.textContent=tarifa.tipo==='personal'
-  ?'Guardado por ti':'Referencia publicada';
-
+  ?'Anotado por ti':'Referencia oficial';
  head.appendChild(tag);
  box.appendChild(head);
 
  par(box,tarifa.titulo);
- par(box,tarifa.detalle);
+ par(box,tarifa.descripcion);
 
  const k=cantidad();
-
  if(k!==null){
-  par(box,'Coste estimado para '+k+' kWh: '+
+  par(box,'Coste orientativo de '+k+' kWh: '+
    euro(k*tarifa.precio));
  }
 
- if(tarifa.fuente){
+ if(tarifa.url){
   const a=document.createElement('a');
-  a.href=tarifa.fuente;
+  a.href=tarifa.url;
   a.target='_blank';
   a.rel='noopener noreferrer';
   a.textContent='Consultar fuente ↗';
@@ -1057,8 +1025,8 @@ function crearPrecio(p,el){
  }
 
  par(box,tarifa.tipo==='personal'
-  ?'Precio anotado personalmente, no verificado.'
-  :'Tarifa orientativa: confirma el precio en la app del operador.');
+  ?'Anotación personal; VOLTIA no ha verificado este precio.'
+  :'Tarifa general publicada, no precio confirmado de este punto. Puede haber excepciones y cargos adicionales.');
 
  el.appendChild(box);
 }
@@ -1078,11 +1046,8 @@ function crearFicha(p,flotante=false){
  const b=document.createElement('button');
  b.className=flotante?'close':'star';
  b.textContent=flotante?'×':esFavorito(p)?'★':'☆';
-
- b.onclick=flotante
-  ?cerrarFicha
-  :()=>favorito(clave(p));
-
+ b.setAttribute('aria-label',flotante?'Cerrar ficha':'Cambiar favorito');
+ b.onclick=flotante?cerrarFicha:()=>favorito(clave(p));
  head.appendChild(b);
  el.appendChild(head);
 
@@ -1111,15 +1076,10 @@ function crearFicha(p,flotante=false){
 
  const fav=document.createElement('button');
  fav.className='btn secondary small';
-
  fav.textContent=flotante
   ?(esFavorito(p)?'★ Quitar favorito':'☆ Guardar favorito')
   :'Ver en mapa';
-
- fav.onclick=flotante
-  ?()=>favorito(clave(p))
-  :()=>verEnMapa(p);
-
+ fav.onclick=flotante?()=>favorito(clave(p)):()=>verEnMapa(p);
  actions.appendChild(fav);
 
  const editar=document.createElement('button');
@@ -1157,7 +1117,7 @@ function verEnMapa(p){
  abrirFicha(p);
 }
 
-/* MAPA Y FILTROS */
+/* MARCADORES */
 function geojson(){
  porId.clear();
 
@@ -1170,15 +1130,9 @@ function geojson(){
     type:'Feature',
     geometry:{
      type:'Point',
-     coordinates:[
-      Number(p.longitude),
-      Number(p.latitude)
-     ]
+     coordinates:[Number(p.longitude),Number(p.latitude)]
     },
-    properties:{
-     sid:clave(p),
-     tipo:tipo(p)
-    }
+    properties:{sid:clave(p),tipo:tipo(p)}
    };
   })
  };
@@ -1196,9 +1150,7 @@ function pintarLista(){
 
  const vs=ordenadas();
 
- for(const p of vs){
-  lista.appendChild(crearFicha(p));
- }
+ for(const p of vs)lista.appendChild(crearFicha(p));
 
  if(!vs.length){
   const e=document.createElement('p');
@@ -1210,6 +1162,10 @@ function pintarLista(){
  $('estado').textContent=
   vs.length+' estaciones visibles de '+
   estaciones.length+' recibidas.';
+
+ $('totalVisibles').textContent=vs.length;
+ $('totalReferencias').textContent=
+  vs.filter(p=>precioEstacion(p)!==null).length;
 }
 
 function filtrar(){
@@ -1224,15 +1180,15 @@ function actualizarPrecios(){
  if(seleccion)abrirFicha(seleccion);
 }
 
-/* CONEXION A CLOUDflare */
+/* CARGADORES REALES */
 async function buscar(){
  iniciarMapa();
  if(!mapa)return;
 
  const actual=++peticion;
  const c=mapa.getCenter();
-
  const url=new URL(API+'/chargers');
+
  url.searchParams.set('lat',c.lat.toFixed(6));
  url.searchParams.set('lon',c.lng.toFixed(6));
 
@@ -1259,16 +1215,16 @@ async function buscar(){
 
  }catch(e){
   if(actual!==peticion)return;
-
   $('estado').textContent=
    'Error al cargar cargadores: '+e.message+
    '. Pulsa Actualizar zona para reintentar.';
  }
 }
 
-/* BUSCADOR */
+/* BUSCAR CIUDAD */
 async function buscarCiudad(){
  const q=$('ciudad').value.trim();
+
  if(q.length<2){
   alert('Escribe una ciudad o dirección.');
   return;
@@ -1277,8 +1233,8 @@ async function buscarCiudad(){
  iniciarMapa();
  if(!mapa)return;
 
- const boton=$('botonCiudad');
- boton.disabled=true;
+ const b=$('botonCiudad');
+ b.disabled=true;
  $('estado').textContent='Buscando ubicación…';
 
  try{
@@ -1288,13 +1244,13 @@ async function buscarCiudad(){
    {headers:{Accept:'application/json'}}
   );
 
-  if(!r.ok)throw Error('Servicio no disponible');
+  if(!r.ok)throw Error('Servicio de búsqueda no disponible');
 
-  const a=await r.json();
-  if(!a.length)throw Error('No se encontró esa ubicación');
+  const xs=await r.json();
+  if(!xs.length)throw Error('No se encontró esa ubicación');
 
   mapa.jumpTo({
-   center:[Number(a[0].lon),Number(a[0].lat)],
+   center:[Number(xs[0].lon),Number(xs[0].lat)],
    zoom:13
   });
 
@@ -1303,7 +1259,7 @@ async function buscarCiudad(){
  }catch(e){
   $('estado').textContent='Error de búsqueda: '+e.message;
  }finally{
-  boton.disabled=false;
+  b.disabled=false;
  }
 }
 
@@ -1311,7 +1267,7 @@ $('ciudad').addEventListener('keydown',e=>{
  if(e.key==='Enter')buscarCiudad();
 });
 
-/* GEOLOCALIZACION */
+/* MI UBICACIÓN */
 function miUbicacion(){
  iniciarMapa();
  if(!mapa)return;
@@ -1333,7 +1289,7 @@ function miUbicacion(){
   },
   ()=>{
    $('estado').textContent=
-    'No se pudo obtener la ubicación.';
+    'No se pudo obtener la ubicación. Busca una ciudad.';
   },
   {timeout:12000}
  );
@@ -1354,9 +1310,7 @@ function pintarFavoritos(){
   return;
  }
 
- for(const p of f){
-  lista.appendChild(crearFicha(p));
- }
+ for(const p of f)lista.appendChild(crearFicha(p));
 }
 
 /* COMPARADOR */
@@ -1374,14 +1328,37 @@ function calcular(){
   return;
  }
 
- const A=a*k;
- const B=b*k;
+ const A=a*k,B=b*k;
 
  out.textContent=
   'Tarifa A: '+euro(A)+
   ' | Tarifa B: '+euro(B)+
   ' | Ahorro estimado: '+euro(Math.abs(A-B))+
   ' con '+(A<=B?'A':'B');
+}
+
+function pintarFuentes(){
+ const cont=$('tarifasOperadores');
+ cont.replaceChildren();
+
+ for(const op of Object.values(FUENTES)){
+  const div=document.createElement('div');
+  div.className='ref-row';
+
+  const h=document.createElement('h3');
+  h.textContent=op.nombre;
+  div.appendChild(h);
+
+  par(div,op.resumen);
+
+  const a=document.createElement('a');
+  a.href=op.url;
+  a.target='_blank';
+  a.rel='noopener noreferrer';
+  a.textContent='Consultar fuente oficial ↗';
+  div.appendChild(a);
+  cont.appendChild(div);
+ }
 }
 
 /* PRECIOS PERSONALES */
@@ -1432,10 +1409,9 @@ $('formPrecio').addEventListener('submit',e=>{
   }
  }
 
- const id=edicion;
  const xs=preciosPersonales();
 
- xs[id]={
+ xs[edicion]={
   precio,fuente,nota,
   fecha:new Date().toISOString().slice(0,10)
  };
@@ -1459,6 +1435,8 @@ function borrarTarifa(){
   pintarFavoritos();
  }
 }
+
+pintarFuentes();
 </script>
 </body>
 </html>
