@@ -3,82 +3,46 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1410">
-<meta name="description" content="VOLTIA: mapa de cargadores eléctricos, tarifas, compatibilidad y rutas.">
-<title>VOLTIA v1.1 · Dark Premium</title>
-
+<meta name="description" content="VOLTIA: cargadores eléctricos, compatibilidad, precios y rutas.">
+<title>VOLTIA v1.2 · Dark Premium</title>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
-
 <style>
 :root{
- --bg:#0b1410;
- --panel:#17261d;
- --panel2:#213629;
- --line:#35503d;
- --lime:#b9ff46;
- --text:#f2f7f1;
- --muted:#a8bbab;
- --blue:#67c9ff;
- --orange:#ffc16c;
- --red:#ff9292;
+ --bg:#0b1410;--panel:#17261d;--panel2:#213629;
+ --line:#35503d;--lime:#b9ff46;--text:#f2f7f1;
+ --muted:#a8bbab;--blue:#67c9ff;--orange:#ffc16c;
+ --red:#ff9292
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
- margin:0;
- background:var(--bg);
- color:var(--text);
- font:15px system-ui,-apple-system,"Segoe UI",sans-serif;
+ margin:0;background:var(--bg);color:var(--text);
+ font:15px system-ui,-apple-system,"Segoe UI",sans-serif
 }
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.5;cursor:not-allowed}
 a{color:var(--lime)}
 header{
- height:75px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 18px;
- background:#101d16;
- border-bottom:1px solid var(--line);
+ height:75px;display:flex;align-items:center;
+ justify-content:space-between;padding:0 18px;
+ background:#101d16;border-bottom:1px solid var(--line)
 }
 .brand{display:flex;align-items:center;gap:12px}
 .logo{
- width:44px;
- height:44px;
- display:grid;
- place-items:center;
- border-radius:14px;
- background:var(--lime);
- color:#14251b;
- font-size:29px;
- font-weight:900;
+ width:44px;height:44px;display:grid;place-items:center;
+ border-radius:14px;background:var(--lime);color:#14251b;
+ font-size:29px;font-weight:900
 }
-.brand h1{
- margin:0;
- color:var(--lime);
- font-size:23px;
- letter-spacing:1px;
-}
-.brand small{
- font-size:10px;
- color:var(--muted);
- letter-spacing:1px;
-}
+.brand h1{margin:0;color:var(--lime);font-size:23px;letter-spacing:1px}
+.brand small{font-size:10px;color:var(--muted);letter-spacing:1px}
 .version{
- font-size:12px;
- border:1px solid var(--line);
- padding:7px 11px;
- border-radius:30px;
- color:var(--muted);
+ font-size:12px;border:1px solid var(--line);
+ padding:7px 11px;border-radius:30px;color:var(--muted)
 }
-main{
- max-width:1120px;
- padding:22px 15px 130px;
- margin:auto;
-}
+main{max-width:1120px;padding:22px 15px 130px;margin:auto}
 section{display:none}
 section.active{display:block}
 h2{font-size:26px;margin:2px 0 12px}
@@ -86,446 +50,253 @@ h3{font-size:17px;margin:0 0 11px}
 p{line-height:1.5}
 .muted{color:var(--muted)}
 .eyebrow{
- color:var(--lime);
- font-size:11px;
- font-weight:800;
- letter-spacing:1.7px;
- margin-bottom:10px;
+ color:var(--lime);font-size:11px;font-weight:800;
+ letter-spacing:1.7px;margin-bottom:10px
 }
 .card{
- background:var(--panel);
- border:1px solid var(--line);
- border-radius:20px;
- padding:20px;
- margin-bottom:15px;
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:20px;padding:20px;margin-bottom:15px
 }
 .hero{
  background:linear-gradient(135deg,#2a553a,var(--panel) 80%);
- padding:32px 23px;
+ padding:32px 23px
 }
-.hero h2{
- font-size:35px;
- max-width:470px;
- line-height:1.14;
-}
+.hero h2{font-size:35px;max-width:470px;line-height:1.14}
 .hero p{color:#dce8da}
 .btn{
- display:inline-flex;
- align-items:center;
- justify-content:center;
- text-align:center;
- background:var(--lime);
- color:#14251b;
- border:0;
- border-radius:12px;
- padding:12px 16px;
- text-decoration:none;
- font-weight:800;
+ display:inline-flex;align-items:center;justify-content:center;
+ text-align:center;background:var(--lime);color:#14251b;
+ border:0;border-radius:12px;padding:12px 16px;
+ text-decoration:none;font-weight:800
 }
 .btn.secondary{
- background:var(--panel2);
- border:1px solid var(--line);
- color:var(--text);
+ background:var(--panel2);border:1px solid var(--line);color:var(--text)
 }
 .btn.small{padding:9px 12px;font-size:13px}
 .btn.full{width:100%}
 .actions{
- display:flex;
- align-items:center;
- gap:9px;
- flex-wrap:wrap;
- margin-top:13px;
+ display:flex;align-items:center;gap:9px;
+ flex-wrap:wrap;margin-top:13px
 }
 .grid2{
- display:grid;
- grid-template-columns:repeat(2,minmax(0,1fr));
- gap:12px;
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px
 }
 .feature{min-height:145px}
-.feature .emoji{
- font-size:27px;
- color:var(--lime);
-}
-.feature h3{
- font-size:15px;
- margin-top:13px;
-}
-.feature p{
- font-size:12px;
- color:var(--muted);
-}
-label{
- display:block;
- font-size:13px;
- margin:0 0 7px;
-}
+.feature .emoji{font-size:27px;color:var(--lime)}
+.feature h3{font-size:15px;margin-top:13px}
+.feature p{font-size:12px;color:var(--muted)}
+label{display:block;font-size:13px;margin:0 0 7px}
 input,select,textarea{
- width:100%;
- min-width:0;
- background:#0d1b13;
- border:1px solid #416249;
- border-radius:12px;
- padding:12px;
- color:white;
- font-size:15px;
+ width:100%;min-width:0;background:#0d1b13;
+ border:1px solid #416249;border-radius:12px;
+ padding:12px;color:white;font-size:15px
 }
-input:focus,
-select:focus,
-textarea:focus,
-button:focus-visible{
- outline:2px solid var(--lime);
- outline-offset:2px;
+input:focus,select:focus,textarea:focus,button:focus-visible{
+ outline:2px solid var(--lime);outline-offset:2px
 }
-input[type=checkbox]{
- width:19px;
- height:19px;
- accent-color:var(--lime);
-}
+input[type=checkbox]{width:19px;height:19px;accent-color:var(--lime)}
 .checkrow{
- display:flex;
- gap:12px;
- align-items:center;
- padding:13px;
- background:#112319;
- border:1px solid var(--line);
- border-radius:12px;
+ display:flex;gap:12px;align-items:center;
+ padding:13px;background:#112319;
+ border:1px solid var(--line);border-radius:12px
 }
 .checkrow label{margin:0;flex:1}
 .search{display:flex;gap:9px}
 .search input{flex:1}
 .filters{
- display:grid;
- grid-template-columns:repeat(2,minmax(0,1fr));
- gap:11px;
- margin-top:15px;
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:11px;margin-top:15px
 }
 .map-wrap{
- position:relative;
- border-radius:20px;
- overflow:hidden;
- border:1px solid #3a5341;
- background:#17251d;
+ position:relative;border-radius:20px;overflow:hidden;
+ border:1px solid #3a5341;background:#17251d
 }
-#map{
- height:59vh;
- min-height:440px;
- max-height:710px;
-}
+#map{height:59vh;min-height:440px;max-height:710px}
+#routeMap{height:440px;width:100%;background:#102019}
 .map-badge{
- position:absolute;
- left:13px;
- top:14px;
- z-index:5;
- padding:9px 12px;
- border:1px solid #486a50;
- border-radius:12px;
- background:#102019e8;
- font-size:12px;
- pointer-events:none;
+ position:absolute;left:13px;top:14px;z-index:5;
+ padding:9px 12px;border:1px solid #486a50;
+ border-radius:12px;background:#102019e8;
+ font-size:12px;pointer-events:none
 }
 .map-tools{
- position:absolute;
- right:14px;
- top:14px;
- z-index:5;
- display:flex;
- flex-direction:column;
- gap:8px;
+ position:absolute;right:14px;top:14px;z-index:5;
+ display:flex;flex-direction:column;gap:8px
 }
 .map-tool{
- border:1px solid #57705d;
- border-radius:12px;
- width:44px;
- height:44px;
- background:#12241be8;
- color:var(--lime);
- font-size:22px;
- box-shadow:0 4px 14px #0008;
+ border:1px solid #57705d;border-radius:12px;
+ width:44px;height:44px;background:#12241be8;
+ color:var(--lime);font-size:22px;box-shadow:0 4px 14px #0008
 }
 .sheet{
- position:absolute;
- left:12px;
- right:12px;
- bottom:13px;
- z-index:6;
- background:#13241df7;
- border:1px solid #56765d;
- border-radius:18px;
- padding:17px;
- box-shadow:0 10px 30px #000b;
- max-height:67%;
- overflow:auto;
- backdrop-filter:blur(12px);
+ position:absolute;left:12px;right:12px;bottom:13px;
+ z-index:6;background:#13241df7;
+ border:1px solid #56765d;border-radius:18px;
+ padding:17px;box-shadow:0 10px 30px #000b;
+ max-height:67%;overflow:auto;backdrop-filter:blur(12px)
 }
 .sheet[hidden]{display:none}
-.sheet-head,
-.station-head{
- display:flex;
- align-items:flex-start;
- justify-content:space-between;
- gap:10px;
+.sheet-head,.station-head{
+ display:flex;align-items:flex-start;justify-content:space-between;gap:10px
 }
 .close{
- width:36px;
- height:36px;
- border:0;
- border-radius:10px;
- background:#2b4434;
- color:white;
- font-size:22px;
- flex-shrink:0;
+ width:36px;height:36px;border:0;border-radius:10px;
+ background:#2b4434;color:white;font-size:22px;flex-shrink:0
 }
-.sheet p,
-.station p{
- font-size:13px;
- color:var(--muted);
- margin:7px 0;
+.sheet p,.station p{
+ font-size:13px;color:var(--muted);margin:7px 0
 }
-.chips{
- display:flex;
- gap:6px;
- flex-wrap:wrap;
- margin:12px 0;
-}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
 .chip{
- border-radius:8px;
- padding:6px 9px;
- background:#2b4535;
- color:#dcffc5;
- font-size:12px;
+ border-radius:8px;padding:6px 9px;
+ background:#2b4535;color:#dcffc5;font-size:12px
 }
 .legend{
- display:flex;
- gap:13px;
- flex-wrap:wrap;
- color:var(--muted);
- font-size:12px;
- padding:14px 2px;
+ display:flex;gap:13px;flex-wrap:wrap;color:var(--muted);
+ font-size:12px;padding:14px 2px
 }
 .dot{
- display:inline-block;
- width:10px;
- height:10px;
- border-radius:50%;
- margin-right:5px;
+ display:inline-block;width:10px;height:10px;
+ border-radius:50%;margin-right:5px
 }
 .status{
- color:var(--muted);
- font-size:13px;
- line-height:1.5;
- margin:13px 0;
+ color:var(--muted);font-size:13px;
+ line-height:1.5;margin:13px 0
 }
 .station-list{display:grid;gap:12px}
 .station{
- border-radius:17px;
- background:#1b2d22;
- border:1px solid var(--line);
- padding:17px;
+ border-radius:17px;background:#1b2d22;
+ border:1px solid var(--line);padding:17px
 }
 .station h3{font-size:16px}
 .star{
- background:#2c4835;
- border:0;
- border-radius:12px;
- width:40px;
- height:40px;
- flex-shrink:0;
- color:var(--lime);
- font-size:23px;
+ background:#2c4835;border:0;border-radius:12px;
+ width:40px;height:40px;flex-shrink:0;
+ color:var(--lime);font-size:23px
 }
-.empty{
- color:var(--muted);
- padding:15px;
- font-size:14px;
-}
-.result{
- color:var(--lime);
- font-weight:750;
- line-height:1.9;
-}
+.empty{color:var(--muted);padding:15px;font-size:14px}
+.result{color:var(--lime);font-weight:750;line-height:1.9}
 .price-box{
- border:1px solid #48654b;
- background:#112519;
- border-radius:12px;
- padding:12px;
- margin-top:12px;
+ border:1px solid #48654b;background:#112519;
+ border-radius:12px;padding:12px;margin-top:12px
 }
-.price-big{
- font-size:22px;
- font-weight:850;
- color:var(--lime);
-}
+.price-big{font-size:22px;font-weight:850;color:var(--lime)}
 .price-head{
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:7px;
- flex-wrap:wrap;
+ display:flex;align-items:center;justify-content:space-between;
+ gap:7px;flex-wrap:wrap
 }
 .mini{font-size:11px;color:var(--muted)}
-.hint{
- font-size:12px;
- line-height:1.45;
- color:#c6d4c9;
-}
+.hint{font-size:12px;line-height:1.45;color:#c6d4c9}
 .tag{
- display:inline-block;
- background:#334635;
- color:#e1f4da;
- border-radius:7px;
- padding:5px 8px;
- font-size:11px;
- font-weight:700;
+ display:inline-block;background:#334635;color:#e1f4da;
+ border-radius:7px;padding:5px 8px;font-size:11px;font-weight:700
 }
-.tag.personal{
- background:#30445a;
- color:#c8e7ff;
-}
-.tag.missing{
- background:#3a403b;
- color:#bdcabe;
-}
-.tag.ok{
- background:#24482a;
- color:#b9ff9f;
-}
-.tag.bad{
- background:#4b2929;
- color:#ffbbbb;
-}
-.tag.unknown{
- background:#4b422b;
- color:#ffdfa0;
-}
+.tag.personal{background:#30445a;color:#c8e7ff}
+.tag.missing{background:#3a403b;color:#bdcabe}
+.tag.ok{background:#24482a;color:#b9ff9f}
+.tag.bad{background:#4b2929;color:#ffbbbb}
+.tag.unknown{background:#4b422b;color:#ffdfa0}
 .compat{
- border-radius:11px;
- padding:10px;
- margin:12px 0;
- background:#102318;
- border:1px solid #34503a;
+ border-radius:11px;padding:10px;margin:12px 0;
+ background:#102318;border:1px solid #34503a
 }
 .compat strong{font-size:13px}
 .compat p{margin:5px 0!important}
-.ref-row{
- border-top:1px solid var(--line);
- padding:13px 0;
-}
+.ref-row{border-top:1px solid var(--line);padding:13px 0}
 .ref-row:first-child{border-top:0}
 .ref-row p{margin:6px 0}
 .kpi{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:10px;
+ display:grid;grid-template-columns:1fr 1fr;gap:10px
 }
 .kpi .card{text-align:center;padding:15px}
-.kpi strong{
- display:block;
- color:var(--lime);
- font-size:25px;
-}
+.kpi strong{display:block;color:var(--lime);font-size:25px}
 .kpi small{color:var(--muted)}
 .profile-summary{
- padding:14px;
- border:1px solid #426b49;
- background:#12291a;
- border-radius:14px;
- margin-bottom:15px;
+ padding:14px;border:1px solid #426b49;
+ background:#12291a;border-radius:14px;margin-bottom:15px
 }
 .form-grid{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:13px;
+ display:grid;grid-template-columns:1fr 1fr;gap:13px
 }
 .form-grid .wide{grid-column:1/-1}
 .info{
- padding:12px;
- border-radius:12px;
- background:#11281b;
- border:1px solid var(--line);
- font-size:12px;
- color:#d0e3d2;
- line-height:1.5;
+ padding:12px;border-radius:12px;
+ background:#11281b;border:1px solid var(--line);
+ font-size:12px;color:#d0e3d2;line-height:1.5
 }
 .route-box{
- border:1px solid #416a49;
- background:#11271b;
- border-radius:16px;
- padding:16px;
- margin-top:15px;
+ border:1px solid #416a49;background:#11271b;
+ border-radius:16px;padding:16px;margin-top:15px
 }
 .route-line{
  border-left:2px solid var(--lime);
- padding-left:16px;
- margin-left:7px;
+ padding-left:16px;margin-left:7px
 }
 .route-point{
- margin:14px 0;
- position:relative;
- word-break:break-word;
+ margin:14px 0;position:relative;word-break:break-word
 }
 .route-point:before{
- content:'';
- width:10px;
- height:10px;
- border-radius:50%;
- background:var(--lime);
- position:absolute;
- left:-22px;
- top:5px;
+ content:"";width:10px;height:10px;border-radius:50%;
+ background:var(--lime);position:absolute;left:-22px;top:5px
 }
+.route-metrics{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;margin:14px 0
+}
+.metric{
+ background:#11291b;border:1px solid #39513e;
+ padding:12px;border-radius:13px
+}
+.metric strong{
+ display:block;font-size:21px;color:var(--lime);
+ margin-top:5px;word-break:break-word
+}
+.metric small{color:var(--muted)}
+.route-warning{
+ background:#3b301b;border:1px solid #6e5832;
+ border-radius:12px;color:#ffe0a3;
+ padding:13px;font-size:13px;line-height:1.5;margin:12px 0
+}
+.route-good{
+ background:#173b25;border:1px solid #3b7248;
+ border-radius:12px;color:#c3ffc8;
+ padding:13px;font-size:13px;line-height:1.5;margin:12px 0
+}
+.route-stations{display:grid;gap:10px;margin-top:12px}
+.route-candidate{
+ border:1px solid #3e5c46;
+ border-radius:15px;background:#1b2d22;padding:14px
+}
+.route-candidate h3{font-size:15px;margin-bottom:6px}
+.route-candidate p{margin:5px 0;color:var(--muted);font-size:12px}
 nav{
- position:fixed;
- left:0;
- right:0;
- bottom:0;
- z-index:20;
- background:#132119;
- border-top:1px solid var(--line);
- display:flex;
- padding:7px 3px calc(8px + env(safe-area-inset-bottom));
+ position:fixed;left:0;right:0;bottom:0;z-index:20;
+ background:#132119;border-top:1px solid var(--line);
+ display:flex;padding:7px 3px calc(8px + env(safe-area-inset-bottom))
 }
 nav button{
- flex:1;
- background:none;
- border:0;
- color:#a0afa1;
- display:flex;
- flex-direction:column;
- align-items:center;
- gap:5px;
- padding:7px 0;
- font-size:10px;
+ flex:1;background:none;border:0;color:#a0afa1;
+ display:flex;flex-direction:column;align-items:center;
+ gap:5px;padding:7px 0;font-size:10px
 }
-nav .nav-icon{font-size:21px}
-nav button.active{
- font-weight:800;
- color:var(--lime);
-}
+nav .nav-icon{font-size:20px}
+nav button.active{font-weight:800;color:var(--lime)}
 footer{
- text-align:center;
- color:var(--muted);
- font-size:11px;
- padding:18px;
+ text-align:center;color:var(--muted);
+ font-size:11px;padding:18px
 }
 dialog{
- color:var(--text);
- background:#16261c;
- border:1px solid #55705a;
- border-radius:20px;
- padding:22px;
- width:min(92vw,450px);
- max-height:85vh;
- overflow:auto;
+ color:var(--text);background:#16261c;
+ border:1px solid #55705a;border-radius:20px;
+ padding:22px;width:min(92vw,450px);
+ max-height:85vh;overflow:auto
 }
 dialog::backdrop{background:#000b}
 @media(min-width:800px){
  .hero{padding:40px}
  .hero h2{font-size:44px}
  .station-list{grid-template-columns:1fr 1fr}
- .sheet{
-  right:auto;
-  width:min(445px,calc(100% - 24px));
- }
+ .sheet{right:auto;width:min(445px,calc(100% - 24px))}
 }
 @media(max-width:400px){
  .filters,.form-grid{grid-template-columns:1fr}
@@ -536,107 +307,87 @@ dialog::backdrop{background:#000b}
 </head>
 
 <body>
-
 <header>
- <div class="brand">
-  <div class="logo">ϟ</div>
-  <div>
-   <h1>VOLTIA</h1>
-   <small>ENERGÍA EN MOVIMIENTO</small>
-  </div>
+<div class="brand">
+ <div class="logo">ϟ</div>
+ <div>
+  <h1>VOLTIA</h1>
+  <small>ENERGÍA EN MOVIMIENTO</small>
  </div>
- <span class="version">v1.1</span>
+</div>
+<span class="version">v1.2</span>
 </header>
 
 <main>
 
 <!-- INICIO -->
 <section id="inicio" class="active">
-
  <div class="card hero">
-  <div class="eyebrow">VOLTIA 1.1 · SMART CHARGING</div>
-  <h2>Tu coche. Tus cargadores. Tu ruta.</h2>
-  <p>Encuentra estaciones compatibles con tu vehículo, compara precios orientativos y prepara tu próximo trayecto.</p>
-  <button class="btn" onclick="mostrar('mapa')">
-   Explorar cargadores →
+  <div class="eyebrow">VOLTIA 1.2 · SMART ROUTES</div>
+  <h2>Tu coche. Tu energía. Tu camino.</h2>
+  <p>Explora cargadores, consulta precios y prepara rutas con autonomía estimada.</p>
+  <button class="btn" onclick="mostrar('rutas')">
+   Planificar viaje →
   </button>
  </div>
 
  <div class="grid2">
-
   <div class="card feature">
    <div class="emoji">⌖</div>
-   <h3>Mapa inteligente</h3>
-   <p>Estaciones reales, fichas y filtros.</p>
-   <button class="btn secondary small" onclick="mostrar('mapa')">
-    Abrir
-   </button>
+   <h3>Mapa de cargadores</h3>
+   <p>Estaciones reales, filtros y favoritos.</p>
+   <button class="btn secondary small" onclick="mostrar('mapa')">Abrir</button>
   </div>
 
   <div class="card feature">
    <div class="emoji">🚗</div>
    <h3>Mi garaje</h3>
-   <p>Guarda tu vehículo y sus conectores.</p>
-   <button class="btn secondary small" onclick="mostrar('vehiculo')">
-    Configurar
-   </button>
+   <p>Conectores y potencia compatibles.</p>
+   <button class="btn secondary small" onclick="mostrar('vehiculo')">Configurar</button>
   </div>
 
   <div class="card feature">
    <div class="emoji">€</div>
-   <h3>Precios</h3>
-   <p>Referencias de operadores y comparador.</p>
-   <button class="btn secondary small" onclick="mostrar('comparar')">
-    Comparar
-   </button>
+   <h3>Comparador</h3>
+   <p>Tarifas orientativas y ahorro.</p>
+   <button class="btn secondary small" onclick="mostrar('comparar')">Comparar</button>
   </div>
 
   <div class="card feature">
    <div class="emoji">↗</div>
-   <h3>Mis rutas</h3>
-   <p>Guarda origen y destino de tu viaje.</p>
-   <button class="btn secondary small" onclick="mostrar('rutas')">
-    Planificar
-   </button>
+   <h3>Rutas inteligentes</h3>
+   <p>Recorrido, autonomía y cargadores cercanos.</p>
+   <button class="btn secondary small" onclick="mostrar('rutas')">Planificar</button>
   </div>
-
  </div>
 
  <div class="card">
-  <h3>Mi vehículo activo</h3>
-  <div id="resumenInicio" class="muted">
+  <h3>Vehículo activo</h3>
+  <p id="resumenInicio" class="muted">
    Configura tu vehículo para activar la compatibilidad.
-  </div>
-  <div class="actions">
-   <button class="btn full" onclick="mostrar('vehiculo')">
-    Abrir mi garaje →
-   </button>
-  </div>
+  </p>
+  <button class="btn full" onclick="mostrar('vehiculo')">
+   Abrir mi garaje →
+  </button>
  </div>
 
  <div class="card">
-  <h3>Datos transparentes</h3>
+  <h3>VOLTIA es transparente</h3>
   <p class="muted">
-   Los precios de operadores son orientativos y no están
-   confirmados para todos los puntos. La potencia real de
-   carga depende del vehículo, el cargador y las condiciones
-   de la batería.
+   Las tarifas son orientativas; la autonomía es una
+   estimación; y las estaciones próximas a una ruta
+   no constituyen paradas garantizadas.
   </p>
  </div>
-
 </section>
 
-<!-- MAPA -->
+<!-- MAPA PRINCIPAL -->
 <section id="mapa">
-
  <div class="eyebrow">EXPLORAR</div>
  <h2>Mapa de cargadores</h2>
- <p class="muted">
-  Datos de estaciones de Open Charge Map.
- </p>
+ <p class="muted">Estaciones reales de Open Charge Map.</p>
 
  <div class="card">
-
   <label for="ciudad">Buscar ciudad o dirección</label>
   <div class="search">
    <input id="ciudad" placeholder="Ej. Sabadell, Barcelona">
@@ -666,7 +417,6 @@ dialog::backdrop{background:#000b}
   </div>
 
   <div class="filters">
-
    <div>
     <label for="conector">Conector</label>
     <select id="conector" onchange="filtrar()">
@@ -688,16 +438,9 @@ dialog::backdrop{background:#000b}
    </div>
 
    <div>
-    <label for="energiaEstimacion">
-     Energía a cargar (kWh)
-    </label>
-    <input
-     id="energiaEstimacion"
-     type="number"
-     min="0.1"
-     max="300"
-     step="0.1"
-     value="10"
+    <label for="energiaEstimacion">Energía a cargar (kWh)</label>
+    <input id="energiaEstimacion" type="number"
+     min="0.1" max="300" step="0.1" value="10"
      oninput="actualizarPrecios()">
    </div>
 
@@ -725,15 +468,11 @@ dialog::backdrop{background:#000b}
      <option value="conocidos">Con precio o referencia</option>
     </select>
    </div>
-
   </div>
-
  </div>
 
  <div class="map-wrap">
-
   <div id="map"></div>
-
   <div class="map-badge" id="etiquetaMapa">
    ● VOLTIA · DARK MAP
   </div>
@@ -745,7 +484,6 @@ dialog::backdrop{background:#000b}
   </div>
 
   <div class="sheet" id="fichaFlotante" hidden></div>
-
  </div>
 
  <div class="legend">
@@ -774,36 +512,25 @@ dialog::backdrop{background:#000b}
  <div id="lista" class="station-list"></div>
 
  <p class="hint">
-  Los datos de conectores, potencias y tarifas pueden estar
-  incompletos o desactualizados. Comprueba siempre la
-  compatibilidad y el precio en la aplicación del operador.
+  Verifica siempre los conectores, precios y disponibilidad
+  en el operador antes de desplazarte.
  </p>
-
 </section>
 
 <!-- FAVORITOS -->
 <section id="favoritos">
-
  <div class="eyebrow">TUS ESTACIONES</div>
  <h2>Mis favoritos</h2>
-
- <p class="muted">
-  Se conservan los favoritos de las versiones anteriores
-  guardados en este navegador.
- </p>
-
+ <p class="muted">Conservamos los favoritos de las versiones anteriores.</p>
  <div id="listaFavoritos" class="station-list"></div>
-
 </section>
 
 <!-- PRECIOS -->
 <section id="comparar">
-
  <div class="eyebrow">TARIFAS Y AHORRO</div>
  <h2>Comparador de recargas</h2>
 
  <div class="card">
-
   <h3>Comparar dos precios</h3>
 
   <label for="precioA">Tarifa A · €/kWh</label>
@@ -826,60 +553,51 @@ dialog::backdrop{background:#000b}
   </div>
 
   <div class="result" id="resultado"></div>
-
   <p class="mini">
-   Los valores iniciales son ejemplos editables.
-   El resultado no incluye posibles cargos adicionales.
+   Valores iniciales de ejemplo; no incluyen cargos adicionales.
   </p>
-
  </div>
 
  <div class="card">
-
   <h3>Tarifas publicadas de referencia</h3>
   <div id="tarifasOperadores"></div>
 
   <p class="hint">
-   Estas referencias se guardan en el código y no se
-   actualizan automáticamente. Pueden existir promociones,
-   suscripciones, excepciones y cambios de precio.
+   Los precios pueden variar. VOLTIA no dispone todavía
+   de tarifas verificadas en tiempo real para cada punto.
   </p>
-
  </div>
-
 </section>
 
 <!-- VEHÍCULO -->
 <section id="vehiculo">
-
  <div class="eyebrow">VOLTIA GARAGE</div>
  <h2>Mi vehículo</h2>
-
  <p class="muted">
-  Personaliza el mapa según los conectores y la potencia
-  de carga que admite tu coche.
+  Guarda tu coche, sus conectores y su consumo para
+  calcular una autonomía estimada.
  </p>
 
  <div id="estadoVehiculo" class="profile-summary">
-  Todavía no has configurado tu vehículo.
+  Todavía no hay vehículo guardado.
  </div>
 
  <div class="card">
-
   <h3>Configurar vehículo</h3>
 
   <form id="formVehiculo">
-
    <div class="form-grid">
 
     <div>
      <label for="marca">Marca</label>
-     <input id="marca" placeholder="Ej. Cupra" maxlength="60" required>
+     <input id="marca" placeholder="Ej. Cupra"
+      maxlength="60" required>
     </div>
 
     <div>
      <label for="modelo">Modelo</label>
-     <input id="modelo" placeholder="Ej. León e-Hybrid" maxlength="80" required>
+     <input id="modelo" placeholder="Ej. León e-Hybrid"
+      maxlength="80" required>
     </div>
 
     <div class="wide">
@@ -892,22 +610,33 @@ dialog::backdrop{background:#000b}
 
     <div>
      <label for="bateria">Batería utilizable (kWh)</label>
-     <input id="bateria" type="number" min="1" max="250" step="0.1" placeholder="Opcional">
+     <input id="bateria" type="number" min="1"
+      max="250" step="0.1" placeholder="Ej. 12">
     </div>
 
     <div>
      <label for="potenciaAC">Máximo AC (kW)</label>
-     <input id="potenciaAC" type="number" min="0.1" max="100" step="0.1" placeholder="Opcional">
+     <input id="potenciaAC" type="number" min="0.1"
+      max="100" step="0.1" placeholder="Opcional">
     </div>
 
     <div>
      <label for="potenciaDC">Máximo DC (kW)</label>
-     <input id="potenciaDC" type="number" min="0.1" max="500" step="0.1" placeholder="Opcional">
+     <input id="potenciaDC" type="number" min="0.1"
+      max="500" step="0.1" placeholder="Opcional">
     </div>
 
-    <div>
+    <div class="wide">
+     <label for="consumoVehiculo">Consumo eléctrico estimado (kWh/100 km)</label>
+     <input id="consumoVehiculo" type="number"
+      min="1" max="60" step="0.1"
+      placeholder="Ej. 18">
+    </div>
+
+    <div class="wide">
      <label for="notaVehiculo">Notas</label>
-     <input id="notaVehiculo" placeholder="Opcional" maxlength="150">
+     <input id="notaVehiculo"
+      maxlength="150" placeholder="Opcional">
     </div>
 
     <div class="wide">
@@ -915,219 +644,247 @@ dialog::backdrop{background:#000b}
 
      <div class="checkrow" style="margin-bottom:9px">
       <input type="checkbox" id="vType2">
-      <label for="vType2">
-       Tipo 2 · carga AC
-      </label>
+      <label for="vType2">Tipo 2 · carga AC</label>
      </div>
 
      <div class="checkrow" style="margin-bottom:9px">
       <input type="checkbox" id="vCCS">
-      <label for="vCCS">
-       CCS Combo · carga DC
-      </label>
+      <label for="vCCS">CCS Combo · carga DC</label>
      </div>
 
      <div class="checkrow" style="margin-bottom:9px">
       <input type="checkbox" id="vCHAdeMO">
-      <label for="vCHAdeMO">
-       CHAdeMO · carga DC
-      </label>
+      <label for="vCHAdeMO">CHAdeMO · carga DC</label>
      </div>
 
      <div class="info">
-      Marca únicamente los conectores que admite tu
-      vehículo. No basta con que el punto tenga mucha
-      potencia: el conector debe ser compatible.
+      Selecciona únicamente los conectores admitidos
+      por tu coche. El consumo debe ser una estimación
+      realista de tu conducción.
      </div>
-
     </div>
-
    </div>
 
    <div class="actions">
     <button class="btn" type="submit">
      Guardar vehículo
     </button>
-    <button class="btn secondary" type="button" onclick="borrarVehiculo()">
+    <button class="btn secondary" type="button"
+     onclick="borrarVehiculo()">
      Borrar perfil
     </button>
    </div>
-
   </form>
-
  </div>
 
  <div class="card">
-  <h3>¿Cómo calcula VOLTIA la compatibilidad?</h3>
+  <h3>Compatibilidad y autonomía</h3>
   <p class="muted">
-   Compara los conectores configurados con los que aparecen
-   registrados en cada estación.
+   VOLTIA compara los conectores del vehículo
+   con los de cada cargador. Si hay datos de potencia,
+   muestra el menor límite declarado.
   </p>
   <p class="muted">
-   Si conoce la potencia del coche y del punto, muestra
-   el menor valor como límite teórico. No es una predicción
-   de la velocidad real de carga.
-  </p>
-  <p class="muted">
-   Si faltan datos, la estación se identifica como
-   «Compatibilidad por confirmar».
+   La autonomía se estima con la batería utilizable,
+   el porcentaje disponible, el consumo introducido
+   y un margen de reserva.
   </p>
  </div>
-
 </section>
 
 <!-- RUTAS -->
 <section id="rutas">
-
  <div class="eyebrow">VOLTIA ROUTES · BETA</div>
- <h2>Mis rutas</h2>
+ <h2>Planificador de rutas</h2>
 
  <p class="muted">
-  Prepara un trayecto y guarda su borrador.
-  La selección automática de paradas de recarga llegará
-  en una versión posterior.
+  Dibuja tu viaje por carretera y consulta cargadores
+  compatibles próximos al recorrido.
  </p>
 
  <div class="card">
-
   <h3>Preparar trayecto</h3>
 
   <form id="formRuta">
-
    <label for="origen">Origen</label>
-   <input
-    id="origen"
-    placeholder="Ej. Sabadell, Barcelona"
-    maxlength="150"
-    required>
+   <input id="origen" maxlength="150"
+    placeholder="Ej. Sabadell, España" required>
 
    <br><br>
 
    <label for="destino">Destino</label>
-   <input
-    id="destino"
-    placeholder="Ej. Andorra la Vella"
-    maxlength="150"
-    required>
+   <input id="destino" maxlength="150"
+    placeholder="Ej. Andorra la Vella, Andorra" required>
 
    <br><br>
 
-   <label for="notaRuta">Notas del viaje</label>
-   <textarea
-    id="notaRuta"
-    maxlength="400"
-    rows="3"
-    placeholder="Ej. revisar cargadores durante el trayecto"></textarea>
+   <div class="form-grid">
+    <div>
+     <label for="socInicial">Batería actual (%)</label>
+     <input id="socInicial" type="number"
+      min="0" max="100" step="1" value="80" required>
+    </div>
+
+    <div>
+     <label for="socReserva">Reserva al llegar (%)</label>
+     <input id="socReserva" type="number"
+      min="0" max="90" step="1" value="15" required>
+    </div>
+
+    <div class="wide">
+     <label for="consumoRuta">
+      Consumo eléctrico (kWh/100 km)
+     </label>
+     <input id="consumoRuta" type="number"
+      min="1" max="60" step="0.1"
+      placeholder="Se usa el del vehículo si lo tienes guardado">
+    </div>
+
+    <div class="wide">
+     <label for="corredorKm">
+      Distancia máxima aproximada del cargador al recorrido
+     </label>
+     <select id="corredorKm">
+      <option value="3">3 km</option>
+      <option value="5" selected>5 km</option>
+      <option value="8">8 km</option>
+     </select>
+    </div>
+
+    <div class="wide">
+     <label for="notaRuta">Notas</label>
+     <textarea id="notaRuta" maxlength="400"
+      rows="2" placeholder="Opcional"></textarea>
+    </div>
+   </div>
 
    <div class="actions">
-    <button class="btn" type="submit">
-     Guardar ruta
+    <button class="btn" type="submit" id="btnRuta">
+     ↗ Calcular ruta
     </button>
-    <button class="btn secondary" type="button" onclick="borrarRuta()">
+    <button class="btn secondary" type="button"
+     onclick="borrarRuta()">
      Borrar ruta
     </button>
    </div>
-
   </form>
 
-  <div id="resultadoRuta"></div>
+  <p id="estadoRuta" class="status" role="status">
+   Introduce origen y destino para calcular el recorrido.
+  </p>
+ </div>
 
+ <div id="resultadoRuta"></div>
+
+ <div class="card">
+  <h3>Mapa del recorrido</h3>
+  <div class="map-wrap">
+   <div id="routeMap"></div>
+   <div class="map-badge">● VOLTIA · ROUTE MAP</div>
+  </div>
+  <div class="legend">
+   <span><i class="dot" style="background:#b9ff46"></i>Recorrido</span>
+   <span><i class="dot" style="background:#67c9ff"></i>Cargador candidato</span>
+   <span><i class="dot" style="background:#ffc16c"></i>Inicio / destino</span>
+  </div>
  </div>
 
  <div class="card">
-  <h3>Próximamente</h3>
-
-  <p class="muted">
-   Integración de estaciones a lo largo del recorrido,
-   autonomía del vehículo, paradas recomendadas
-   y estimación del coste del viaje.
+  <h3>Posibles paradas de recarga</h3>
+  <p class="hint">
+   Son estaciones localizadas cerca de una parte
+   muestreada de la ruta. No se ha comprobado
+   disponibilidad ni desvío real por carretera.
   </p>
 
-  <div class="info">
-   La versión 1.1 no calcula una ruta eléctrica optimizada,
-   no valida automáticamente el destino y no garantiza
-   que existan cargadores disponibles durante el trayecto.
+  <div id="estadoParadas" class="status">
+   Calcula una ruta para buscar cargadores.
   </div>
 
+  <div id="listaParadas" class="route-stations"></div>
  </div>
 
+ <div class="card">
+  <h3>Fuentes y limitaciones</h3>
+  <p class="muted">
+   Cartografía: OpenFreeMap / OpenStreetMap.
+   Geocodificación: Nominatim. Recorrido:
+   OSRM público de demostración.
+   Estaciones: Open Charge Map.
+  </p>
+  <p class="muted">
+   El consumo, la autonomía y los costes son estimaciones.
+   El cálculo inicial es eléctrico incluso en vehículos
+   híbridos enchufables; no calcula consumo de gasolina.
+  </p>
+  <div class="route-warning">
+   Esta versión es un prototipo. No utilices las sugerencias
+   como única fuente para planificar una recarga necesaria
+   durante un viaje.
+  </div>
+ </div>
 </section>
 
-<footer>VOLTIA v1.1 · Energía en movimiento</footer>
-
+<footer>
+ VOLTIA v1.2 · Energía en movimiento
+</footer>
 </main>
 
-<!-- NAVEGACIÓN -->
 <nav>
  <button class="active" data-page="inicio" onclick="mostrar('inicio')">
   <span class="nav-icon">⌂</span>Inicio
  </button>
-
  <button data-page="mapa" onclick="mostrar('mapa')">
   <span class="nav-icon">⌖</span>Mapa
  </button>
-
  <button data-page="favoritos" onclick="mostrar('favoritos')">
   <span class="nav-icon">☆</span>Favoritos
  </button>
-
  <button data-page="comparar" onclick="mostrar('comparar')">
   <span class="nav-icon">€</span>Precios
  </button>
-
  <button data-page="vehiculo" onclick="mostrar('vehiculo')">
   <span class="nav-icon">🚗</span>Garaje
  </button>
-
  <button data-page="rutas" onclick="mostrar('rutas')">
   <span class="nav-icon">↗</span>Rutas
  </button>
 </nav>
 
-<!-- PRECIO PERSONAL -->
 <dialog id="precioDialog">
  <form id="formPrecio">
-
   <h3>Anotar precio de una estación</h3>
   <p class="muted" id="dialogEstacion"></p>
 
   <label for="manualPrecio">Precio consultado · €/kWh</label>
-  <input
-   id="manualPrecio"
-   type="number"
-   min="0"
-   max="10"
-   step="0.001"
-   required>
+  <input id="manualPrecio" type="number"
+   min="0" max="10" step="0.001" required>
 
   <br><br>
 
-  <label for="manualFuente">Enlace a la fuente (opcional)</label>
-  <input
-   id="manualFuente"
-   type="url"
+  <label for="manualFuente">Fuente (opcional)</label>
+  <input id="manualFuente" type="url"
    placeholder="https://...">
 
   <br><br>
 
-  <label for="manualNota">Condiciones de la tarifa</label>
-  <textarea id="manualNota" rows="2" maxlength="250"></textarea>
+  <label for="manualNota">Condiciones</label>
+  <textarea id="manualNota" maxlength="250" rows="2"></textarea>
 
   <p class="hint">
-   Este precio quedará guardado en tu navegador.
-   No se publicará ni será verificado por VOLTIA.
+   Este precio se guarda solo en tu navegador
+   y no estará verificado por VOLTIA.
   </p>
 
   <div class="actions">
    <button class="btn" type="submit">Guardar</button>
-   <button class="btn secondary" type="button" onclick="cerrarDialogo()">
-    Cancelar
-   </button>
-   <button class="btn secondary" type="button" id="borrarManual" onclick="borrarTarifa()">
+   <button class="btn secondary" type="button"
+    onclick="cerrarDialogo()">Cancelar</button>
+   <button class="btn secondary" type="button"
+    id="borrarManual" onclick="borrarTarifa()">
     Borrar tarifa
    </button>
   </div>
-
  </form>
 </dialog>
 
@@ -1136,162 +893,163 @@ dialog::backdrop{background:#000b}
 <script>
 "use strict";
 
-/* CONFIGURACIÓN */
-const API = "https://voltiaapi.mziyani21k.workers.dev";
+/* CONFIGURACION */
+const API="https://voltiaapi.mziyani21k.workers.dev";
+const FAV_KEY="voltia-favoritos-v05";
+const PRICE_KEY="voltia-precios-personales-v09";
+const VEHICLE_KEY="voltia-vehiculo-v11";
+const ROUTE_KEY="voltia-ruta-v11";
 
-const FAV_KEY = "voltia-favoritos-v05";
-const PRICE_KEY = "voltia-precios-personales-v09";
-const VEHICLE_KEY = "voltia-vehiculo-v11";
-const ROUTE_KEY = "voltia-ruta-v11";
+const $=id=>document.getElementById(id);
+const euro=n=>n.toLocaleString("es-ES",{
+ style:"currency",currency:"EUR"
+});
+const estilo=t=>
+ "https://tiles.openfreemap.org/styles/"+
+ (t==="dark"?"dark":"liberty");
 
-const $ = id => document.getElementById(id);
-
-const FUENTES = {
+const FUENTES={
  endesa:{
   nombre:"Endesa",
   url:"https://www.endesaxway.com/",
-  resumen:"Tarifas e-Flex de referencia, diferenciadas por potencia y horario."
+  resumen:"e-Flex: tarifas de referencia por potencia y horario."
  },
  wenea:{
   nombre:"Wenea",
   url:"https://wenea.com/tarifas-de-carga/",
-  resumen:"Referencias publicadas: AC 0,39 €, rápida 0,49 € y ultrarrápida 0,59 €/kWh."
+  resumen:"Referencias: AC 0,39 €; rápida 0,49 €; ultrarrápida 0,59 €/kWh."
  },
  repsol:{
   nombre:"Repsol",
   url:"https://www.repsol.es/particulares/vehiculos/movilidad-electrica/pago-por-recarga/",
-  resumen:"Referencias publicadas: normal 0,36 €, rápida desde 0,48 € y ultrarrápida 0,56 €/kWh."
+  resumen:"Referencias: normal 0,36 €; rápida desde 0,48 €; ultrarrápida 0,56 €/kWh."
  },
  zunder:{
   nombre:"Zunder",
   url:"https://www.zunder.com/usuario-ve/",
-  resumen:"Referencias publicadas: AC hasta 50 kW a 0,42 € y rápida superior a 50 kW a 0,59 €/kWh."
+  resumen:"Referencias: AC hasta 50 kW 0,42 €; rápida superior a 50 kW 0,59 €/kWh."
  },
  iberdrola:{
   nombre:"Iberdrola",
   url:"https://www.iberdrola.es/movilidad-electrica",
-  resumen:"Consulta el precio aplicable al cargador en su aplicación oficial."
+  resumen:"Consulta el precio de cada estación en la aplicación oficial."
  },
  tesla:{
   nombre:"Tesla",
   url:"https://www.tesla.com/es_es/support/charging/supercharging-other-evs",
-  resumen:"Precios variables según estación, vehículo, horario y condiciones."
+  resumen:"Tarifa variable por ubicación, vehículo y horario."
  }
 };
 
-let mapa = null;
-let estaciones = [];
-let primeraCarga = false;
-let tema = "dark";
-let seleccion = null;
-let peticion = 0;
-let edicion = null;
-
-const porId = new Map();
-
-const vacio = {
+const geoVacio={
  type:"FeatureCollection",
  features:[]
 };
 
-const euro = n => n.toLocaleString("es-ES",{
- style:"currency",
- currency:"EUR"
-});
+let mapa=null;
+let mapaRuta=null;
+let estaciones=[];
+let primeraCarga=false;
+let tema="dark";
+let seleccion=null;
+let peticion=0;
+let edicion=null;
 
-const estilo = t =>
- "https://tiles.openfreemap.org/styles/" +
- (t === "dark" ? "dark" : "liberty");
+let rutaCalculada=null;
+let paradasRuta=[];
+let rutaPeticion=0;
 
-/* DATOS LOCALES */
-function leerJSON(key, defecto){
+const porId=new Map();
+const rutaPorId=new Map();
+
+/* ALMACENAMIENTO */
+function leerJSON(key,defecto){
  try{
-  return JSON.parse(localStorage.getItem(key)) ?? defecto;
+  return JSON.parse(localStorage.getItem(key))??defecto;
  }catch{
   return defecto;
  }
 }
-
-function guardarJSON(key, dato){
+function guardarJSON(key,dato){
  try{
   localStorage.setItem(key,JSON.stringify(dato));
   return true;
  }catch{
-  alert("No se pudieron guardar los datos en este navegador.");
+  alert("No se pudieron guardar los datos.");
   return false;
  }
 }
-
 function getFavoritos(){
- const a=leerJSON(FAV_KEY,[]);
- return Array.isArray(a)?a:[];
+ const x=leerJSON(FAV_KEY,[]);
+ return Array.isArray(x)?x:[];
 }
-
 function preciosPersonales(){
- const a=leerJSON(PRICE_KEY,{});
- return a && typeof a==="object" && !Array.isArray(a)?a:{};
+ const x=leerJSON(PRICE_KEY,{});
+ return x&&typeof x==="object"&&!Array.isArray(x)?x:{};
 }
-
 function getVehiculo(){
- const a=leerJSON(VEHICLE_KEY,null);
-
- if(!a || typeof a!=="object")return null;
- if(!Array.isArray(a.conectores))return null;
- if(!a.marca || !a.modelo)return null;
-
- return a;
+ const v=leerJSON(VEHICLE_KEY,null);
+ if(!v||typeof v!=="object"||!v.marca||!v.modelo)return null;
+ if(!Array.isArray(v.conectores))return null;
+ return v;
 }
-
 function getRuta(){
- const a=leerJSON(ROUTE_KEY,null);
-
- if(!a || typeof a!=="object")return null;
- if(!a.origen || !a.destino)return null;
-
+ const r=leerJSON(ROUTE_KEY,null);
+ return r&&typeof r==="object"&&r.origen&&r.destino?r:null;
+}
+function par(el,texto){
+ const p=document.createElement("p");
+ p.textContent=texto;
+ el.appendChild(p);
+}
+function botonLink(texto,url,secundario=false){
+ const a=document.createElement("a");
+ a.textContent=texto;
+ a.href=url;
+ a.target="_blank";
+ a.rel="noopener noreferrer";
+ a.className="btn small"+(secundario?" secondary":"");
  return a;
 }
 
-/* NAVEGACIÓN */
+/* NAVEGACION */
 function mostrar(id){
- document.querySelectorAll("main section").forEach(s=>{
-  s.classList.toggle("active",s.id===id);
- });
-
- document.querySelectorAll("nav button").forEach(b=>{
-  b.classList.toggle("active",b.dataset.page===id);
- });
+ document.querySelectorAll("main section").forEach(s=>
+  s.classList.toggle("active",s.id===id)
+ );
+ document.querySelectorAll("nav button").forEach(b=>
+  b.classList.toggle("active",b.dataset.page===id)
+ );
 
  if(id==="mapa"){
   iniciarMapa();
-
   if(mapa){
    setTimeout(()=>mapa.resize(),160);
-
    if(!primeraCarga){
     primeraCarga=true;
     buscar();
    }
   }
  }
-
+ if(id==="rutas"){
+  iniciarMapaRuta();
+  setTimeout(()=>mapaRuta?.resize(),180);
+  pintarRuta();
+  if(rutaCalculada)dibujarRuta();
+ }
  if(id==="favoritos")pintarFavoritos();
- if(id==="comparar")calcular();
  if(id==="vehiculo")pintarVehiculo();
- if(id==="rutas")pintarRuta();
-
+ if(id==="comparar")calcular();
  window.scrollTo(0,0);
 }
 
-/* MAPA */
+/* MAPA PRINCIPAL */
 function iniciarMapa(){
  if(mapa)return;
-
  if(typeof maplibregl==="undefined"){
-  $("estado").textContent=
-   "No se pudo cargar la biblioteca del mapa.";
+  $("estado").textContent="No se pudo cargar el mapa.";
   return;
  }
-
  mapa=new maplibregl.Map({
   container:"map",
   style:estilo(tema),
@@ -1299,31 +1057,20 @@ function iniciarMapa(){
   zoom:12.5,
   attributionControl:true
  });
-
  mapa.addControl(
   new maplibregl.NavigationControl({showCompass:false}),
   "bottom-right"
  );
-
  mapa.on("style.load",construirCapas);
-
  mapa.on("click",e=>{
   const capas=["estaciones","agrupaciones"]
    .filter(id=>mapa.getLayer(id));
-
   if(!capas.length)return;
-
-  const fs=mapa.queryRenderedFeatures(e.point,{
-   layers:capas
-  });
-
-  const f=fs[0];
-
+  const f=mapa.queryRenderedFeatures(e.point,{layers:capas})[0];
   if(!f){
    cerrarFicha();
    return;
   }
-
   if(f.layer.id==="agrupaciones"){
    mapa.easeTo({
     center:f.geometry.coordinates,
@@ -1333,55 +1080,37 @@ function iniciarMapa(){
    cerrarFicha();
    return;
   }
-
   const p=porId.get(String(f.properties.sid));
   if(p)abrirFicha(p);
  });
-
  mapa.on("mousemove",e=>{
   const capas=["estaciones","agrupaciones"]
    .filter(id=>mapa.getLayer(id));
-
   mapa.getCanvas().style.cursor=
-   capas.length &&
+   capas.length&&
    mapa.queryRenderedFeatures(e.point,{layers:capas}).length
-    ?"pointer":"";
+   ?"pointer":"";
  });
-
- mapa.on("error",e=>{
-  console.warn("Error de mapa:",e.error||e);
- });
+ mapa.on("error",e=>console.warn("Mapa:",e.error||e));
 }
-
 function construirCapas(){
- if(!mapa || mapa.getLayer("estaciones"))return;
-
+ if(!mapa||mapa.getLayer("estaciones"))return;
  if(!mapa.getSource("cargadores")){
   mapa.addSource("cargadores",{
-   type:"geojson",
-   data:vacio,
-   cluster:true,
-   clusterMaxZoom:14,
-   clusterRadius:55
+   type:"geojson",data:geoVacio,
+   cluster:true,clusterMaxZoom:14,clusterRadius:55
   });
  }
-
  mapa.addLayer({
-  id:"estaciones-halo",
-  type:"circle",
-  source:"cargadores",
+  id:"estaciones-halo",type:"circle",source:"cargadores",
   filter:["!",["has","point_count"]],
   paint:{
-   "circle-radius":23,
-   "circle-color":"#102419",
+   "circle-radius":23,"circle-color":"#102419",
    "circle-opacity":0.8
   }
  });
-
  mapa.addLayer({
-  id:"estaciones",
-  type:"circle",
-  source:"cargadores",
+  id:"estaciones",type:"circle",source:"cargadores",
   filter:["!",["has","point_count"]],
   paint:{
    "circle-radius":16,
@@ -1396,203 +1125,134 @@ function construirCapas(){
    "circle-stroke-color":"#173827"
   }
  });
-
  mapa.addLayer({
-  id:"agrupaciones-halo",
-  type:"circle",
-  source:"cargadores",
+  id:"agrupaciones-halo",type:"circle",source:"cargadores",
   filter:["has","point_count"],
-  paint:{
-   "circle-radius":28,
-   "circle-color":"#1a3b27"
-  }
+  paint:{"circle-radius":28,"circle-color":"#1a3b27"}
  });
-
  mapa.addLayer({
-  id:"agrupaciones",
-  type:"circle",
-  source:"cargadores",
+  id:"agrupaciones",type:"circle",source:"cargadores",
   filter:["has","point_count"],
   paint:{
-   "circle-radius":23,
-   "circle-color":"#b9ff46",
+   "circle-radius":23,"circle-color":"#b9ff46",
    "circle-stroke-width":3,
    "circle-stroke-color":"#214631"
   }
  });
-
  mapa.addLayer({
-  id:"agrupaciones-cantidad",
-  type:"symbol",
-  source:"cargadores",
-  filter:["has","point_count"],
+  id:"agrupaciones-cantidad",type:"symbol",
+  source:"cargadores",filter:["has","point_count"],
   layout:{
    "text-field":["get","point_count_abbreviated"],
    "text-size":14
   },
-  paint:{
-   "text-color":"#102016"
-  }
+  paint:{"text-color":"#102016"}
  });
-
  refrescarMapa();
 }
-
 function cambiarTema(){
  if(!mapa)return;
-
  tema=tema==="dark"?"light":"dark";
-
  $("etiquetaMapa").textContent=
   tema==="dark"
-   ?"● VOLTIA · DARK MAP"
-   :"● VOLTIA · LIGHT MAP";
-
+  ?"● VOLTIA · DARK MAP"
+  :"● VOLTIA · LIGHT MAP";
  mapa.setStyle(estilo(tema));
 }
 
-/* IDENTIFICACIÓN */
+/* ESTACIONES */
 function clave(p){
- return String(
-  p.id ?? (p.latitude+","+p.longitude+","+p.name)
- );
+ return String(p.id??(
+  p.latitude+","+p.longitude+","+p.name
+ ));
 }
-
 function conexiones(p){
  return Array.isArray(p.connections)?p.connections:[];
 }
-
 function potenciaValida(x){
- if(x===null || x===undefined || x==="")return null;
-
+ if(x===null||x===undefined||x==="")return null;
  const n=Number(x);
  return Number.isFinite(n)&&n>0?n:null;
 }
-
 function maxima(p){
  const n=conexiones(p)
   .map(x=>potenciaValida(x.powerKW))
   .filter(x=>x!==null);
-
  return n.length?Math.max(...n):null;
 }
-
 function tipo(p){
  const w=maxima(p);
-
  if(w===null)return "unknown";
  if(w>=150)return "ultra";
  if(w>22)return "fast";
  return "slow";
 }
-
 function coordOK(p){
- const a=Number(p.latitude);
- const b=Number(p.longitude);
-
- return Number.isFinite(a) &&
-  Number.isFinite(b) &&
-  a>=-90 && a<=90 &&
-  b>=-180 && b<=180;
+ const a=Number(p.latitude),b=Number(p.longitude);
+ return Number.isFinite(a)&&Number.isFinite(b)&&
+  a>=-90&&a<=90&&b>=-180&&b<=180;
 }
-
 function nombreConector(t){
  const s=String(t||"").toLowerCase();
-
- if(
-  s.includes("ccs") ||
-  s.includes("combo") ||
-  s.includes("configuration ff")
- )return "ccs";
-
- if(
-  s.includes("type 2") ||
-  s.includes("tipo 2") ||
-  s.includes("mennekes") ||
-  s.includes("62196-2")
- )return "type2";
-
+ if(s.includes("ccs")||s.includes("combo")||
+    s.includes("configuration ff"))return "ccs";
+ if(s.includes("type 2")||s.includes("tipo 2")||
+    s.includes("mennekes")||s.includes("62196-2"))
+    return "type2";
  if(s.includes("chademo"))return "chademo";
-
  return null;
 }
-
 function corriente(c){
  const id=nombreConector(c.type);
-
  if(id==="type2")return "AC";
  if(id==="ccs"||id==="chademo")return "DC";
-
  return null;
 }
-
-function tipoCoincide(t,filtro){
- if(filtro==="todos")return true;
- return nombreConector(t)===filtro;
+function tipoCoincide(t,f){
+ return f==="todos"||nombreConector(t)===f;
 }
-
-function potenciaCoincide(c,filtro){
- if(filtro==="todos")return true;
-
+function potenciaCoincide(c,f){
+ if(f==="todos")return true;
  const w=potenciaValida(c.powerKW);
  if(w===null)return false;
-
- return (
-  (filtro==="lenta"&&w<=22) ||
-  (filtro==="rapida"&&w>22&&w<150) ||
-  (filtro==="ultra"&&w>=150)
- );
+ return (f==="lenta"&&w<=22)||
+  (f==="rapida"&&w>22&&w<150)||
+  (f==="ultra"&&w>=150);
 }
-
 function conexionesFiltradas(p){
- const c=$("conector").value;
- const k=$("potencia").value;
-
  return conexiones(p).filter(x=>
-  tipoCoincide(x.type,c) &&
-  potenciaCoincide(x,k)
+  tipoCoincide(x.type,$("conector").value)&&
+  potenciaCoincide(x,$("potencia").value)
  );
 }
-
 function coincide(p){
- if(
-  $("conector").value==="todos" &&
-  $("potencia").value==="todos"
- )return true;
-
- return conexionesFiltradas(p).length>0;
+ return ($("conector").value==="todos"&&
+  $("potencia").value==="todos")||
+  conexionesFiltradas(p).length>0;
 }
-
 function detalle(p){
  return {
-  direccion:[p.address,p.town]
-   .filter(Boolean).join(", ")||"Dirección no disponible",
-
+  direccion:[p.address,p.town].filter(Boolean).join(", ")||
+   "Dirección no disponible",
   operador:p.operator||"No indicado",
-
-  ruta:
-   "https://www.google.com/maps/dir/?api=1&destination="+
+  ruta:"https://www.google.com/maps/dir/?api=1&destination="+
    encodeURIComponent(p.latitude+","+p.longitude)
  };
 }
-
 function identificarOperador(p){
  const t=String(p.operator||"").toLowerCase();
-
  if(t.includes("endesa"))return "endesa";
  if(t.includes("wenea"))return "wenea";
  if(t.includes("repsol"))return "repsol";
  if(t.includes("zunder")||t.includes("easycharger"))return "zunder";
  if(t.includes("iberdrola"))return "iberdrola";
  if(t.includes("tesla"))return "tesla";
-
  return null;
 }
 
-/* COMPATIBILIDAD */
+/* COMPATIBILIDAD V1.1 */
 function compatibilidad(p){
  const v=getVehiculo();
-
  if(!v){
   return {
    estado:"sinperfil",
@@ -1600,9 +1260,7 @@ function compatibilidad(p){
    potencia:null
   };
  }
-
  const xs=conexiones(p);
-
  if(!xs.length){
   return {
    estado:"desconocida",
@@ -1610,63 +1268,49 @@ function compatibilidad(p){
    potencia:null
   };
  }
-
- const reconocidas=xs
-  .map(c=>({
-   conexion:c,
-   conector:nombreConector(c.type)
-  }))
-  .filter(x=>x.conector!==null);
+ const reconocidas=xs.map(c=>({
+  conexion:c,
+  conector:nombreConector(c.type)
+ })).filter(x=>x.conector!==null);
 
  const compatibles=reconocidas.filter(x=>
   v.conectores.includes(x.conector)
  );
-
  if(!compatibles.length){
   return reconocidas.length===xs.length
    ?{
      estado:"incompatible",
-     texto:"Ningún conector registrado coincide con tu vehículo.",
+     texto:"Ningún conector registrado coincide con tu coche.",
      potencia:null
     }
    :{
      estado:"desconocida",
-     texto:"No se puede descartar compatibilidad: faltan datos de conectores.",
+     texto:"Faltan datos para descartar compatibilidad.",
      potencia:null
     };
  }
-
  const limites=[];
-
  for(const x of compatibles){
   const cargador=potenciaValida(x.conexion.powerKW);
-
-  const limiteVehiculo=
-   x.conector==="type2"
-    ?potenciaValida(v.maxAC)
-    :potenciaValida(v.maxDC);
-
-  if(cargador!==null && limiteVehiculo!==null){
-   limites.push(Math.min(cargador,limiteVehiculo));
+  const vehiculo=x.conector==="type2"
+   ?potenciaValida(v.maxAC)
+   :potenciaValida(v.maxDC);
+  if(cargador!==null&&vehiculo!==null){
+   limites.push(Math.min(cargador,vehiculo));
   }
  }
-
  return {
   estado:"compatible",
   texto:"Se ha encontrado al menos un conector compatible.",
   potencia:limites.length?Math.max(...limites):null
  };
 }
-
 function etiquetaCompatibilidad(p){
  const r=compatibilidad(p);
-
  const d=document.createElement("div");
  d.className="compat";
-
  const b=document.createElement("span");
  b.className="tag";
-
  if(r.estado==="compatible"){
   b.classList.add("ok");
   b.textContent="✓ Conector compatible";
@@ -1679,33 +1323,22 @@ function etiquetaCompatibilidad(p){
    ?"Vehículo no configurado"
    :"Compatibilidad por confirmar";
  }
-
  d.appendChild(b);
  par(d,r.texto);
-
  if(r.potencia!==null){
-  par(
-   d,
-   "Límite teórico de potencia: "+
-   r.potencia+" kW."
-  );
+  par(d,"Límite teórico: "+r.potencia+" kW.");
  }
-
  return d;
 }
 
-/* TARIFAS */
+/* PRECIOS V1.0 */
 function referenciaConexion(op,x){
  const w=potenciaValida(x.powerKW);
  const c=corriente(x);
  const noche=$("horario").value==="noche";
+ if(w===null||!c)return null;
 
- if(w===null || !c)return null;
-
- let precio=null;
- let descripcion="";
- let minimo=false;
-
+ let precio=null,descripcion="",minimo=false;
  if(op==="endesa"){
   if(c==="AC"&&w<50){
    precio=noche?0.30:0.35;
@@ -1718,20 +1351,18 @@ function referenciaConexion(op,x){
    descripcion="Endesa e-Flex · DC desde 100 kW";
   }
  }
-
  if(op==="wenea"){
   if(c==="AC"&&w>=7.4&&w<=22){
    precio=0.39;
    descripcion="Wenea · AC 7,4–22 kW";
   }else if(c==="DC"&&w>=50&&w<=150){
    precio=0.49;
-   descripcion="Wenea · rápida 50–150 kW";
+   descripcion="Wenea · DC 50–150 kW";
   }else if(c==="DC"&&w>=151&&w<=400){
    precio=0.59;
-   descripcion="Wenea · ultrarrápida 151–400 kW";
+   descripcion="Wenea · HPC 151–400 kW";
   }
  }
-
  if(op==="repsol"){
   if(c==="AC"&&w<=22){
    precio=0.36;
@@ -1742,10 +1373,9 @@ function referenciaConexion(op,x){
    minimo=true;
   }else if(c==="DC"&&w>=150){
    precio=0.56;
-   descripcion="Repsol · carga ultrarrápida";
+   descripcion="Repsol · ultrarrápida";
   }
  }
-
  if(op==="zunder"){
   if(c==="AC"&&w<=50){
    precio=0.42;
@@ -1755,21 +1385,14 @@ function referenciaConexion(op,x){
    descripcion="Zunder · DC superior a 50 kW";
   }
  }
-
  if(precio===null)return null;
-
  return {precio,descripcion,minimo};
 }
-
-function precioEstacion(p){
+function precioEstacion(p,filtrarConector=true){
  const personal=preciosPersonales()[clave(p)];
-
- if(
-  personal &&
-  personal.precio!=="" &&
-  Number.isFinite(Number(personal.precio)) &&
-  Number(personal.precio)>=0
- ){
+ if(personal&&personal.precio!==""&&
+    Number.isFinite(Number(personal.precio))&&
+    Number(personal.precio)>=0){
   return {
    precio:Number(personal.precio),
    tipo:"personal",
@@ -1779,98 +1402,63 @@ function precioEstacion(p){
    minimo:false
   };
  }
-
  const op=identificarOperador(p);
-
- if(
-  !op ||
-  !["endesa","wenea","repsol","zunder"].includes(op)
- )return null;
-
- const lat=Number(p.latitude);
- const lon=Number(p.longitude);
-
- if(
-  !Number.isFinite(lat) ||
-  !Number.isFinite(lon) ||
-  lat<35.9 || lat>44.1 ||
-  lon< -9.5 || lon>4.6
- )return null;
-
- const posibilidades=conexionesFiltradas(p)
-  .map(x=>referenciaConexion(op,x))
-  .filter(Boolean);
-
- if(!posibilidades.length)return null;
-
- posibilidades.sort((a,b)=>a.precio-b.precio);
- const r=posibilidades[0];
-
+ if(!["endesa","wenea","repsol","zunder"].includes(op)){
+  return null;
+ }
+ const lat=Number(p.latitude),lon=Number(p.longitude);
+ if(!Number.isFinite(lat)||!Number.isFinite(lon)||
+    lat<35.9||lat>44.1||lon< -9.5||lon>4.6){
+  return null;
+ }
+ const xs=filtrarConector
+  ?conexionesFiltradas(p)
+  :conexiones(p);
+ const posibles=xs.map(x=>referenciaConexion(op,x))
+  .filter(Boolean)
+  .sort((a,b)=>a.precio-b.precio);
+ if(!posibles.length)return null;
+ const r=posibles[0];
  return {
   precio:r.precio,
   tipo:"referencia",
-  titulo:FUENTES[op].nombre+
-   " · tarifa general de referencia",
+  titulo:FUENTES[op].nombre+" · tarifa general de referencia",
   descripcion:r.descripcion,
   url:FUENTES[op].url,
-  minimo:r.minimo||posibilidades.length>1
+  minimo:r.minimo||posibles.length>1
  };
 }
-
 function cantidad(){
  const s=$("energiaEstimacion").value.trim();
  const n=Number(s);
-
- return (
-  s!=="" &&
-  Number.isFinite(n) &&
-  n>0 &&
-  n<=300
- )?n:null;
+ return s!==""&&Number.isFinite(n)&&n>0&&n<=300?n:null;
 }
-
-/* ESTACIONES VISIBLES */
 function vistas(){
  return estaciones.filter(p=>{
-  if(!coordOK(p))return false;
-  if(!coincide(p))return false;
-
-  if(
-   $("soloPrecio").value==="conocidos" &&
-   precioEstacion(p)===null
-  )return false;
-
-  if($("soloCompatibles").checked){
-   if(!getVehiculo())return false;
-
-   if(
-    compatibilidad(p).estado!=="compatible"
-   )return false;
+  if(!coordOK(p)||!coincide(p))return false;
+  if($("soloPrecio").value==="conocidos"&&
+     precioEstacion(p)===null)return false;
+  if($("soloCompatibles").checked&&
+     compatibilidad(p).estado!=="compatible"){
+   return false;
   }
-
   return true;
  });
 }
-
 function ordenadas(){
  const a=vistas();
- const orden=$("orden").value;
-
- if(orden==="nombre"){
-  a.sort((x,y)=>
-   String(x.name||"").localeCompare(
-    String(y.name||""),"es"
-   )
-  );
+ const o=$("orden").value;
+ if(o==="nombre"){
+  a.sort((x,y)=>String(x.name||"").localeCompare(
+   String(y.name||""),"es"
+  ));
  }
-
- if(orden==="precio"){
+ if(o==="precio"){
   a.sort((x,y)=>
    (precioEstacion(x)?.precio??Infinity)-
    (precioEstacion(y)?.precio??Infinity)
   );
  }
-
  return a;
 }
 
@@ -1878,228 +1466,134 @@ function ordenadas(){
 function esFavorito(p){
  return getFavoritos().some(x=>clave(x)===clave(p));
 }
-
 function buscarPorId(id){
- return porId.get(id) ||
-  estaciones.find(p=>clave(p)===id) ||
-  getFavoritos().find(p=>clave(p)===id);
+ return porId.get(id)||
+  estaciones.find(p=>clave(p)===id)||
+  getFavoritos().find(p=>clave(p)===id)||
+  rutaPorId.get(id);
 }
-
 function favorito(id){
  const p=buscarPorId(id);
  if(!p)return;
-
  let f=getFavoritos();
-
  f=f.some(x=>clave(x)===id)
   ?f.filter(x=>clave(x)!==id)
   :[...f,p];
-
  if(guardarJSON(FAV_KEY,f)){
   pintarLista();
   pintarFavoritos();
-
-  if(seleccion&&clave(seleccion)===id){
-   abrirFicha(p);
-  }
+  if(seleccion&&clave(seleccion)===id)abrirFicha(p);
+  if(rutaCalculada)pintarParadas();
  }
 }
 
-/* ELEMENTOS DE FICHAS */
-function par(el,texto){
- const p=document.createElement("p");
- p.textContent=texto;
- el.appendChild(p);
-}
-
+/* FICHAS */
 function chips(p,el){
  const xs=conexiones(p);
-
- const lista=xs.length
-  ?xs
-  :[{type:"Conectores no indicados"}];
-
+ const lista=xs.length?xs:[{type:"Conectores no indicados"}];
  for(const x of lista){
   const chip=document.createElement("span");
   chip.className="chip";
-
-  chip.textContent=
-   (x.type||"Conector no indicado")+
+  chip.textContent=(x.type||"Conector no indicado")+
    (x.powerKW!=null?" · "+x.powerKW+" kW":"");
-
   el.appendChild(chip);
  }
 }
-
 function crearPrecio(p,el){
  const tarifa=precioEstacion(p);
-
  const box=document.createElement("div");
  box.className="price-box";
-
  if(!tarifa){
   const tag=document.createElement("span");
   tag.className="tag missing";
   tag.textContent="Precio no disponible";
   box.appendChild(tag);
-
-  par(
-   box,
-   "No hay una tarifa aplicable confirmada para este punto."
-  );
-
+  par(box,"Consulta la tarifa actual del operador.");
   const op=identificarOperador(p);
-
   if(op&&FUENTES[op]){
-   const a=document.createElement("a");
-   a.href=FUENTES[op].url;
-   a.target="_blank";
-   a.rel="noopener noreferrer";
-   a.textContent=
-    "Consultar "+FUENTES[op].nombre+" ↗";
-   box.appendChild(a);
+   box.appendChild(botonLink(
+    "Consultar "+FUENTES[op].nombre+" ↗",
+    FUENTES[op].url,true
+   ));
   }
-
   el.appendChild(box);
   return;
  }
-
  const head=document.createElement("div");
  head.className="price-head";
-
  const precio=document.createElement("div");
  precio.className="price-big";
-
  precio.textContent=
   (tarifa.minimo?"Desde ":"")+
   tarifa.precio.toLocaleString("es-ES",{
-   minimumFractionDigits:2,
-   maximumFractionDigits:3
+   minimumFractionDigits:2,maximumFractionDigits:3
   })+" €/kWh";
-
  head.appendChild(precio);
-
  const tag=document.createElement("span");
- tag.className=tarifa.tipo==="personal"
-  ?"tag personal"
-  :"tag";
-
+ tag.className=tarifa.tipo==="personal"?"tag personal":"tag";
  tag.textContent=tarifa.tipo==="personal"
-  ?"Anotado por ti"
-  :"Referencia publicada";
-
+  ?"Anotado por ti":"Referencia publicada";
  head.appendChild(tag);
  box.appendChild(head);
-
  par(box,tarifa.titulo);
  par(box,tarifa.descripcion);
-
  const k=cantidad();
-
  if(k!==null){
-  par(
-   box,
-   "Coste orientativo de "+k+" kWh: "+
-   euro(k*tarifa.precio)
-  );
+  par(box,"Coste orientativo de "+k+" kWh: "+
+   euro(k*tarifa.precio));
  }
-
  if(tarifa.url){
-  const a=document.createElement("a");
-  a.href=tarifa.url;
-  a.target="_blank";
-  a.rel="noopener noreferrer";
-  a.textContent="Consultar fuente ↗";
-  box.appendChild(a);
+  box.appendChild(botonLink("Consultar fuente ↗",
+   tarifa.url,true));
  }
-
- par(
-  box,
-  tarifa.tipo==="personal"
-   ?"Precio anotado personalmente y no verificado."
-   :"Tarifa general orientativa. Confirma las condiciones del punto y posibles cargos adicionales."
- );
-
+ par(box,tarifa.tipo==="personal"
+  ?"Precio personal no verificado."
+  :"Tarifa general orientativa; confirma precio y cargos.");
  el.appendChild(box);
 }
-
 function crearFicha(p,flotante=false){
  const d=detalle(p);
-
- const el=document.createElement(
-  flotante?"div":"article"
- );
-
+ const el=document.createElement(flotante?"div":"article");
  if(!flotante)el.className="station";
 
  const head=document.createElement("div");
- head.className=flotante
-  ?"sheet-head"
-  :"station-head";
-
+ head.className=flotante?"sheet-head":"station-head";
  const h=document.createElement("h3");
  h.textContent=p.name||"Punto de recarga";
  head.appendChild(h);
 
  const b=document.createElement("button");
  b.className=flotante?"close":"star";
-
- b.textContent=flotante
-  ?"×"
-  :esFavorito(p)?"★":"☆";
-
- b.setAttribute(
-  "aria-label",
-  flotante?"Cerrar ficha":"Cambiar favorito"
- );
-
- b.onclick=flotante
-  ?cerrarFicha
-  :()=>favorito(clave(p));
-
+ b.textContent=flotante?"×":esFavorito(p)?"★":"☆";
+ b.setAttribute("aria-label",flotante
+  ?"Cerrar ficha":"Cambiar favorito");
+ b.onclick=flotante?cerrarFicha:()=>favorito(clave(p));
  head.appendChild(b);
  el.appendChild(head);
 
  par(el,"🏢 "+d.operador);
  par(el,"📍 "+d.direccion);
-
- par(
-  el,
-  "⚡ Potencia máxima registrada: "+
-  (maxima(p)===null?"Sin datos":maxima(p)+" kW")
- );
+ par(el,"⚡ Potencia máxima registrada: "+
+  (maxima(p)===null?"Sin datos":maxima(p)+" kW"));
 
  const etiquetas=document.createElement("div");
  etiquetas.className="chips";
  chips(p,etiquetas);
  el.appendChild(etiquetas);
-
  el.appendChild(etiquetaCompatibilidad(p));
-
  crearPrecio(p,el);
 
  const actions=document.createElement("div");
  actions.className="actions";
 
- const ruta=document.createElement("a");
- ruta.className="btn small";
- ruta.href=d.ruta;
- ruta.target="_blank";
- ruta.rel="noopener noreferrer";
- ruta.textContent="↗ Cómo llegar";
- actions.appendChild(ruta);
+ actions.appendChild(botonLink("↗ Cómo llegar",d.ruta));
 
  const fav=document.createElement("button");
  fav.className="btn secondary small";
-
  fav.textContent=flotante
   ?(esFavorito(p)?"★ Quitar favorito":"☆ Guardar favorito")
   :"Ver en mapa";
-
- fav.onclick=flotante
-  ?()=>favorito(clave(p))
-  :()=>verEnMapa(p);
-
+ fav.onclick=flotante?()=>favorito(clave(p)):()=>verEnMapa(p);
  actions.appendChild(fav);
 
  const editar=document.createElement("button");
@@ -2109,352 +1603,207 @@ function crearFicha(p,flotante=false){
  actions.appendChild(editar);
 
  el.appendChild(actions);
-
  return el;
 }
-
 function abrirFicha(p){
  seleccion=p;
-
- const box=$("fichaFlotante");
- box.replaceChildren(crearFicha(p,true));
- box.hidden=false;
+ $("fichaFlotante").replaceChildren(crearFicha(p,true));
+ $("fichaFlotante").hidden=false;
 }
-
 function cerrarFicha(){
  seleccion=null;
-
  $("fichaFlotante").hidden=true;
  $("fichaFlotante").replaceChildren();
 }
-
 function verEnMapa(p){
  mostrar("mapa");
-
  if(!mapa||!coordOK(p))return;
-
  mapa.flyTo({
-  center:[
-   Number(p.longitude),
-   Number(p.latitude)
-  ],
+  center:[Number(p.longitude),Number(p.latitude)],
   zoom:16
  });
-
  abrirFicha(p);
 }
-
-/* MARCADORES */
 function geojson(){
  porId.clear();
-
  return {
   type:"FeatureCollection",
   features:vistas().map(p=>{
    porId.set(clave(p),p);
-
    return {
     type:"Feature",
     geometry:{
      type:"Point",
      coordinates:[
-      Number(p.longitude),
-      Number(p.latitude)
+      Number(p.longitude),Number(p.latitude)
      ]
     },
-    properties:{
-     sid:clave(p),
-     tipo:tipo(p)
-    }
+    properties:{sid:clave(p),tipo:tipo(p)}
    };
   })
  };
 }
-
 function refrescarMapa(){
- if(!mapa)return;
-
- const src=mapa.getSource("cargadores");
+ const src=mapa?.getSource("cargadores");
  if(src)src.setData(geojson());
 }
-
 function pintarLista(){
  const lista=$("lista");
  lista.replaceChildren();
-
  const vs=ordenadas();
-
- for(const p of vs){
-  lista.appendChild(crearFicha(p));
- }
-
+ for(const p of vs)lista.appendChild(crearFicha(p));
  if(!vs.length){
   const e=document.createElement("p");
   e.className="empty";
-
-  e.textContent=$("soloCompatibles").checked
-   ?"No se han encontrado estaciones compatibles con los filtros actuales."
-   :"No hay estaciones que coincidan con los filtros.";
-
+  e.textContent="No hay estaciones que coincidan con los filtros.";
   lista.appendChild(e);
  }
-
- $("estado").textContent=
-  vs.length+
-  " estaciones visibles de "+
-  estaciones.length+
-  " recibidas.";
-
+ $("estado").textContent=vs.length+
+  " estaciones visibles de "+estaciones.length+" recibidas.";
  $("totalVisibles").textContent=vs.length;
-
- $("totalCompatibles").textContent=
-  getVehiculo()
-   ?vs.filter(p=>
-     compatibilidad(p).estado==="compatible"
-    ).length
-   :"—";
+ $("totalCompatibles").textContent=getVehiculo()
+  ?vs.filter(p=>compatibilidad(p).estado==="compatible").length
+  :"—";
 }
-
 function filtrar(){
- if(
-  $("soloCompatibles").checked &&
-  !getVehiculo()
- ){
+ if($("soloCompatibles").checked&&!getVehiculo()){
   $("soloCompatibles").checked=false;
-
-  alert(
-   "Primero configura tu vehículo en Mi garaje."
-  );
+  alert("Primero configura tu vehículo.");
  }
-
  pintarLista();
  refrescarMapa();
  cerrarFicha();
 }
-
 function actualizarPrecios(){
  pintarLista();
  refrescarMapa();
  pintarFavoritos();
-
  if(seleccion)abrirFicha(seleccion);
+ if(rutaCalculada)pintarParadas();
 }
 
-/* CARGADORES REALES */
+/* DATOS REALES DEL MAPA */
 async function buscar(){
  iniciarMapa();
  if(!mapa)return;
-
  const actual=++peticion;
  const c=mapa.getCenter();
-
  const url=new URL(API+"/chargers");
  url.searchParams.set("lat",c.lat.toFixed(6));
  url.searchParams.set("lon",c.lng.toFixed(6));
-
- $("estado").textContent=
-  "Buscando cargadores reales…";
-
+ $("estado").textContent="Buscando cargadores reales…";
  try{
   const res=await fetch(url.toString(),{
-   mode:"cors",
-   cache:"no-store"
+   mode:"cors",cache:"no-store"
   });
-
   const data=await res.json();
-
   if(actual!==peticion)return;
-
-  if(!res.ok){
-   throw Error(data.error||"HTTP "+res.status);
-  }
-
+  if(!res.ok)throw Error(data.error||"HTTP "+res.status);
   if(!Array.isArray(data.chargers)){
    throw Error("Respuesta de datos incorrecta");
   }
-
   estaciones=data.chargers;
-
   cerrarFicha();
   pintarLista();
   refrescarMapa();
-
  }catch(e){
   if(actual!==peticion)return;
-
   $("estado").textContent=
-   "Error al cargar cargadores: "+
-   e.message+
-   ". Pulsa Actualizar zona para reintentar.";
+   "Error al cargar estaciones: "+e.message;
  }
 }
-
-/* BUSCAR CIUDAD */
 async function buscarCiudad(){
  const q=$("ciudad").value.trim();
-
  if(q.length<2){
   alert("Escribe una ciudad o dirección.");
   return;
  }
-
  iniciarMapa();
  if(!mapa)return;
-
  const b=$("botonCiudad");
  b.disabled=true;
-
- $("estado").textContent=
-  "Buscando ubicación…";
-
+ $("estado").textContent="Buscando ubicación…";
  try{
-  const r=await fetch(
-   "https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=es&q="+
-   encodeURIComponent(q),
-   {
-    headers:{
-     Accept:"application/json"
-    }
-   }
-  );
-
-  if(!r.ok){
-   throw Error("Servicio de búsqueda no disponible");
-  }
-
-  const xs=await r.json();
-
-  if(!xs.length){
-   throw Error("No se encontró esa ubicación");
-  }
-
-  mapa.jumpTo({
-   center:[
-    Number(xs[0].lon),
-    Number(xs[0].lat)
-   ],
-   zoom:13
-  });
-
+  const coords=await geocodificar(q);
+  mapa.jumpTo({center:coords,zoom:13});
   await buscar();
-
  }catch(e){
-  $("estado").textContent=
-   "Error de búsqueda: "+e.message;
+  $("estado").textContent="Búsqueda: "+e.message;
  }finally{
   b.disabled=false;
  }
 }
-
 $("ciudad").addEventListener("keydown",e=>{
  if(e.key==="Enter")buscarCiudad();
 });
-
-/* GEOLOCALIZACIÓN */
 function miUbicacion(){
  iniciarMapa();
  if(!mapa)return;
-
  if(!navigator.geolocation){
-  $("estado").textContent=
-   "Geolocalización no disponible.";
+  $("estado").textContent="Geolocalización no disponible.";
   return;
  }
-
- $("estado").textContent=
-  "Obteniendo ubicación…";
-
+ $("estado").textContent="Obteniendo ubicación…";
  navigator.geolocation.getCurrentPosition(
   p=>{
    mapa.jumpTo({
-    center:[
-     p.coords.longitude,
-     p.coords.latitude
-    ],
+    center:[p.coords.longitude,p.coords.latitude],
     zoom:14
    });
-
    buscar();
   },
   ()=>{
    $("estado").textContent=
-    "No se pudo obtener la ubicación. Busca una ciudad.";
+    "Ubicación no disponible. Busca una ciudad.";
   },
   {timeout:12000}
  );
 }
-
-/* FAVORITOS */
 function pintarFavoritos(){
  const lista=$("listaFavoritos");
  lista.replaceChildren();
-
  const f=getFavoritos();
-
  if(!f.length){
   const e=document.createElement("div");
   e.className="card empty";
-  e.textContent=
-   "Todavía no tienes estaciones favoritas.";
+  e.textContent="Todavía no tienes favoritos.";
   lista.appendChild(e);
   return;
  }
-
- for(const p of f){
-  lista.appendChild(crearFicha(p));
- }
+ for(const p of f)lista.appendChild(crearFicha(p));
 }
 
-/* COMPARADOR */
+/* COMPARADOR Y FUENTES */
 function calcular(){
  const v=["precioA","precioB","energia"]
   .map(id=>$(id).value.trim());
-
  const [a,b,k]=v.map(Number);
- const out=$("resultado");
-
- if(
-  v.some(x=>x==="") ||
-  ![a,b,k].every(Number.isFinite) ||
-  a<0 || b<0 || k<=0
- ){
-  out.textContent=
-   "Introduce valores válidos.";
+ if(v.some(x=>x==="")||
+    ![a,b,k].every(Number.isFinite)||
+    a<0||b<0||k<=0){
+  $("resultado").textContent="Introduce valores válidos.";
   return;
  }
-
- const A=a*k;
- const B=b*k;
-
- out.textContent=
+ const A=a*k,B=b*k;
+ $("resultado").textContent=
   "Tarifa A: "+euro(A)+
   " | Tarifa B: "+euro(B)+
-  " | Ahorro estimado: "+
-  euro(Math.abs(A-B))+
+  " | Ahorro: "+euro(Math.abs(A-B))+
   " con "+(A<=B?"A":"B");
 }
-
 function pintarFuentes(){
  const cont=$("tarifasOperadores");
  cont.replaceChildren();
-
  for(const op of Object.values(FUENTES)){
   const div=document.createElement("div");
   div.className="ref-row";
-
   const h=document.createElement("h3");
   h.textContent=op.nombre;
   div.appendChild(h);
-
   par(div,op.resumen);
-
-  const a=document.createElement("a");
-  a.href=op.url;
-  a.target="_blank";
-  a.rel="noopener noreferrer";
-  a.textContent="Consultar fuente oficial ↗";
-
-  div.appendChild(a);
+  div.appendChild(botonLink(
+   "Consultar fuente oficial ↗",op.url,true
+  ));
   cont.appendChild(div);
  }
 }
@@ -2462,49 +1811,33 @@ function pintarFuentes(){
 /* PRECIOS PERSONALES */
 function editarTarifa(p){
  edicion=clave(p);
-
- $("dialogEstacion").textContent=
-  p.name||"Punto de recarga";
-
+ $("dialogEstacion").textContent=p.name||"Punto de recarga";
  const t=preciosPersonales()[edicion];
-
  $("manualPrecio").value=t?.precio??"";
  $("manualFuente").value=t?.fuente??"";
  $("manualNota").value=t?.nota??"";
  $("borrarManual").disabled=!t;
-
  $("precioDialog").showModal();
 }
-
 function cerrarDialogo(){
  $("precioDialog").close();
  edicion=null;
 }
-
 $("formPrecio").addEventListener("submit",e=>{
  e.preventDefault();
-
  if(!edicion)return;
-
  const v=$("manualPrecio").value.trim();
  const precio=Number(v);
  const fuente=$("manualFuente").value.trim();
  const nota=$("manualNota").value.trim();
-
- if(
-  v==="" ||
-  !Number.isFinite(precio) ||
-  precio<0 ||
-  precio>10
- ){
+ if(v===""||!Number.isFinite(precio)||
+    precio<0||precio>10){
   alert("Introduce un precio válido.");
   return;
  }
-
  if(fuente){
   try{
    const u=new URL(fuente);
-
    if(!["http:","https:"].includes(u.protocol)){
     throw Error("URL no válida");
    }
@@ -2513,71 +1846,48 @@ $("formPrecio").addEventListener("submit",e=>{
    return;
   }
  }
-
  const xs=preciosPersonales();
-
  xs[edicion]={
-  precio,
-  fuente,
-  nota,
+  precio,fuente,nota,
   fecha:new Date().toISOString().slice(0,10)
  };
-
  if(guardarJSON(PRICE_KEY,xs)){
   cerrarDialogo();
   actualizarPrecios();
  }
 });
-
 function borrarTarifa(){
  if(!edicion)return;
-
  const xs=preciosPersonales();
  delete xs[edicion];
-
  if(guardarJSON(PRICE_KEY,xs)){
   cerrarDialogo();
   actualizarPrecios();
  }
 }
 
-/* PERFIL DE VEHÍCULO */
+/* VEHICULO */
 function pintarVehiculo(){
  const v=getVehiculo();
-
  if(!v){
   $("estadoVehiculo").textContent=
    "Todavía no has guardado un vehículo.";
-
   $("resumenInicio").textContent=
    "Configura tu vehículo para activar la compatibilidad.";
-
-  $("vehiculoMapa").textContent=
-   "🚗 Sin vehículo configurado.";
+  $("vehiculoMapa").textContent="🚗 Sin vehículo configurado.";
   return;
  }
-
- const conectores=v.conectores.map(c=>{
-  if(c==="type2")return "Tipo 2";
-  if(c==="ccs")return "CCS";
-  if(c==="chademo")return "CHAdeMO";
-  return c;
- }).join(" · ");
-
- const texto=
-  v.marca+" "+v.modelo+
-  " · "+v.tipo+
-  " · "+conectores;
-
+ const nombres={type2:"Tipo 2",ccs:"CCS",chademo:"CHAdeMO"};
+ const conectores=v.conectores.map(c=>nombres[c]||c).join(" · ");
+ const texto=v.marca+" "+v.modelo+
+  " · "+v.tipo+" · "+conectores;
  $("estadoVehiculo").textContent="✓ "+texto;
  $("resumenInicio").textContent=texto;
  $("vehiculoMapa").textContent="🚗 "+texto;
 }
-
 function cargarFormularioVehiculo(){
  const v=getVehiculo();
  if(!v)return;
-
  $("marca").value=v.marca||"";
  $("modelo").value=v.modelo||"";
  $("tipoVehiculo").value=v.tipo||"PHEV";
@@ -2585,221 +1895,839 @@ function cargarFormularioVehiculo(){
  $("potenciaAC").value=v.maxAC??"";
  $("potenciaDC").value=v.maxDC??"";
  $("notaVehiculo").value=v.nota||"";
-
+ $("consumoVehiculo").value=v.consumo??"";
  $("vType2").checked=v.conectores.includes("type2");
  $("vCCS").checked=v.conectores.includes("ccs");
  $("vCHAdeMO").checked=v.conectores.includes("chademo");
+ if(v.consumo&&!$("consumoRuta").value){
+  $("consumoRuta").placeholder="Vehículo: "+v.consumo;
+ }
 }
-
-function numeroOpcional(id){
+function numOpcional(id){
  const s=$(id).value.trim();
-
  if(s==="")return null;
-
  const n=Number(s);
  return Number.isFinite(n)&&n>0?n:null;
 }
-
 $("formVehiculo").addEventListener("submit",e=>{
  e.preventDefault();
-
  const marca=$("marca").value.trim();
  const modelo=$("modelo").value.trim();
  const conectores=[];
-
  if($("vType2").checked)conectores.push("type2");
  if($("vCCS").checked)conectores.push("ccs");
  if($("vCHAdeMO").checked)conectores.push("chademo");
-
- if(!marca||!modelo){
-  alert("Introduce la marca y el modelo.");
+ if(!marca||!modelo||!conectores.length){
+  alert("Indica marca, modelo y al menos un conector.");
   return;
  }
-
- if(!conectores.length){
-  alert("Selecciona al menos un conector.");
-  return;
- }
-
  const campos=[
   ["bateria",250],
   ["potenciaAC",100],
-  ["potenciaDC",500]
+  ["potenciaDC",500],
+  ["consumoVehiculo",60]
  ];
-
  for(const [id,max] of campos){
   const s=$(id).value.trim();
-
   if(s!==""){
    const n=Number(s);
-
    if(!Number.isFinite(n)||n<=0||n>max){
-    alert("Revisa el valor de "+id+".");
+    alert("Revisa el valor de "+id);
     return;
    }
   }
  }
-
- const vehiculo={
-  marca,
-  modelo,
+ const v={
+  marca,modelo,
   tipo:$("tipoVehiculo").value,
-  bateria:numeroOpcional("bateria"),
-  maxAC:numeroOpcional("potenciaAC"),
-  maxDC:numeroOpcional("potenciaDC"),
+  bateria:numOpcional("bateria"),
+  maxAC:numOpcional("potenciaAC"),
+  maxDC:numOpcional("potenciaDC"),
+  consumo:numOpcional("consumoVehiculo"),
   conectores,
   nota:$("notaVehiculo").value.trim()
  };
-
- if(guardarJSON(VEHICLE_KEY,vehiculo)){
+ if(guardarJSON(VEHICLE_KEY,v)){
   pintarVehiculo();
   filtrar();
   pintarFavoritos();
-
-  alert("Vehículo guardado correctamente.");
+  if(v.consumo&&!$("consumoRuta").value){
+   $("consumoRuta").placeholder="Vehículo: "+v.consumo;
+  }
+  alert("Vehículo guardado.");
  }
 });
-
 function borrarVehiculo(){
  if(!getVehiculo())return;
-
- if(!confirm("¿Quieres borrar tu perfil de vehículo?")){
-  return;
- }
-
+ if(!confirm("¿Borrar tu perfil de vehículo?"))return;
  try{
   localStorage.removeItem(VEHICLE_KEY);
  }catch{
-  alert("No se pudo borrar el perfil.");
+  alert("No se pudo borrar.");
   return;
  }
-
  $("formVehiculo").reset();
  $("soloCompatibles").checked=false;
-
  pintarVehiculo();
  filtrar();
  pintarFavoritos();
 }
 
-/* RUTAS */
+/* RUTAS V1.2 */
 function pintarRuta(){
  const r=getRuta();
+ if(!r)return;
+ $("origen").value=r.origen;
+ $("destino").value=r.destino;
+ $("notaRuta").value=r.nota||"";
+ $("socInicial").value=r.soc??80;
+ $("socReserva").value=r.reserva??15;
+ $("consumoRuta").value=r.consumo??"";
+ $("corredorKm").value=String(r.corredor??5);
+}
+function borrarRuta(){
+ if(!getRuta()&&!rutaCalculada)return;
+ if(!confirm("¿Borrar la ruta guardada y su resultado?"))return;
+ try{
+  localStorage.removeItem(ROUTE_KEY);
+ }catch{
+  alert("No se pudo borrar.");
+  return;
+ }
+ rutaPeticion++;
+ rutaCalculada=null;
+ paradasRuta=[];
+ rutaPorId.clear();
+ $("formRuta").reset();
+ $("resultadoRuta").replaceChildren();
+ $("listaParadas").replaceChildren();
+ $("estadoRuta").textContent="Ruta borrada.";
+ $("estadoParadas").textContent="Calcula una nueva ruta.";
+ if(mapaRuta)dibujarRuta();
+}
+
+/* GEOCODIFICACION CON CONSULTAS PUNTUALES */
+async function geocodificar(texto){
+ const url=new URL(
+  "https://nominatim.openstreetmap.org/search"
+ );
+ url.searchParams.set("format","json");
+ url.searchParams.set("limit","1");
+ url.searchParams.set("accept-language","es");
+ url.searchParams.set("q",texto);
+
+ const r=await fetch(url.toString(),{
+  headers:{Accept:"application/json"}
+ });
+ if(!r.ok){
+  throw Error("No disponible el servicio de búsqueda");
+ }
+ const xs=await r.json();
+ if(!Array.isArray(xs)||!xs.length){
+  throw Error("Ubicación no encontrada: "+texto);
+ }
+ const lon=Number(xs[0].lon);
+ const lat=Number(xs[0].lat);
+ if(!Number.isFinite(lon)||!Number.isFinite(lat)){
+  throw Error("Coordenadas no válidas");
+ }
+ return [lon,lat];
+}
+const pausa=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+
+/* SERVICIO DE RUTAS OSRM DEMO */
+async function obtenerRecorrido(a,b){
+ const coords=a.join(",")+";"+b.join(",");
+ const url=
+  "https://router.project-osrm.org/route/v1/driving/"+
+  coords+
+  "?overview=full&geometries=geojson&steps=false";
+
+ const r=await fetch(url);
+ if(!r.ok)throw Error("Servicio de rutas no disponible");
+
+ const data=await r.json();
+ const ruta=data.routes?.[0];
+
+ if(data.code!=="Ok"||
+    !ruta||
+    !Array.isArray(ruta.geometry?.coordinates)){
+  throw Error("No se pudo calcular una ruta por carretera");
+ }
+ return {
+  geometry:ruta.geometry,
+  distanciaKm:ruta.distance/1000,
+  duracionHoras:ruta.duration/3600
+ };
+}
+
+/* DISTANCIA GEODESICA APROXIMADA */
+function distanciaKm(a,b){
+ const R=6371;
+ const rad=Math.PI/180;
+ const dLat=(b[1]-a[1])*rad;
+ const dLon=(b[0]-a[0])*rad;
+ const la1=a[1]*rad,la2=b[1]*rad;
+ const h=Math.sin(dLat/2)**2+
+  Math.cos(la1)*Math.cos(la2)*
+  Math.sin(dLon/2)**2;
+ return 2*R*Math.asin(Math.min(1,Math.sqrt(h)));
+}
+
+/* PUNTOS MUESTREADOS A LO LARGO DEL RECORRIDO */
+function muestrasRecorrido(coords,total=5){
+ if(coords.length<2)return [];
+ const acumulada=[0];
+ for(let i=1;i<coords.length;i++){
+  acumulada.push(
+   acumulada[i-1]+distanciaKm(coords[i-1],coords[i])
+  );
+ }
+ const longitud=acumulada[acumulada.length-1];
+ if(longitud<=0)return [coords[0]];
+
+ const fracciones=[0.08,0.29,0.5,0.71,0.92];
+ const muestras=[];
+
+ for(const fraccion of fracciones.slice(0,total)){
+  const objetivo=longitud*fraccion;
+  let j=1;
+  while(j<acumulada.length-1&&
+        acumulada[j]<objetivo)j++;
+  const anterior=acumulada[j-1];
+  const longitudTramo=acumulada[j]-anterior;
+  const f=longitudTramo>0
+   ?(objetivo-anterior)/longitudTramo:0;
+
+  muestras.push([
+   coords[j-1][0]+f*(coords[j][0]-coords[j-1][0]),
+   coords[j-1][1]+f*(coords[j][1]-coords[j-1][1])
+  ]);
+ }
+ return muestras;
+}
+
+/* DISTANCIA APROXIMADA A LA LINEA */
+function distanciaAlRecorrido(p,coords){
+ const lat=Number(p.latitude);
+ const lon=Number(p.longitude);
+ if(!Number.isFinite(lat)||!Number.isFinite(lon)){
+  return Infinity;
+ }
+ const rad=Math.PI/180;
+ const escalaX=111.195*Math.cos(lat*rad);
+ const escalaY=111.195;
+ let minimo=Infinity;
+
+ for(let i=1;i<coords.length;i++){
+  const a=coords[i-1],b=coords[i];
+  const ax=(a[0]-lon)*escalaX;
+  const ay=(a[1]-lat)*escalaY;
+  const bx=(b[0]-lon)*escalaX;
+  const by=(b[1]-lat)*escalaY;
+  const vx=bx-ax,vy=by-ay;
+  const largo=vx*vx+vy*vy;
+
+  const t=largo>0
+   ?Math.max(0,Math.min(1,-(ax*vx+ay*vy)/largo))
+   :0;
+
+  const dx=ax+t*vx;
+  const dy=ay+t*vy;
+  minimo=Math.min(minimo,Math.hypot(dx,dy));
+ }
+ return minimo;
+}
+
+/* BUSCAR PARADAS CANDIDATAS */
+async function buscarParadas(coords,limite,actual){
+ const puntos=muestrasRecorrido(coords);
+ const todas=new Map();
+ const errores=[];
+
+ for(const punto of puntos){
+  if(actual!==rutaPeticion)return null;
+
+  const url=new URL(API+"/chargers");
+  url.searchParams.set("lat",punto[1].toFixed(6));
+  url.searchParams.set("lon",punto[0].toFixed(6));
+
+  try{
+   const r=await fetch(url.toString(),{
+    mode:"cors",
+    cache:"no-store"
+   });
+
+   const data=await r.json();
+
+   if(!r.ok||!Array.isArray(data.chargers)){
+    throw Error("Respuesta incorrecta");
+   }
+
+   for(const p of data.chargers){
+    if(!coordOK(p))continue;
+    const id=clave(p);
+    if(!todas.has(id))todas.set(id,p);
+   }
+  }catch(e){
+   errores.push(e.message);
+  }
+ }
+ if(actual!==rutaPeticion)return null;
+
+ const candidatas=[];
+
+ for(const p of todas.values()){
+  const d=distanciaAlRecorrido(p,coords);
+  if(d>limite)continue;
+
+  if(getVehiculo()&&
+     compatibilidad(p).estado!=="compatible"){
+   continue;
+  }
+
+  candidatas.push({...p,distanciaRuta:d});
+ }
+
+ candidatas.sort((a,b)=>
+  a.distanciaRuta-b.distanciaRuta
+ );
+
+ return {
+  estaciones:candidatas.slice(0,25),
+  errores:errores.length,
+  muestreos:puntos.length
+ };
+}
+
+/* CALCULO DE AUTONOMIA */
+function datosEnergia(r){
+ const v=getVehiculo();
+ const bateria=potenciaValida(v?.bateria);
+
+ const consumoTexto=String(r.consumo??"").trim();
+ const consumo=consumoTexto!==""?
+  potenciaValida(consumoTexto):
+  potenciaValida(v?.consumo);
+
+ const soc=Number(r.soc);
+ const reserva=Number(r.reserva);
+
+ if(bateria===null||consumo===null){
+  return null;
+ }
+
+ const energiaActual=bateria*soc/100;
+ const energiaReservada=bateria*reserva/100;
+
+ const util=Math.max(0,energiaActual-energiaReservada);
+ const autonomia=util/consumo*100;
+
+ return {
+  bateria,consumo,soc,reserva,
+  energiaActual,energiaReservada,
+  util,autonomia
+ };
+}
+
+/* MAPA DE RUTA */
+function iniciarMapaRuta(){
+ if(mapaRuta)return;
+ if(typeof maplibregl==="undefined"){
+  $("estadoRuta").textContent="No se pudo cargar el mapa.";
+  return;
+ }
+ mapaRuta=new maplibregl.Map({
+  container:"routeMap",
+  style:estilo("dark"),
+  center:[2.1686,41.3874],
+  zoom:8,
+  attributionControl:true
+ });
+ mapaRuta.addControl(
+  new maplibregl.NavigationControl({showCompass:false}),
+  "bottom-right"
+ );
+ mapaRuta.on("style.load",construirMapaRuta);
+ mapaRuta.on("click","puntos-ruta",e=>{
+  const id=String(e.features?.[0]?.properties?.sid??"");
+  const p=rutaPorId.get(id);
+  if(p){
+   const el=$("listaParadas");
+   el.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+ });
+ mapaRuta.on("mouseenter","puntos-ruta",()=>{
+  mapaRuta.getCanvas().style.cursor="pointer";
+ });
+ mapaRuta.on("mouseleave","puntos-ruta",()=>{
+  mapaRuta.getCanvas().style.cursor="";
+ });
+}
+function fuenteGeo(nombre,data){
+ const src=mapaRuta.getSource(nombre);
+ if(src)src.setData(data);
+ else mapaRuta.addSource(nombre,{type:"geojson",data});
+}
+function construirMapaRuta(){
+ if(!mapaRuta||mapaRuta.getLayer("linea-ruta"))return;
+
+ fuenteGeo("ruta-linea",geoVacio);
+ fuenteGeo("ruta-extremos",geoVacio);
+ fuenteGeo("ruta-paradas",geoVacio);
+
+ mapaRuta.addLayer({
+  id:"linea-ruta",
+  type:"line",
+  source:"ruta-linea",
+  paint:{
+   "line-color":"#b9ff46",
+   "line-width":5,
+   "line-opacity":0.95
+  }
+ });
+
+ mapaRuta.addLayer({
+  id:"extremos-ruta",
+  type:"circle",
+  source:"ruta-extremos",
+  paint:{
+   "circle-radius":10,
+   "circle-color":"#ffc16c",
+   "circle-stroke-width":3,
+   "circle-stroke-color":"#17261d"
+  }
+ });
+
+ mapaRuta.addLayer({
+  id:"puntos-ruta",
+  type:"circle",
+  source:"ruta-paradas",
+  paint:{
+   "circle-radius":9,
+   "circle-color":"#67c9ff",
+   "circle-stroke-width":3,
+   "circle-stroke-color":"#162a37"
+  }
+ });
+
+ dibujarRuta();
+}
+function dibujarRuta(){
+ if(!mapaRuta)return;
+
+ const geo=rutaCalculada?.geometry;
+ const line=geo?{
+  type:"FeatureCollection",
+  features:[{
+   type:"Feature",
+   geometry:geo,
+   properties:{}
+  }]
+ }:geoVacio;
+
+ fuenteSiExiste("ruta-linea",line);
+
+ const extremos=geo?{
+  type:"FeatureCollection",
+  features:[
+   {
+    type:"Feature",
+    geometry:{type:"Point",coordinates:rutaCalculada.inicio},
+    properties:{nombre:"Origen"}
+   },
+   {
+    type:"Feature",
+    geometry:{type:"Point",coordinates:rutaCalculada.fin},
+    properties:{nombre:"Destino"}
+   }
+  ]
+ }:geoVacio;
+
+ fuenteSiExiste("ruta-extremos",extremos);
+
+ rutaPorId.clear();
+
+ const puntos={
+  type:"FeatureCollection",
+  features:paradasRuta.map(p=>{
+   rutaPorId.set(clave(p),p);
+   return {
+    type:"Feature",
+    geometry:{
+     type:"Point",
+     coordinates:[
+      Number(p.longitude),Number(p.latitude)
+     ]
+    },
+    properties:{sid:clave(p)}
+   };
+  })
+ };
+
+ fuenteSiExiste("ruta-paradas",puntos);
+
+ if(geo&&Array.isArray(geo.coordinates)){
+  const coords=geo.coordinates;
+  const longitudes=coords.map(p=>p[0]);
+  const latitudes=coords.map(p=>p[1]);
+
+  mapaRuta.fitBounds([
+   [Math.min(...longitudes),Math.min(...latitudes)],
+   [Math.max(...longitudes),Math.max(...latitudes)]
+  ],{padding:40,maxZoom:13,duration:350});
+ }
+}
+function fuenteSiExiste(nombre,data){
+ const src=mapaRuta?.getSource(nombre);
+ if(src)src.setData(data);
+}
+
+/* MOSTRAR ANALISIS DE RUTA */
+function pintarAnalisis(){
  const cont=$("resultadoRuta");
  cont.replaceChildren();
 
- if(!r)return;
+ if(!rutaCalculada)return;
 
+ const r=rutaCalculada;
+ const datos=datosEnergia(r);
  const box=document.createElement("div");
- box.className="route-box";
+ box.className="card";
 
  const h=document.createElement("h3");
- h.textContent="✓ Ruta guardada";
+ h.textContent="Resultado del recorrido";
  box.appendChild(h);
 
- const line=document.createElement("div");
- line.className="route-line";
+ const metrics=document.createElement("div");
+ metrics.className="route-metrics";
 
- const punto1=document.createElement("div");
- punto1.className="route-point";
- punto1.textContent="Origen: "+r.origen;
- line.appendChild(punto1);
+ function metric(titulo,valor){
+  const d=document.createElement("div");
+  d.className="metric";
 
- const punto2=document.createElement("div");
- punto2.className="route-point";
- punto2.textContent="Destino: "+r.destino;
- line.appendChild(punto2);
+  const s=document.createElement("small");
+  s.textContent=titulo;
 
- box.appendChild(line);
+  const b=document.createElement("strong");
+  b.textContent=valor;
 
- if(r.nota)par(box,r.nota);
+  d.appendChild(s);
+  d.appendChild(b);
+  metrics.appendChild(d);
+ }
 
- const url=new URL(
-  "https://www.google.com/maps/dir/"
+ metric("Distancia por carretera",
+  r.distanciaKm.toFixed(1)+" km");
+ metric("Tiempo orientativo",
+  Math.round(r.duracionHoras*60)+" min");
+
+ if(datos){
+  const necesaria=r.distanciaKm*datos.consumo/100;
+  const faltante=Math.max(
+   0,necesaria-datos.util
+  );
+  const llegada=datos.soc-
+   necesaria/datos.bateria*100;
+
+  metric("Autonomía con reserva",
+   datos.autonomia.toFixed(0)+" km");
+  metric("Energía del trayecto",
+   necesaria.toFixed(1)+" kWh");
+  metric("Recarga mínima estimada",
+   faltante.toFixed(1)+" kWh");
+  metric("Batería al llegar sin recargar",
+   llegada.toFixed(0)+" %");
+
+  box.appendChild(metrics);
+
+  const aviso=document.createElement("div");
+
+  if(faltante>0){
+   aviso.className="route-warning";
+   aviso.textContent=
+    "La autonomía eléctrica estimada no cubre el trayecto "+
+    "manteniendo la reserva. Serían necesarios aproximadamente "+
+    faltante.toFixed(1)+" kWh adicionales. "+
+    "No es una recomendación de parada ni un cálculo de carga "+
+    "real: el consumo puede variar.";
+  }else{
+   aviso.className="route-good";
+   aviso.textContent=
+    "Según los datos introducidos, la energía eléctrica "+
+    "estimada cubriría el recorrido manteniendo la reserva. "+
+    "No garantiza autonomía real.";
+  }
+  box.appendChild(aviso);
+
+  const precios=paradasRuta
+   .map(p=>precioEstacion(p,false))
+   .filter(Boolean)
+   .map(x=>x.precio);
+
+  if(faltante>0&&precios.length){
+   const min=Math.min(...precios);
+   const max=Math.max(...precios);
+   const valor=document.createElement("p");
+   valor.className="result";
+   valor.textContent=
+    "Coste orientativo de "+faltante.toFixed(1)+
+    " kWh adicionales: "+
+    euro(faltante*min)+
+    (min!==max?" – "+euro(faltante*max):"")+
+    ".";
+   box.appendChild(valor);
+
+   par(box,
+    "Rango basado en referencias encontradas entre las "+
+    "estaciones candidatas; no incluye desvíos, pérdidas "+
+    "ni cargos adicionales. No implica que todas las "+
+    "tarifas sean aplicables a tu vehículo."
+   );
+  }else if(faltante>0){
+   par(box,
+    "El coste de recarga no puede estimarse todavía "+
+    "sin referencias de precios apropiadas."
+   );
+  }
+ }else{
+  box.appendChild(metrics);
+  const aviso=document.createElement("div");
+  aviso.className="route-warning";
+  aviso.textContent=
+   "Para calcular autonomía, guarda la batería utilizable "+
+   "en Mi garaje e introduce un consumo en kWh/100 km.";
+  box.appendChild(aviso);
+ }
+
+ const google=new URL("https://www.google.com/maps/dir/");
+ google.searchParams.set("api","1");
+ google.searchParams.set("origin",r.origen);
+ google.searchParams.set("destination",r.destino);
+ google.searchParams.set("travelmode","driving");
+
+ box.appendChild(
+  botonLink("↗ Abrir viaje en Google Maps",google.toString())
  );
 
- url.searchParams.set("api","1");
- url.searchParams.set("origin",r.origen);
- url.searchParams.set("destination",r.destino);
- url.searchParams.set("travelmode","driving");
-
- const a=document.createElement("a");
- a.className="btn full";
- a.href=url.toString();
- a.target="_blank";
- a.rel="noopener noreferrer";
- a.textContent="↗ Abrir indicaciones en Google Maps";
-
- box.appendChild(a);
-
- par(
-  box,
-  "Google Maps calculará la ruta de conducción. VOLTIA todavía no inserta paradas automáticas de carga."
- );
+ const nota=document.createElement("p");
+ nota.className="hint";
+ nota.textContent=
+  "Trazado obtenido de un servicio de demostración. "+
+  "Las indicaciones abiertas en Google Maps pueden "+
+  "utilizar un recorrido diferente.";
+ box.appendChild(nota);
 
  cont.appendChild(box);
 }
 
-$("formRuta").addEventListener("submit",e=>{
+/* MOSTRAR CANDIDATOS */
+function pintarParadas(){
+ const lista=$("listaParadas");
+ lista.replaceChildren();
+ rutaPorId.clear();
+
+ if(!rutaCalculada)return;
+
+ if(!paradasRuta.length){
+  $("estadoParadas").textContent=
+   "No se encontraron candidatos en el corredor muestreado. "+
+   "Esto no significa que no existan cargadores en la ruta.";
+  pintarAnalisis();
+  dibujarRuta();
+  return;
+ }
+
+ $("estadoParadas").textContent=
+  paradasRuta.length+
+  " estaciones candidatas próximas al trazado. "+
+  "Distancias aproximadas en línea recta al recorrido.";
+
+ for(const p of paradasRuta){
+  rutaPorId.set(clave(p),p);
+
+  const card=document.createElement("div");
+  card.className="route-candidate";
+
+  const h=document.createElement("h3");
+  h.textContent=p.name||"Punto de recarga";
+  card.appendChild(h);
+
+  const d=detalle(p);
+  par(card,d.operador+" · "+d.direccion);
+
+  par(card,
+   "Distancia aproximada al trazado: "+
+   p.distanciaRuta.toFixed(1)+" km"
+  );
+
+  const compat=compatibilidad(p);
+  par(card,getVehiculo()
+   ?compat.texto
+   :"Compatibilidad por confirmar: configura tu vehículo.");
+
+  const tarifa=precioEstacion(p,false);
+
+  par(card,tarifa
+   ?"Precio "+(tarifa.tipo==="personal"
+       ?"anotado":"orientativo")+
+    ": "+tarifa.precio.toFixed(2)+" €/kWh"
+   :"Precio no disponible");
+
+  const actions=document.createElement("div");
+  actions.className="actions";
+
+  actions.appendChild(botonLink("↗ Indicaciones",d.ruta));
+
+  const guardar=document.createElement("button");
+  guardar.className="btn secondary small";
+  guardar.textContent=esFavorito(p)
+   ?"★ Favorito"
+   :"☆ Guardar";
+  guardar.onclick=()=>favorito(clave(p));
+  actions.appendChild(guardar);
+
+  const localizar=document.createElement("button");
+  localizar.className="btn secondary small";
+  localizar.textContent="Ver en mapa";
+  localizar.onclick=()=>{
+   mostrar("rutas");
+   mapaRuta?.flyTo({
+    center:[
+     Number(p.longitude),Number(p.latitude)
+    ],
+    zoom:13
+   });
+   document.getElementById("routeMap")
+    .scrollIntoView({behavior:"smooth",block:"center"});
+  };
+  actions.appendChild(localizar);
+
+  card.appendChild(actions);
+  lista.appendChild(card);
+ }
+
+ pintarAnalisis();
+ dibujarRuta();
+}
+
+/* CALCULAR RECORRIDO */
+$("formRuta").addEventListener("submit",async e=>{
  e.preventDefault();
 
  const origen=$("origen").value.trim();
  const destino=$("destino").value.trim();
  const nota=$("notaRuta").value.trim();
 
+ const soc=Number($("socInicial").value);
+ const reserva=Number($("socReserva").value);
+
+ const sConsumo=$("consumoRuta").value.trim();
+ const consumo=sConsumo===""?null:Number(sConsumo);
+
+ const corredor=Number($("corredorKm").value);
+
  if(!origen||!destino){
   alert("Introduce origen y destino.");
   return;
  }
+ if(!Number.isFinite(soc)||soc<0||soc>100||
+    !Number.isFinite(reserva)||reserva<0||
+    reserva>90||reserva>=soc){
+  alert("Revisa batería actual y reserva: "+
+   "la reserva debe ser inferior a la batería actual.");
+  return;
+ }
+ if(sConsumo!==""&&
+    (!Number.isFinite(consumo)||consumo<=0||consumo>60)){
+  alert("Introduce un consumo válido.");
+  return;
+ }
 
- const ruta={
-  origen,
-  destino,
-  nota,
+ const r={
+  origen,destino,nota,soc,reserva,
+  consumo,corredor,
   fecha:new Date().toISOString()
  };
 
- if(guardarJSON(ROUTE_KEY,ruta)){
-  pintarRuta();
-  alert("Borrador de ruta guardado.");
+ if(!guardarJSON(ROUTE_KEY,r))return;
+
+ const actual=++rutaPeticion;
+ const btn=$("btnRuta");
+ btn.disabled=true;
+ rutaCalculada=null;
+ paradasRuta=[];
+
+ $("resultadoRuta").replaceChildren();
+ $("listaParadas").replaceChildren();
+ $("estadoParadas").textContent="Pendiente del recorrido.";
+ $("estadoRuta").textContent=
+  "Buscando origen y destino…";
+
+ try{
+  const inicio=await geocodificar(origen);
+  if(actual!==rutaPeticion)return;
+
+  // Nominatim público: máximo una consulta por segundo.
+  await pausa(1150);
+
+  const fin=await geocodificar(destino);
+  if(actual!==rutaPeticion)return;
+
+  $("estadoRuta").textContent=
+   "Calculando ruta por carretera…";
+
+  const calculo=await obtenerRecorrido(inicio,fin);
+  if(actual!==rutaPeticion)return;
+
+  rutaCalculada={...r,...calculo,inicio,fin};
+
+  iniciarMapaRuta();
+  dibujarRuta();
+  pintarAnalisis();
+
+  $("estadoRuta").textContent=
+   "Recorrido calculado. Buscando estaciones cercanas…";
+  $("estadoParadas").textContent=
+   "Consultando puntos de recarga…";
+
+  const resultado=await buscarParadas(
+   calculo.geometry.coordinates,
+   corredor,
+   actual
+  );
+
+  if(actual!==rutaPeticion)return;
+  if(!resultado)return;
+
+  paradasRuta=resultado.estaciones;
+  pintarParadas();
+
+  $("estadoRuta").textContent=
+   "Ruta calculada: "+
+   calculo.distanciaKm.toFixed(1)+
+   " km. Consultas de estaciones completadas: "+
+   (resultado.muestreos-resultado.errores)+
+   " de "+resultado.muestreos+".";
+
+ }catch(err){
+  if(actual!==rutaPeticion)return;
+
+  $("estadoRuta").textContent=
+   "No se pudo completar el cálculo: "+err.message+
+   ". Puedes volver a intentarlo.";
+  $("estadoParadas").textContent=
+   "Sin búsqueda de cargadores completada.";
+ }finally{
+  if(actual===rutaPeticion)btn.disabled=false;
  }
 });
 
-function cargarFormularioRuta(){
- const r=getRuta();
- if(!r)return;
-
- $("origen").value=r.origen;
- $("destino").value=r.destino;
- $("notaRuta").value=r.nota||"";
-}
-
-function borrarRuta(){
- if(!getRuta())return;
-
- if(!confirm("¿Quieres borrar la ruta guardada?")){
-  return;
- }
-
- try{
-  localStorage.removeItem(ROUTE_KEY);
- }catch{
-  alert("No se pudo borrar la ruta.");
-  return;
- }
-
- $("formRuta").reset();
- pintarRuta();
-}
-
-/* ARRANQUE */
+/* INICIALIZACION */
 pintarFuentes();
 cargarFormularioVehiculo();
-cargarFormularioRuta();
 pintarVehiculo();
 pintarRuta();
-
 </script>
-
 </body>
 </html>
